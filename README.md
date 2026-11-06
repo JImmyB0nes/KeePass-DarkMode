@@ -2,7 +2,6 @@
 
 [![Version](https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 **Dunkles Theme für KeePass — augenfreundlich, auch nachts.**
 

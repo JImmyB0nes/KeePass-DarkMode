@@ -76,7 +76,7 @@ namespace KeePassDarkMode.Decorators
                 AssignHandle(handle);
                 return true;
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return false;
             }

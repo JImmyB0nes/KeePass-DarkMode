@@ -18,7 +18,7 @@ namespace KeePassDarkMode.Decorators
 			{
 				FindAndDecorate(sender, darkMode);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				// Ignore because users should be able to use KeePass anyways.
 			}

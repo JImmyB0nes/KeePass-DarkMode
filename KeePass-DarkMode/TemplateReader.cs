@@ -118,7 +118,7 @@ namespace KeePassDarkMode
 					return new IniFile(sr);
 				}
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return null;
 			}

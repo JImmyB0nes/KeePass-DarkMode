@@ -29,7 +29,6 @@ namespace KeePassDarkMode
 		private IPluginHost _host;
 		private ToolStripMenuItem _menuItem;
 		private DarkModeOptions _options;
-		private OptionsPanel _optionsPanel;
 		private Win10ThemeMonitor _win10ThemeMonitor;
 		private bool _initialized;
 

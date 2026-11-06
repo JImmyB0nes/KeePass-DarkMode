@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using KeePass.Util;
 using KeePassLib.Utility;
@@ -15,7 +14,6 @@ namespace KeePassDarkMode.Editor
 	public partial class TemplateEditorForm : Form
 	{
 		private static TemplateEditorForm _instance;
-		private static Thread _thread;
 		
 		public static TemplateEditorForm Instance
 		{

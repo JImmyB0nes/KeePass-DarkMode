@@ -6,10 +6,10 @@
     <version>1.0.3</version>
     <authors>JImmyBOnes</authors>
     <owners>jimmybonesde</owners>
-    <summary>Plugin changes the appearance of KeePass, to make it look better at night</summary>
+    <summary>Plugin für eine dunkle, augenfreundliche KeePass-Oberfläche</summary>
     <description>
-You can enable it using hotkey `CTRL+T` or using the menu `Tools -> DarkTheme`.
-The plugin allows you to create your own theme.
+Aktivierbar per Hotkey `STRG+T` oder über das Menü `Tools -> DarkTheme`.
+Das Plugin ermöglicht eigene Themes.
 
 [Announcement](https://sourceforge.net/p/keepass/discussion/329220/thread/fcd9700f30/)
     </description>

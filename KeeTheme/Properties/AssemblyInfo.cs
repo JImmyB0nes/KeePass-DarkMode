@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("KeeTheme")]
-[assembly: AssemblyDescription("Plugin changes the appearance of KeePass, to make it look better at night. \n\nYou can enable it using hotkey `CTRL+T` or using the menu `Tools -> DarkTheme`.")]
+[assembly: AssemblyDescription("Plugin für eine dunkle, augenfreundliche KeePass-Oberfläche. \n\nAktivierbar per Hotkey `STRG+T` oder über das Menü `Tools -> DarkTheme`.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JImmyBOnes")]
 [assembly: AssemblyProduct("KeePass Plugin")]

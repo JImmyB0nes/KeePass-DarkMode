@@ -1,32 +1,58 @@
-# KeePass-DarkMode
+# 🌙 KeePass-DarkMode
 
-[![Version](https://img.shields.io/github/release/jimmybonesde/KeePass-DarkMode)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest)
-[![Releasedate](https://img.shields.io/github/release-date/jimmybonesde/KeePass-DarkMode)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx)
+[![Version](https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square)](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-KeePass Plugin
+**Dunkles Theme für KeePass — augenfreundlich, auch nachts.**
 
-This plugin changes the appearance of KeePass to make it look better at night.
+KeePass-DarkMode verwandelt die helle Standardoberfläche von KeePass in ein ruhiges, dunkles Design. Kein Umstieg, kein Verlust: Alle Funktionen bleiben erhalten, nur die Optik ändert sich.
 
-You can enable it using the hotkey `CTRL+T` or through the menu `Tools -> DarkTheme`.
+> **Umschalten:** `STRG+T` oder Menü **Tools → DarkTheme**
 
-### Customizations
+---
 
-You can use the built-in theme editor to create your own theme.
-Custom themes should be saved in the plugins folder.
+## ✨ Features
 
-![Theme editor](docs/KeePassDarkThemeEditor.png)
+- 🌑 Modernes, dunkles Theme für die gesamte KeePass-Oberfläche
+- ⌨️ Hotkey `STRG+T` zum schnellen Umschalten
+- 🎨 Eigene Themes mit dem eingebauten Theme-Editor erstellen
+- 💾 Automatische Aktualisierung über die KeePass-Plugin-Funktion
 
-### Installation
+---
 
-#### Method 1:
-1. Copy [KeeTheme.dll](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.dll) or [KeeTheme.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx) to the KeePass Plugins directory (default: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`)
-2. Start a new KeePass instance to propagate the new plugin
+## 🚀 Installation
 
-#### Method 2:
-1. Install via [Chocolatey](https://community.chocolatey.org/packages/keepass-plugin-keetheme#install):
+### Methode 1: Manuell
 
-```
+1. [KeeTheme.dll](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.dll) oder [KeeTheme.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx) herunterladen
+2. In den KeePass-Plugin-Ordner kopieren (Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`)
+3. KeePass neu starten — fertig
+
+### Methode 2: Über Chocolatey
+
+```powershell
 choco install keepass-plugin-keetheme
 ```
-2. Start a new KeePass instance to propagate the new plugin
+
+KeePass danach einmal neu starten.
+
+---
+
+## 🎨 Eigene Themes
+
+Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
+
+![Theme-Editor](docs/KeePassDarkThemeEditor.png)
+
+Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen dann automatisch in der Theme-Auswahl unter **Tools → Optionen → KeeTheme**.
+
+---
+
+## 💬 Hinweise
+
+KeePass basiert auf klassischen Windows-Controls, die sich nur eingeschränkt umfärben lassen. Einzelne Bereiche können deshalb weiterhin hell erscheinen. Das Plugin ist so ausgereift wie möglich — gut genug für den Alltag, aber kein kompromettloses Pixel-Perfect-Theming.
+
+## 📄 Lizenz
+
+[MIT](LICENSE) — Nutzung, Bearbeitung und Weitervergabe frei.

@@ -52,6 +52,8 @@ namespace KeePassDarkMode
 
 			if (_enabled)
 				_customTheme = GetCustomTheme();
+			else
+				CleanupCenteredSearch();
 
 			_theme = _enabled ? _customTheme : _defaultTheme;
 
@@ -60,6 +62,14 @@ namespace KeePassDarkMode
 			KnownColorsDecorator.Apply(_theme, _enabled);
 
 			ApplyOther();
+		}
+
+		// Releases all centered-search decorators (theme off or plugin shutdown).
+		public void CleanupCenteredSearch()
+		{
+			foreach (var decorator in _centeredSearch.Values)
+				decorator.Dispose();
+			_centeredSearch.Clear();
 		}
 
 		// Re-read the template and swap in the new theme without toggling

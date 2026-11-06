@@ -114,3 +114,9 @@ cd build && build.cmd
 Ein [Workflow](.github/workflows/build.yml) ist vorhanden, läuft aber **nur manuell** (über _Actions → Build → Run workflow_), damit kein Actions-Kontingent verbraucht wird. Gebaut wird typischerweise lokal unter Windows; der Workflow lädt dazu KeePass als Referenz-Assembly automatisch herunter.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
+
+---
+
+## 🙏 Danksagung
+
+Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT-Lizenz). Einige Dekoratoren (First-Frame-Flimmer-Schutz, zentrierte Suche, moderne Vektor-Icons, Icon-Picker) wurden aus [Pleasant KeePass Dark Mode](https://github.com/kulmi84/Pleasant-KeePass-Dark-Mode) von Marcin Kulmaczewski portiert (ebenfalls MIT, KeeTheme-Fork) — Dank an beide Autoren.

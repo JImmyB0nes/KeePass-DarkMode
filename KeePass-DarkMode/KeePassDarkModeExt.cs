@@ -16,7 +16,7 @@ using KeePassDarkMode.Properties;
 
 namespace KeePassDarkMode
 {
-	public sealed class DarkModeExt : Plugin
+	public sealed class KeePassDarkModeExt : Plugin
 	{
 		// Copied from EcasEventIDs.AppInitPost instead of using reflection because probably it will never change
 		private static readonly PwUuid AppInitPost = new PwUuid(new byte[] {

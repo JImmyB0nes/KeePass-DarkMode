@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeePassDarkMode</RootNamespace>
-    <AssemblyName>KeePass-DarkMode</AssemblyName>
+    <AssemblyName>KeePassDarkMode</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -100,7 +100,7 @@
     <Compile Include="Theme\ToolStripLook.cs" />
     <Compile Include="Theme\TreeViewLook.cs" />
     <Compile Include="DarkMode.cs" />
-    <Compile Include="DarkModeExt.cs" />
+    <Compile Include="KeePassDarkModeExt.cs" />
     <Compile Include="Theme\CustomTheme.cs" />
     <Compile Include="Theme\ITheme.cs" />
     <Compile Include="Theme\IniFile.cs" />

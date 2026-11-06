@@ -85,7 +85,7 @@ jobs:
           name: msbuild-log
           path: msbuild.log
 
-      - name: Package KeePass-DarkMode.plgx
+      - name: Package KeePassDarkMode.plgx
         shell: pwsh
         run: |
           $plgxDir = Join-Path $env:GITHUB_WORKSPACE "build\PlgX"
@@ -94,11 +94,19 @@ jobs:
           & "C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create $plgxDir --debug --plgx-prereq-net:4.0
           # KeePass schreibt die Ausgabe als '<dir>.plgx' neben das Quellverzeichnis,
           # nicht ins aktuelle Verzeichnis — genau dort abholen.
+          # KeePass leitet den Plugintyp aus dem plgx-Dateinamen ab:
+          # '<BaseFileName>.<BaseFileName>Ext' (PluginManager.CreatePluginInstance).
+          # Die Klasse heißt KeePassDarkMode.KeePassDarkModeExt — der Dateiname
+          # MUSS KeePassDarkMode.plgx lauten, sonst schlägt der Type-Load fehl.
           $plgxOut = "$plgxDir.plgx"
           if (-not (Test-Path $plgxOut)) { throw "KeePass /plgx-create produced no output at $plgxOut" }
-          Move-Item -LiteralPath $plgxOut -Destination "KeePass-DarkMode.plgx" -Force
+          Move-Item -LiteralPath $plgxOut -Destination "KeePassDarkMode.plgx" -Force
+          # Safety net: verify the packaged plgx declares the right base name.
+          $bytes = [System.IO.File]::ReadAllBytes("KeePassDarkMode.plgx")
+          $head = [System.Text.Encoding]::UTF8.GetString($bytes[0..200])
+          if ($head -notmatch 'KeePassDarkMode') { throw "plgx BaseFileName sanity check failed" }
           Remove-Item -Recurse -Force $plgxDir
-          Write-Host "Created KeePass-DarkMode.plgx ($((Get-Item KeePass-DarkMode.plgx).Length) bytes)"
+          Write-Host "Created KeePassDarkMode.plgx ($((Get-Item KeePassDarkMode.plgx).Length) bytes)"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -106,7 +114,7 @@ jobs:
           name: KeePass-DarkMode
           path: |
             KeePass-DarkMode/bin/Release/KeePass-DarkMode.dll
-            KeePass-DarkMode.plgx
+            KeePassDarkMode.plgx
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
@@ -114,5 +122,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            KeePass-DarkMode.plgx
+            KeePassDarkMode.plgx
             KeePass-DarkMode/bin/Release/KeePass-DarkMode.dll

@@ -37,7 +37,9 @@ echo Compiling PlgX
 "C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create "%cd%\PlgX" --debug --plgx-prereq-net:3.5
 
 echo Releasing PlgX
-move /y "PlgX.plgx" "KeePass-DarkMode.plgx"
+rem KeePass leitet den Plugin-Typ aus dem plgx-Dateinamen ab:
+rem '<name>.<name>Ext' -> MUSS KeePassDarkMode.plgx lauten (Namespace/Class ohne Bindestriche)
+move /y "PlgX.plgx" "KeePassDarkMode.plgx"
 
 echo Cleaning up
 rmdir /s /q "PlgX"

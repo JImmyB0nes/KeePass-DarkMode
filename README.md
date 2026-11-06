@@ -52,7 +52,3 @@ Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erschei
 ## 💬 Hinweise
 
 KeePass basiert auf klassischen Windows-Controls, die sich nur eingeschränkt umfärben lassen. Einzelne Bereiche können deshalb weiterhin hell erscheinen. Das Plugin ist so ausgereift wie möglich — gut genug für den Alltag, aber kein kompromettloses Pixel-Perfect-Theming.
-
-## 📄 Lizenz
-
-[MIT](LICENSE) — Nutzung, Bearbeitung und Weitervergabe frei.

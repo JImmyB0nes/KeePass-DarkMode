@@ -509,6 +509,11 @@ namespace KeePassDarkMode
 
 			button.EnabledChanged -= HandleButtonEnabledChanged;
 			button.EnabledChanged += HandleButtonEnabledChanged;
+
+			// Apply disabled state immediately (issue #146): buttons that are
+			// disabled when the form opens never fire EnabledChanged.
+			if (!button.Enabled)
+				HandleButtonEnabledChanged(button, EventArgs.Empty);
 		}
 
 		private void HandleButtonEnabledChanged(object sender, EventArgs e)

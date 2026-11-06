@@ -223,6 +223,18 @@ namespace KeePassDarkMode.Decorators
 				return;
 			}
 
+			// Selected items (including multi-selection via Ctrl/Shift/Ctrl+A/
+			// rubber-band) must show the native highlight — issue #150.
+			if (e.Item.Selected)
+			{
+				using (var brush = new SolidBrush(SystemColors.Highlight))
+				{
+					e.Graphics.FillRectangle(brush, e.Bounds);
+				}
+				e.DrawFocusRectangle();
+				return;
+			}
+
 			var backColor = GetAlternatingBackColor(e.Item.Index);
 			
 			var listItem = e.Item.Tag as PwListItem;

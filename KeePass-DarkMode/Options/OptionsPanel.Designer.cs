@@ -125,12 +125,6 @@ namespace KeePassDarkMode.Options
 
 		private System.Windows.Forms.Label autoSyncWin10ThemeLabel;
 
-		private System.Windows.Forms.Label syncWin10ThemeLabel;
-		private System.Windows.Forms.CheckBox syncWin10ThemeCheckBox;
-
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.Label syncWinThemeLabel;
-
 		private System.Windows.Forms.Label hotKeyLabel;
 		private KeePass.UI.HotKeyControlEx hotKeyTextBox;
 

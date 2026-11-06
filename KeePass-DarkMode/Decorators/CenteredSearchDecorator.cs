@@ -80,7 +80,7 @@ namespace KeePassDarkMode.Decorators
                     return text != null && text.Multiline && text.ScrollBars != ScrollBars.None;
                 }
             }
-            private readonly IntPtr _backgroundBrush = CreateSolidBrush(0x00262525);
+            private IntPtr _backgroundBrush = CreateSolidBrush(0x00262525);
             private CalendarBorderWindow _calendarBorder;
             private CalendarBorderWindow _calendarHeader;
             private ComboEditEdgeWindow _comboEditEdge;
@@ -259,6 +259,7 @@ namespace KeePassDarkMode.Decorators
                 OnCalendarClosed(null,EventArgs.Empty);
                 if(_comboEditEdge!=null){_comboEditEdge.Dispose();_comboEditEdge=null;}
                 if(_comboArrow!=null){_comboArrow.Dispose();_comboArrow=null;}
+                if (_backgroundBrush != IntPtr.Zero) { DeleteObject(_backgroundBrush); _backgroundBrush = IntPtr.Zero; }
                 ReleaseHandle();
                 if (!_combo.IsDisposed) _combo.Invalidate(true);
             }

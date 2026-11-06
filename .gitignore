@@ -333,9 +333,6 @@ ASALocalRun/
 /build/KeePass-DarkMode.dll
 /build/KeePass-DarkMode.plgx
 
-# Chocolatey artifacts
-/choco/choco.key
-/choco/KeePass-DarkMode.plgx
 .cptr
 
 # Git-Status-Export (Tippfehler-Fund)

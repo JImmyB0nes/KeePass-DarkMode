@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square&label=Version&color=blue" alt="Version"></a>
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
+  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/actions"><img src="https://img.shields.io/github/actions/workflow/status/jimmybonesde/KeePass-DarkMode/build.yml?style=flat-square&label=Build" alt="Build"></a>
 </p>
 
@@ -37,7 +37,7 @@ oder über das Menü: **Tools → Dark Theme**
 
 ## 🚀 Installation
 
-1. [KeePass-DarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx) herunterladen
+1. [KeePassDarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx) herunterladen
 2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
    - KeePass Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`
    - Pleasant Security Server: `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\`

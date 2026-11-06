@@ -5,7 +5,6 @@
   <img src="https://img.shields.io/badge/.NET-4.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
-  <a href="https://github.com/xatupal/KeeTheme/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License"></a>
 </p>
 
 <p align="center">
@@ -117,15 +116,3 @@ cd build && build.cmd
 Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push; KeePass wird dazu als Referenz-Assembly automatisch heruntergeladen.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
-
----
-
-## 🙏 Danksagung
-
-Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT-Lizenz) — Dank an den Originalautor.
-
----
-
-<p align="center">
-  <sub>Made with ☕ — gebaut auf Windows, designed für KeePass.</sub>
-</p>

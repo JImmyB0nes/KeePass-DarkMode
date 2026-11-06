@@ -1,25 +1,56 @@
 # 🌙 KeePass-DarkMode
 
 <p align="center">
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square&label=Version&color=blue" alt="Version"></a>
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/actions"><img src="https://img.shields.io/github/actions/workflow/status/jimmybonesde/KeePass-DarkMode/build.yml?style=flat-square&label=Build" alt="Build"></a>
+  <img src="https://img.shields.io/badge/platform-Windows-blue?style=for-the-badge&logo=windows&logoColor=white" alt="Platform">
+  <img src="https://img.shields.io/badge/.NET-4.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
+  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
+  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
+  <a href="https://github.com/xatupal/KeeTheme/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License"></a>
 </p>
 
 <p align="center">
-  <strong>Dunkles Theme für KeePass — augenfreundlich, auch nachts.</strong><br>
-  Kein Umstieg, kein Verlust: Alle Funktionen bleiben erhalten, nur die Optik ändert sich.<br>
+  <strong>Dunkles Theme für KeePass 2.x — augenfreundlich, auch nachts.</strong><br>
+  Kein Umstieg, kein Funktionsverlust: Alles bleibt, nur die Optik ändert sich.
 </p>
 
 ---
 
-## ⚡ Schnellstart
+## Inhalt
+
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Features](#-features)
+- [Eigene Themes](#-eigene-themes)
+- [Troubleshooting](#-troubleshooting)
+- [Kompatibilität](#-kompatibilität)
+- [Entwicklung](#-entwicklung)
+
+---
+
+## ⚡ Quick Start
 
 ```
-STRG+T    Theme umschalten
+STRG + T          Theme umschalten
 ```
 
-oder über das Menü: **Tools → Dark Theme**
+Alternativ über das Menü: **Tools → Dark Theme**
+
+---
+
+## 🚀 Installation
+
+1. **[KeePassDarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx)** von der Release-Seite herunterladen
+2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
+
+   | Version | Pfad |
+   |---|---|
+   | KeePass Standard | `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\` |
+   | Pleasant PPS | `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\` |
+
+3. KeePass neu starten — fertig.
+
+> [!TIP]
+> Alternativ: **Tools → Plugins → Add…** und die `.plgx` dort reinziehen. KeePass lädt und aktiviert Plugins dann zur Laufzeit.
 
 ---
 
@@ -27,23 +58,12 @@ oder über das Menü: **Tools → Dark Theme**
 
 | | |
 |---|---|
-| 🌑 **Dunkles Theme** | Moderne, ruhige Farbpalette für die gesamte KeePass-Oberfläche |
-| ⌨️ **Hotkey** | `STRG+T` zum schnellen Umschalten — frei konfigurierbar |
-| 🎨 **Theme-Editor** | Eigene Farbwelten ohne Editieren von Textdateien erstellen |
-| 📦 **Plgx-Format** | Einfache Installation, Update über die KeePass-eigene Plugin-Funktion |
-| 🪟 **Win11-Unterstützung** | Eigenes Theme für Windows-11-Optik (`DarkThemeWin11.ini`) |
-
----
-
-## 🚀 Installation
-
-1. [KeePassDarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx) herunterladen
-2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
-   - KeePass Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`
-   - Pleasant Security Server: `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\`
-3. KeePass neu starten — fertig
-
-Alternativ funktioniert auch die klassische Variante über **Tools → Plugins → Add…**, einfach die `.plgx` dort reinziehen.
+| 🌑 **Dunkles Theme** | Ruhige, moderne Farbpalette für die gesamte KeePass-Oberfläche |
+| ⌨️ **Hotkey** | `STRG+T` zum Umschalten — frei konfigurierbar |
+| 🎨 **Theme-Editor** | Eigene Farbwelten per GUI erstellen, ohne Textdateien zu editieren |
+| 🪟 **Windows-11-Support** | Eigenes Theme mit Windows-11-Flair (`DarkThemeWin11.ini`) |
+| 📦 **Plgx-Format** | Ein Dateisprung installiert/updatet das Plugin — ohne Kompilieren |
+| 🔧 **Theme-Erkennung** | Automatisches Erkennen des Windows-Farbschemas (Hell/Dunkel) |
 
 ---
 
@@ -53,32 +73,69 @@ Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
 
 ![Theme-Editor](docs/KeePassDarkThemeEditor.png)
 
-Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen dann automatisch in der Theme-Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
+Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen automatisch in der Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
 
 Zwei Startpunkte liegen bei:
 
 | Theme | Beschreibung |
 |---|---|
 | `DarkTheme.ini` | Klassisches dunkles Theme |
-| `DarkThemeWin11.ini` | An Windows-11-Flair angepasst |
+| `DarkThemeWin11.ini` | An Windows-11-Optik angepasst |
 
 ---
 
-## ⚠️ Hinweise
+## 🔧 Troubleshooting
 
-KeePass basiert auf klassischen Windows-Controls, die sich nur eingeschränkt umfärben lassen. Einzelne Bereiche können deshalb weiterhin hell erscheinen. Das Plugin ist so ausgereift wie möglich — gut genug für den Alltag, aber kein kompromissloses Pixel-Perfect-Theming.
+### Plugin wird als „inkompatibel“ gemeldet
+
+KeePass leitet den Plugin-Typen aus dem **plgx-Dateinamen** ab (`<name>.<name>Ext`). Der Dateiname **muss** `KeePassDarkMode.plgx` lauten — ohne Bindestriche.
+
+```diff
+- KeePass-DarkMode.plgx   ✗  (sucht KeePass-DarkMode.KeePass-DarkModeExt)
++ KeePassDarkMode.plgx    ✓  (findet KeePassDarkMode.KeePassDarkModeExt)
+```
+
+Falls die Meldung trotzdem erscheint:
+
+1. **Plugin-Cache leeren:** `%LOCALAPPDATA%\KeePass\PluginCache\` (bzw. bei Pleasant PPS `%LOCALAPPDATA%\PleasantKeePass\PluginCache\`) löschen und KeePass neu starten.
+2. **Alte Plugin-Reste entfernen:** sicherstellen, dass keine `KeePass-DarkMode.dll` oder `.plgx` mehr im Plugin-Ordner liegt.
+
+### Bestimmte Bereiche bleiben hell
+
+KeePass nutzt klassische Windows-Controls, die sich nur eingeschränkt umfärben lassen. Einzelne Stellen (z. B. bestimmte Dialoge und Systemmenüs) können hell bleiben — alltagstauglich, aber kein kompromissloses Pixel-Perfect-Theming.
+
+---
+
+## 🧩 Kompatibilität
+
+- **KeePass:** 2.4x und neuer (gegen 2.42 gebaut, lauffähig mit aktuellen Versionen)
+- **Windows:** 10 und 11
+- **.NET Framework:** 4.0 oder neuer
 
 ---
 
 ## 🛠️ Entwicklung
 
 ```bash
-# Build unter Windows (benötigt .NET Framework 4.x SDK)
+# Build unter Windows (benötigt .NET Framework 4.x)
 msbuild KeePass-DarkMode.sln /p:Configuration=Release
+
+# plgx-Paket erzeugen
+cd build && build.cmd
 ```
 
-Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push — KeePass wird dazu automatisch als Referenz-Assembly heruntergeladen.
+Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push; KeePass wird dazu als Referenz-Assembly automatisch heruntergeladen.
+
+**Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
 
 ---
 
-*Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT) — Dank an den Originalautor.*
+## 🙏 Danksagung
+
+Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT-Lizenz) — Dank an den Originalautor.
+
+---
+
+<p align="center">
+  <sub>Made with ☕ — gebaut auf Windows, designed für KeePass.</sub>
+</p>

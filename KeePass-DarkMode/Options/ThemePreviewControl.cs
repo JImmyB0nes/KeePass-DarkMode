@@ -41,8 +41,7 @@ namespace KeePassDarkMode.Options
 			var split = new SplitContainer
 			{
 				Dock = DockStyle.Fill,
-				FixedPanel = SplitPanel.Panel1,
-				FixedPanelWidth = 90
+				SplitterDistance = 90
 			};
 
 			_treeView = new TreeView { Dock = DockStyle.Fill, HideSelection = false };

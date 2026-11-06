@@ -33,6 +33,16 @@ namespace KeePassDarkMode.Theme
 			return _colorsByName.ContainsKey(color) ? _colorsByName[color] : ParseColor(color);
 		}
 
+		public bool HasColor(string color)
+		{
+			return _colorsByName.ContainsKey(color);
+		}
+
+		public void SetColor(string name, Color color)
+		{
+			_colorsByName[name] = color;
+		}
+
 		public static Color ParseColor(string color)
 		{
 			if (string.IsNullOrEmpty(color))

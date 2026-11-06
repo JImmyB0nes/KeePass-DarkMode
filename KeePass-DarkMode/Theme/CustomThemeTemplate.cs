@@ -77,6 +77,7 @@ namespace KeePassDarkMode.Theme
 
 			var paletteSection = iniFile.GetSection("Palette");
 			Palette = new Palette(paletteSection);
+			ApplyAccent(Palette);
 
 			var otherSection = iniFile.GetSection("Other");
 			LoadLook(otherSection, Palette, Other);
@@ -125,6 +126,22 @@ namespace KeePassDarkMode.Theme
 
 			var scrollBarSection = iniFile.GetSection("ScrollBar");
 			LoadLook(scrollBarSection, Palette, ScrollBar);		
+		}
+
+		// Optional [Palette] key "Accent": one color that drives the interactive
+		// highlights. Themes without it are untouched (backward compatible).
+		private static void ApplyAccent(Palette palette)
+		{
+			if (!palette.HasColor("Accent"))
+				return;
+
+			var accent = palette.GetColor("Accent");
+			palette.SetColor("Link", accent);
+			palette.SetColor("ToolStripHighlight", accent);
+
+			// Selection backgrounds need to keep white text readable - darken a bit.
+			palette.SetColor("TreeViewHighlight", Color.FromArgb(
+				accent.R * 3 / 4, accent.G * 3 / 4, accent.B * 3 / 4));
 		}
 
 		private static void LoadLook<T>(Dictionary<string, string> controlSection, Palette palette, T look)

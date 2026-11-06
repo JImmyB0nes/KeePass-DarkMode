@@ -225,5 +225,68 @@ namespace KeePassDarkMode.Options
 		{
 			LoadDarkModeTemplates();
 		}
+
+		private void HandleOpenThemeFolderButtonClick(object sender, EventArgs e)
+		{
+			try
+			{
+				var dir = TemplateReader.GetTemplatesDir();
+				if (!System.IO.Directory.Exists(dir))
+					System.IO.Directory.CreateDirectory(dir);
+				System.Diagnostics.Process.Start("explorer.exe", "\"" + dir + "\"");
+			}
+			catch (Exception)
+			{
+				// Blocked by policy - nothing else we can do.
+			}
+		}
+
+		private void HandleExportSettingsButtonClick(object sender, EventArgs e)
+		{
+			using (var dialog = new SaveFileDialog())
+			{
+				dialog.Title = "Export KeePass-DarkMode settings";
+				dialog.Filter = "KeePass-DarkMode settings (*.kdmconfig)|*.kdmconfig";
+				dialog.FileName = "KeePass-DarkMode.kdmconfig";
+				if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
+					return;
+
+				try
+				{
+					System.IO.File.WriteAllText(dialog.FileName, _options.ExportSettings());
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(FindForm(), "Could not export settings: " + ex.Message,
+						"KeePass-DarkMode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+			}
+		}
+
+		private void HandleImportSettingsButtonClick(object sender, EventArgs e)
+		{
+			using (var dialog = new OpenFileDialog())
+			{
+				dialog.Title = "Import KeePass-DarkMode settings";
+				dialog.Filter = "KeePass-DarkMode settings (*.kdmconfig)|*.kdmconfig|All files (*.*)|*.*";
+				if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
+					return;
+
+				try
+				{
+					_options.ImportSettings(System.IO.File.ReadAllText(dialog.FileName));
+					// Reflect the imported values in the dialog.
+					hotKeyTextBox.HotKey = _options.HotKey;
+					autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
+					checkUpdatesCheckBox.Checked = _options.CheckUpdates;
+					LoadDarkModeTemplates();
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(FindForm(), "Could not import settings: " + ex.Message,
+						"KeePass-DarkMode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+			}
+		}
 	}
 }

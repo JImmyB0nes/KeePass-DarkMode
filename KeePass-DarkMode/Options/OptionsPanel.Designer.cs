@@ -42,6 +42,9 @@ namespace KeePassDarkMode.Options
 			this.versionLink = new System.Windows.Forms.LinkLabel();
 			this.checkUpdatesLabel = new System.Windows.Forms.Label();
 			this.checkUpdatesCheckBox = new System.Windows.Forms.CheckBox();
+			this.openThemeFolderButton = new System.Windows.Forms.Button();
+			this.importSettingsButton = new System.Windows.Forms.Button();
+			this.exportSettingsButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// hotKeyLabel
@@ -122,6 +125,36 @@ namespace KeePassDarkMode.Options
 			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(102, 24);
 			this.checkUpdatesCheckBox.TabIndex = 10;
 			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// openThemeFolderButton
+			// 
+			this.openThemeFolderButton.Location = new System.Drawing.Point(311, 8);
+			this.openThemeFolderButton.Name = "openThemeFolderButton";
+			this.openThemeFolderButton.Size = new System.Drawing.Size(110, 23);
+			this.openThemeFolderButton.TabIndex = 11;
+			this.openThemeFolderButton.Text = "Theme folder";
+			this.openThemeFolderButton.UseVisualStyleBackColor = true;
+			this.openThemeFolderButton.Click += new System.EventHandler(this.HandleOpenThemeFolderButtonClick);
+			// 
+			// importSettingsButton
+			// 
+			this.importSettingsButton.Location = new System.Drawing.Point(311, 35);
+			this.importSettingsButton.Name = "importSettingsButton";
+			this.importSettingsButton.Size = new System.Drawing.Size(110, 23);
+			this.importSettingsButton.TabIndex = 12;
+			this.importSettingsButton.Text = "Import settings";
+			this.importSettingsButton.UseVisualStyleBackColor = true;
+			this.importSettingsButton.Click += new System.EventHandler(this.HandleImportSettingsButtonClick);
+			// 
+			// exportSettingsButton
+			// 
+			this.exportSettingsButton.Location = new System.Drawing.Point(311, 62);
+			this.exportSettingsButton.Name = "exportSettingsButton";
+			this.exportSettingsButton.Size = new System.Drawing.Size(110, 23);
+			this.exportSettingsButton.TabIndex = 13;
+			this.exportSettingsButton.Text = "Export settings";
+			this.exportSettingsButton.UseVisualStyleBackColor = true;
+			this.exportSettingsButton.Click += new System.EventHandler(this.HandleExportSettingsButtonClick);
 			this.versionLink.Name = "versionLink";
 			this.versionLink.Size = new System.Drawing.Size(0, 13);
 			this.versionLink.TabIndex = 8;
@@ -132,6 +165,9 @@ namespace KeePassDarkMode.Options
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.versionLink);
+			this.Controls.Add(this.openThemeFolderButton);
+			this.Controls.Add(this.importSettingsButton);
+			this.Controls.Add(this.exportSettingsButton);
 			this.Controls.Add(this.checkUpdatesCheckBox);
 			this.Controls.Add(this.checkUpdatesLabel);
 			this.Controls.Add(this.editTemplateButton);
@@ -153,6 +189,10 @@ namespace KeePassDarkMode.Options
 
 		private System.Windows.Forms.Label checkUpdatesLabel;
 		private System.Windows.Forms.CheckBox checkUpdatesCheckBox;
+
+		private System.Windows.Forms.Button openThemeFolderButton;
+		private System.Windows.Forms.Button importSettingsButton;
+		private System.Windows.Forms.Button exportSettingsButton;
 
 		private System.Windows.Forms.Label themeTemplate;
 		private System.Windows.Forms.ComboBox themeTemplateComboBox;

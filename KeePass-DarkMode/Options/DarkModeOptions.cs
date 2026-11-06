@@ -108,6 +108,65 @@ namespace KeePassDarkMode.Options
 			set { _pluginHost.CustomConfig.SetString(LatestVersionOption, value ?? string.Empty); }
 		}
 
+		private const string ConfigFileHeader = "KeePass-DarkMode-Config v1";
+
+		/// <summary>
+		/// Serializes all plugin settings for sharing between machines.
+		/// </summary>
+		public string ExportSettings()
+		{
+			return string.Join(Environment.NewLine, new[]
+			{
+				ConfigFileHeader,
+				TemplateOption + "=" + _template,
+				EnabledOption + "=" + _enabled,
+				HotKeyOption + "=" + _hotKey,
+				AutoSyncWithWin10ThemeOption + "=" + _autoSyncWithWin10Theme,
+				CheckUpdatesOption + "=" + _checkUpdates
+			});
+		}
+
+		/// <summary>
+		/// Applies settings from ExportSettings output. Fires the change events
+		/// so the running theme follows immediately.
+		/// </summary>
+		public void ImportSettings(string data)
+		{
+			if (string.IsNullOrEmpty(data) ||
+				!data.StartsWith(ConfigFileHeader, StringComparison.Ordinal))
+				throw new FormatException("Not a KeePass-DarkMode settings file.");
+
+			foreach (var rawLine in data.Split(new[] { "\r\n", "\n" },
+				StringSplitOptions.RemoveEmptyEntries))
+			{
+				var line = rawLine.Trim();
+				var separator = line.IndexOf('=');
+				if (separator <= 0)
+					continue;
+
+				var key = line.Substring(0, separator).Trim();
+				var value = line.Substring(separator + 1).Trim();
+				switch (key)
+				{
+					case TemplateOption:
+						Template = value;
+						break;
+					case EnabledOption:
+						Enabled = bool.Parse(value);
+						break;
+					case HotKeyOption:
+						HotKey = (Keys) Enum.Parse(typeof(Keys), value);
+						break;
+					case AutoSyncWithWin10ThemeOption:
+						AutoSyncWithWin10Theme = bool.Parse(value);
+						break;
+					case CheckUpdatesOption:
+						CheckUpdates = bool.Parse(value);
+						break;
+				}
+			}
+		}
+
 		public event Action<bool> EnabledChanged;
 		public event Action<Keys> HotKeyChanged;
 		public event Action<bool> AutoSyncWithWin10ThemeChanged;

@@ -82,6 +82,7 @@ namespace KeePassDarkMode.Options
 		{
 			hotKeyTextBox.HotKey = _options.HotKey;
 			autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
+			checkUpdatesCheckBox.Checked = _options.CheckUpdates;
 			LoadDarkModeTemplates();
 			LoadVersionInfo();
 		}

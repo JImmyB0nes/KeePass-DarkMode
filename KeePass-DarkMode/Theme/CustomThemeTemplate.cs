@@ -14,6 +14,10 @@ namespace KeePassDarkMode.Theme
 		public Palette Palette { get; private set; }
 
 		[Category("Appearance")]
+		[TypeConverter(typeof(PaletteTypeConverter))]
+		public Palette PaletteView { get { return Palette; } }
+
+		[Category("Appearance")]
 		public OtherLook Other { get; private set; }
 		[Category("Appearance")]
 		public ControlLook Control { get; private set; }
@@ -207,10 +211,9 @@ namespace KeePassDarkMode.Theme
 		private void SavePalette(IniFile iniFile, Palette palette)
 		{
 			var section = iniFile.AddSection("Palette");
-			var colors = palette.GetColors();
-			for (int i = 0; i < colors.Length; i++)
+			foreach (var pair in palette.GetColorsByName())
 			{
-				section.Add("Color" + i, GetColorTextValue(colors[i]));
+				section.Add(pair.Key, GetColorTextValue(pair.Value));
 			}
 		}
 

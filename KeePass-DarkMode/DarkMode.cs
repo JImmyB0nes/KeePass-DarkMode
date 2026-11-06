@@ -481,6 +481,11 @@ namespace KeePassDarkMode
 			form.BackColor = _theme.Form.BackColor;
 			form.ForeColor = _theme.Form.ForeColor;
 
+			// Title bar in theme color (Win11 22H2+, no-op elsewhere).
+			var caption = _theme.Form.BackColor;
+			var dark = _enabled && caption.GetBrightness() < 0.5;
+			CaptionTint.Apply(form, caption, _theme.Form.ForeColor, dark);
+
 			foreach (var component in GetComponents(form))
 			{
 				Apply(component);

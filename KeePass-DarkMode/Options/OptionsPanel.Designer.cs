@@ -42,6 +42,7 @@ namespace KeePassDarkMode.Options
 			this.versionLink = new System.Windows.Forms.LinkLabel();
 			this.checkUpdatesLabel = new System.Windows.Forms.Label();
 			this.checkUpdatesCheckBox = new System.Windows.Forms.CheckBox();
+			this.themePreview = new KeePassDarkMode.Options.ThemePreviewControl();
 			this.openThemeFolderButton = new System.Windows.Forms.Button();
 			this.importSettingsButton = new System.Windows.Forms.Button();
 			this.exportSettingsButton = new System.Windows.Forms.Button();
@@ -94,6 +95,7 @@ namespace KeePassDarkMode.Options
 			this.themeTemplateComboBox.Name = "themeTemplateComboBox";
 			this.themeTemplateComboBox.Size = new System.Drawing.Size(166, 21);
 			this.themeTemplateComboBox.TabIndex = 6;
+			this.themeTemplateComboBox.SelectedIndexChanged += new System.EventHandler(this.HandleTemplateSelectionChanged);
 			// 
 			// editTemplateButton
 			// 
@@ -125,6 +127,16 @@ namespace KeePassDarkMode.Options
 			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(102, 24);
 			this.checkUpdatesCheckBox.TabIndex = 10;
 			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// openThemeFolderButton
+			// 
+			// 
+			// themePreview
+			// 
+			this.themePreview.Location = new System.Drawing.Point(430, 8);
+			this.themePreview.Name = "themePreview";
+			this.themePreview.Size = new System.Drawing.Size(205, 185);
+			this.themePreview.TabIndex = 14;
 			// 
 			// openThemeFolderButton
 			// 
@@ -164,6 +176,7 @@ namespace KeePassDarkMode.Options
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.themePreview);
 			this.Controls.Add(this.versionLink);
 			this.Controls.Add(this.openThemeFolderButton);
 			this.Controls.Add(this.importSettingsButton);
@@ -190,6 +203,7 @@ namespace KeePassDarkMode.Options
 		private System.Windows.Forms.Label checkUpdatesLabel;
 		private System.Windows.Forms.CheckBox checkUpdatesCheckBox;
 
+		private KeePassDarkMode.Options.ThemePreviewControl themePreview;
 		private System.Windows.Forms.Button openThemeFolderButton;
 		private System.Windows.Forms.Button importSettingsButton;
 		private System.Windows.Forms.Button exportSettingsButton;

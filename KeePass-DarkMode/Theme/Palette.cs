@@ -28,6 +28,16 @@ namespace KeePassDarkMode.Theme
 			return _colorsByName.Values.ToArray();
 		}
 
+		public string[] GetNames()
+		{
+			return _colorsByName.Keys.ToArray();
+		}
+
+		public Dictionary<string, Color> GetColorsByName()
+		{
+			return new Dictionary<string, Color>(_colorsByName);
+		}
+
 		public Color GetColor(string color)
 		{
 			return _colorsByName.ContainsKey(color) ? _colorsByName[color] : ParseColor(color);

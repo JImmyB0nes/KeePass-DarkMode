@@ -68,6 +68,7 @@
     <Compile Include="Decorators\TabControlDecorator.cs" />
     <Compile Include="Decorators\TabControlPainter.cs" />
     <Compile Include="Editor\ColorConverter.cs" />
+    <Compile Include="Editor\PaletteTypeConverter.cs" />
     <Compile Include="Editor\ColorEditor.cs" />
     <Compile Include="Editor\GenericTypeConverter.cs" />
     <Compile Include="Editor\TemplateEditorForm.cs">
@@ -79,9 +80,11 @@
     <Compile Include="FormAddedEventHandler.cs" />
     <Compile Include="FormsArrayList.cs" />
     <Compile Include="Options\DarkModeOptions.cs" />
+    <Compile Include="Options\ThemePreviewControl.cs" />
     <Compile Include="TemplateFile.cs" />
     <Compile Include="TemplateReader.cs" />
     <Compile Include="Theme\ButtonLook.cs" />
+    <Compile Include="Theme\CaptionTint.cs" />
     <Compile Include="Theme\CheckBoxButtonLook.cs" />
     <Compile Include="Theme\CheckBoxLook.cs" />
     <Compile Include="Theme\ControlLook.cs" />

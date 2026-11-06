@@ -9,6 +9,7 @@ using KeePass.Forms;
 using KeePass.UI;
 using KeePass.Util;
 using KeePassDarkMode.Editor;
+using KeePassDarkMode.Theme;
 
 namespace KeePassDarkMode.Options
 {
@@ -84,6 +85,7 @@ namespace KeePassDarkMode.Options
 			autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
 			checkUpdatesCheckBox.Checked = _options.CheckUpdates;
 			LoadDarkModeTemplates();
+			UpdateThemePreview();
 			LoadVersionInfo();
 		}
 
@@ -154,6 +156,29 @@ namespace KeePassDarkMode.Options
 			catch (Exception)
 			{
 				// Blocked by policy - nothing else we can do.
+			}
+		}
+
+		private void HandleTemplateSelectionChanged(object sender, EventArgs e)
+		{
+			UpdateThemePreview();
+		}
+
+		private void UpdateThemePreview()
+		{
+			var template = (TemplateFile) themeTemplateComboBox.SelectedItem;
+			if (template == null)
+				return;
+
+			try
+			{
+				var iniFile = TemplateReader.Get(template.Path);
+				if (iniFile != null)
+					themePreview.ApplyTheme(new CustomThemeTemplate(iniFile));
+			}
+			catch (Exception)
+			{
+				// Preview is optional - never fail the dialog over it.
 			}
 		}
 

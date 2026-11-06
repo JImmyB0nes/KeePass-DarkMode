@@ -86,19 +86,9 @@ Zwei Startpunkte liegen bei:
 
 ## 🔧 Troubleshooting
 
-### Plugin wird als „inkompatibel“ gemeldet
+### Plugin-Cache leeren
 
-KeePass leitet den Plugin-Typen aus dem **plgx-Dateinamen** ab (`<name>.<name>Ext`). Der Dateiname **muss** `KeePassDarkMode.plgx` lauten — ohne Bindestriche.
-
-```diff
-- KeePass-DarkMode.plgx   ✗  (sucht KeePass-DarkMode.KeePass-DarkModeExt)
-+ KeePassDarkMode.plgx    ✓  (findet KeePassDarkMode.KeePassDarkModeExt)
-```
-
-Falls die Meldung trotzdem erscheint:
-
-1. **Plugin-Cache leeren:** `%LOCALAPPDATA%\KeePass\PluginCache\` (bzw. bei Pleasant PPS `%LOCALAPPDATA%\PleasantKeePass\PluginCache\`) löschen und KeePass neu starten.
-2. **Alte Plugin-Reste entfernen:** sicherstellen, dass keine `KeePass-DarkMode.dll` oder `.plgx` mehr im Plugin-Ordner liegt.
+Nach einem Update kann ein veralteter Plugin-Cache für Lade-Probleme sorgen. Dazu einfach `%LOCALAPPDATA%\KeePass\PluginCache\` (bei Pleasant PPS: `%LOCALAPPDATA%\PleasantKeePass\PluginCache\`) löschen und KeePass neu starten.
 
 ### Bestimmte Bereiche bleiben hell
 

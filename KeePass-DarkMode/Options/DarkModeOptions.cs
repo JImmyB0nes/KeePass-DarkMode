@@ -10,11 +10,15 @@ namespace KeePassDarkMode.Options
 		private const string EnabledOption = "KeePass-DarkMode.Enabled";
 		private const string HotKeyOption = "KeePass-DarkMode.HotKey";
 		private const string AutoSyncWithWin10ThemeOption = "KeePass-DarkMode.AutoSyncWithWin10Theme";
+		private const string CheckUpdatesOption = "KeePass-DarkMode.CheckUpdates";
+		private const string LastUpdateCheckOption = "KeePass-DarkMode.LastUpdateCheck";
+		private const string LatestVersionOption = "KeePass-DarkMode.LatestVersion";
 		
 		private readonly IPluginHost _pluginHost;
 		private bool _enabled;
 		private Keys _hotKey;
 		private bool _autoSyncWithWin10Theme;
+		private bool _checkUpdates;
 		private string _template;
 
 		public bool Enabled
@@ -68,6 +72,42 @@ namespace KeePassDarkMode.Options
 			}
 		}
 
+		/// <summary>
+		/// Whether the background update check against GitHub may run.
+		/// </summary>
+		public bool CheckUpdates
+		{
+			get { return _checkUpdates; }
+			set
+			{
+				_checkUpdates = value;
+				_pluginHost.CustomConfig.SetBool(CheckUpdatesOption, value);
+			}
+		}
+
+		/// <summary>
+		/// UTC time of the last successful update check (DateTime.MinValue if never).
+		/// </summary>
+		public DateTime LastUpdateCheck
+		{
+			get
+			{
+				long ticks;
+				var raw = _pluginHost.CustomConfig.GetString(LastUpdateCheckOption, string.Empty);
+				return long.TryParse(raw, out ticks) && ticks > 0 ? new DateTime(ticks) : DateTime.MinValue;
+			}
+			set { _pluginHost.CustomConfig.SetString(LastUpdateCheckOption, value.Ticks.ToString()); }
+		}
+
+		/// <summary>
+		/// Highest version seen during the last update check (empty if none).
+		/// </summary>
+		public string LatestVersion
+		{
+			get { return _pluginHost.CustomConfig.GetString(LatestVersionOption, string.Empty); }
+			set { _pluginHost.CustomConfig.SetString(LatestVersionOption, value ?? string.Empty); }
+		}
+
 		public event Action<bool> EnabledChanged;
 		public event Action<Keys> HotKeyChanged;
 		public event Action<bool> AutoSyncWithWin10ThemeChanged;
@@ -89,7 +129,8 @@ namespace KeePassDarkMode.Options
 				// instead of failing the whole plugin load.
 				_hotKey = Keys.Control | Keys.T;
 			}
-			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, false);
+			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, true);
+			_checkUpdates = pluginHost.CustomConfig.GetBool(CheckUpdatesOption, true);
 			_template = pluginHost.CustomConfig.GetString(TemplateOption, TemplateReader.DefaultTemplatePath);
 		}
 	}

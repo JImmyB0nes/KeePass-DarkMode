@@ -193,6 +193,7 @@ namespace KeePassDarkMode.Options
 		{
 			_options.HotKey = hotKeyTextBox.HotKey;
 			_options.AutoSyncWithWin10Theme = autoSyncWin10ThemeCheckBox.Checked;
+			_options.CheckUpdates = checkUpdatesCheckBox.Checked;
 
 			var template = (TemplateFile) themeTemplateComboBox.SelectedItem;
 			if (template != null)

@@ -40,6 +40,8 @@ namespace KeePassDarkMode.Options
 			this.themeTemplateComboBox = new System.Windows.Forms.ComboBox();
 			this.editTemplateButton = new System.Windows.Forms.Button();
 			this.versionLink = new System.Windows.Forms.LinkLabel();
+			this.checkUpdatesLabel = new System.Windows.Forms.Label();
+			this.checkUpdatesCheckBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// hotKeyLabel
@@ -103,7 +105,23 @@ namespace KeePassDarkMode.Options
 			// versionLink
 			// 
 			this.versionLink.AutoSize = true;
-			this.versionLink.Location = new System.Drawing.Point(9, 125);
+			this.versionLink.Location = new System.Drawing.Point(9, 170);
+			// 
+			// checkUpdatesLabel
+			// 
+			this.checkUpdatesLabel.Location = new System.Drawing.Point(9, 140);
+			this.checkUpdatesLabel.Name = "checkUpdatesLabel";
+			this.checkUpdatesLabel.Size = new System.Drawing.Size(174, 23);
+			this.checkUpdatesLabel.TabIndex = 9;
+			this.checkUpdatesLabel.Text = "Check for updates (GitHub):";
+			// 
+			// checkUpdatesCheckBox
+			// 
+			this.checkUpdatesCheckBox.Location = new System.Drawing.Point(189, 140);
+			this.checkUpdatesCheckBox.Name = "checkUpdatesCheckBox";
+			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(102, 24);
+			this.checkUpdatesCheckBox.TabIndex = 10;
+			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
 			this.versionLink.Name = "versionLink";
 			this.versionLink.Size = new System.Drawing.Size(0, 13);
 			this.versionLink.TabIndex = 8;
@@ -114,6 +132,8 @@ namespace KeePassDarkMode.Options
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.versionLink);
+			this.Controls.Add(this.checkUpdatesCheckBox);
+			this.Controls.Add(this.checkUpdatesLabel);
 			this.Controls.Add(this.editTemplateButton);
 			this.Controls.Add(this.themeTemplateComboBox);
 			this.Controls.Add(this.themeTemplate);
@@ -130,6 +150,9 @@ namespace KeePassDarkMode.Options
 		private System.Windows.Forms.Button editTemplateButton;
 
 		private System.Windows.Forms.LinkLabel versionLink;
+
+		private System.Windows.Forms.Label checkUpdatesLabel;
+		private System.Windows.Forms.CheckBox checkUpdatesCheckBox;
 
 		private System.Windows.Forms.Label themeTemplate;
 		private System.Windows.Forms.ComboBox themeTemplateComboBox;

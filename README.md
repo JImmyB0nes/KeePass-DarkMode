@@ -70,8 +70,6 @@ Alternativ über das Menü: **Tools → Dark Theme**
 
 Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
 
-![Theme-Editor](docs/KeePassDarkThemeEditor.png)
-
 Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen automatisch in der Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
 
 Zwei Startpunkte liegen bei:

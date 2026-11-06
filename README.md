@@ -3,7 +3,6 @@
 <p align="center">
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square&label=Version&color=blue" alt="Version"></a>
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"></a>
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/actions"><img src="https://img.shields.io/github/actions/workflow/status/jimmybonesde/KeePass-DarkMode/build.yml?style=flat-square&label=Build" alt="Build"></a>
 </p>
 
@@ -82,10 +81,4 @@ Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push �
 
 ---
 
-## 📄 Lizenz
-
-[MIT](LICENSE) — Nutzung, Bearbeitung und Weitervergabe frei.
-
----
-
-*Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa — Dank an den Originalautor.*
+*Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT) — Dank an den Originalautor.*

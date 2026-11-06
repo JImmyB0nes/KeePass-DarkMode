@@ -237,7 +237,9 @@ namespace KeePassDarkMode
 
 		public override string UpdateUrl
 		{
-			get { return "https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"; }
+			// KeePass's Update Check parses a plain text file "Name:Version" -
+			// a releases page (HTML) would only yield "Unknown".
+			get { return "https://raw.githubusercontent.com/jimmybonesde/KeePass-DarkMode/master/update.txt"; }
 		}
 
 		public override Image SmallIcon

@@ -6,7 +6,7 @@ using KeePassDarkMode.Theme;
 namespace KeePassDarkMode.Options
 {
 	// Miniature KeePass window rendered in the colors of the selected theme.
-	public class ThemePreviewControl : Panel
+	internal class ThemePreviewControl : Panel
 	{
 		private readonly Label _titleBar;
 		private readonly MenuStrip _menuStrip;

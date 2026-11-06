@@ -38,8 +38,6 @@ oder über das Menü: **Tools → DarkTheme**
 
 ## 🚀 Installation
 
-### Methode 1: Manuell
-
 1. [KeePass-DarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx) herunterladen
 2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
    - KeePass Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`
@@ -47,14 +45,6 @@ oder über das Menü: **Tools → DarkTheme**
 3. KeePass neu starten — fertig
 
 Alternativ funktioniert auch die klassische Variante über **Tools → Plugins → Add…**, einfach die `.plgx` dort reinziehen.
-
-### Methode 2: Über Chocolatey
-
-```powershell
-choco install keepass-plugin-keepass-darkmode
-```
-
-KeePass danach einmal neu starten.
 
 ---
 

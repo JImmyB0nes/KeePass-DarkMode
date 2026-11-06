@@ -213,8 +213,13 @@ namespace KeePassDarkMode
 			if (_theme != null)
 				_theme.Enabled = false;
 
-			// Restore the original OpenForms list that we replaced in AttachApplicationOpenFormsHandler
-			var customArrayList = Application.OpenForms as FormsArrayList;
+			// Restore the original OpenForms list that we replaced in AttachApplicationOpenFormsHandler.
+			// Application.OpenForms is a sealed FormCollection, so our FormsArrayList lives in its
+			// private 'list' field and must be read via reflection (same as when installing it).
+			var listField = typeof(ReadOnlyCollectionBase).GetField("list", BindingFlags.Instance | BindingFlags.NonPublic);
+			var customArrayList = listField != null
+				? listField.GetValue(Application.OpenForms) as FormsArrayList
+				: null;
 			if (customArrayList != null)
 			{
 				customArrayList.Added -= HandleOpenFormsAdded;
@@ -223,9 +228,7 @@ namespace KeePassDarkMode
 				foreach (Form form in customArrayList)
 					plainList.Add(form);
 
-				var listField = typeof(ReadOnlyCollectionBase).GetField("list", BindingFlags.Instance | BindingFlags.NonPublic);
-				if (listField != null)
-					listField.SetValue(Application.OpenForms, plainList);
+				listField.SetValue(Application.OpenForms, plainList);
 			}
 		}
 

@@ -19,7 +19,15 @@ namespace KeePassDarkMode.Theme
 		{
 			if (!form.IsHandleCreated)
 			{
-				form.HandleCreated += (s, e) => Apply(form, backColor, foreColor, dark);
+				// Apply(Form) runs repeatedly (every Visit/theme change) while the
+				// handle may still be missing - hook exactly once per form.
+				EventHandler hook = null;
+				hook = (s, e) =>
+				{
+					form.HandleCreated -= hook;
+					Apply(form, backColor, foreColor, dark);
+				};
+				form.HandleCreated += hook;
 				return;
 			}
 

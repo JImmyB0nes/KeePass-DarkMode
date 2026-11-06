@@ -8,5 +8,9 @@ namespace KeePassDarkMode.Theme
 	class MenuLook : ControlLook
 	{
 		public Color HighlightColor { get; set; }
+
+		// Draws vector toolbar/menu glyphs in theme color instead of the
+		// classic colorful KeePass icons.
+		public bool ModernIcons { get; set; }
 	}
 }

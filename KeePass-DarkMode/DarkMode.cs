@@ -20,6 +20,9 @@ namespace KeePassDarkMode
 		private readonly DarkModeOptions _options;
 		private readonly CustomTheme _defaultTheme;
 
+		private readonly Dictionary<ToolStrip, CenteredSearchDecorator> _centeredSearch =
+			new Dictionary<ToolStrip, CenteredSearchDecorator>();
+
 		private ITheme _customTheme;
 		private ITheme _theme;
 		private bool _enabled;
@@ -415,7 +418,37 @@ namespace KeePassDarkMode
 			toolStrip.BackColor = _theme.MenuItem.BackColor;
 			toolStrip.ForeColor = _theme.MenuItem.ForeColor;
 
+			// Keep the quick-find box centered like a modern search bar.
+			CenteredSearchDecorator centered;
+			if (_centeredSearch.TryGetValue(toolStrip, out centered))
+			{
+				centered.Dispose();
+				_centeredSearch.Remove(toolStrip);
+			}
+
 			Apply(toolStrip.Items);
+
+			var search = toolStrip.Items.OfType<ToolStripComboBox>().FirstOrDefault(x =>
+				x.Name == "m_tbQuickFind" || x.Name == "m_tbQuickSearch");
+			var ownerForm = toolStrip.FindForm();
+			if (_enabled && search != null && ownerForm != null &&
+				ownerForm.GetType().FullName == "KeePass.Forms.MainForm")
+			{
+				_centeredSearch.Add(toolStrip, new CenteredSearchDecorator(toolStrip, search));
+				toolStrip.Disposed -= HandleCenteredStripDisposed;
+				toolStrip.Disposed += HandleCenteredStripDisposed;
+			}
+		}
+
+		private void HandleCenteredStripDisposed(object sender, EventArgs e)
+		{
+			var strip = (ToolStrip) sender;
+			CenteredSearchDecorator centered;
+			if (_centeredSearch.TryGetValue(strip, out centered))
+			{
+				centered.Dispose();
+				_centeredSearch.Remove(strip);
+			}
 		}
 
 		private void Apply(ToolStripItemCollection toolStripItemCollection)
@@ -655,6 +688,16 @@ namespace KeePassDarkMode
 
 		private void Apply(ListView listView)
 		{
+			// Dark vector glyphs for the standard icon picker's preview list.
+			var pickerForm = listView.FindForm();
+			if (listView.Name == "m_lvIcons" && pickerForm != null &&
+				pickerForm.GetType().FullName == "KeePass.Forms.IconPickerForm")
+			{
+				var picker = listView.Controls.OfType<StandardIconPickerDecorator>().FirstOrDefault()
+				             ?? new StandardIconPickerDecorator(listView);
+				picker.Apply(_enabled, _theme);
+			}
+
 			if (ObjectListViewDecorator.CanDecorate(listView))
 			{
 				ObjectListViewDecorator.Apply(listView, _theme);

@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlVisitor.cs" />
+    <Compile Include="Decorators\CenteredSearchDecorator.cs" />
     <Compile Include="Decorators\ControlSnapshot.cs" />
+    <Compile Include="Decorators\FirstFrameDecorator.cs" />
     <Compile Include="Decorators\KnownColorsDecorator.cs" />
     <Compile Include="Decorators\ListViewGroupsPainter.cs" />
     <Compile Include="Decorators\ListViewHeaderPainter.cs" />
@@ -65,6 +67,8 @@
     </Compile>
     <Compile Include="Decorators\RichTextBoxNativeWindow.cs" />
     <Compile Include="Decorators\SplitButtonExDecorator.cs" />
+    <Compile Include="Decorators\StandardIconPickerDecorator.cs" />
+    <Compile Include="Decorators\WindowIconDecorator.cs" />
     <Compile Include="Decorators\TabControlDecorator.cs" />
     <Compile Include="Decorators\TabControlPainter.cs" />
     <Compile Include="Editor\ColorConverter.cs" />
@@ -85,6 +89,8 @@
     <Compile Include="TemplateReader.cs" />
     <Compile Include="Theme\ButtonLook.cs" />
     <Compile Include="Theme\CaptionTint.cs" />
+    <Compile Include="Theme\ModernStandardIcons.cs" />
+    <Compile Include="Theme\ModernToolbarIcons.cs" />
     <Compile Include="Theme\CheckBoxButtonLook.cs" />
     <Compile Include="Theme\CheckBoxLook.cs" />
     <Compile Include="Theme\ControlLook.cs" />
@@ -136,10 +142,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\DarkTheme.ini" />
+    <EmbeddedResource Include="Resources\DarkThemeDracula.ini" />
     <EmbeddedResource Include="Resources\DarkThemeWin11.ini" />
     <EmbeddedResource Include="Resources\DarkThemeHighContrast.ini" />
     <EmbeddedResource Include="Resources\DarkThemeColorblind.ini" />
     <None Include="Resources\PluginIcon.png" />
+    <EmbeddedResource Include="Resources\ModernWindow.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

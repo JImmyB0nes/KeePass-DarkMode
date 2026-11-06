@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Reflection;
@@ -30,6 +31,9 @@ namespace KeePassDarkMode
 		private ToolStripMenuItem _menuItem;
 		private DarkModeOptions _options;
 		private Win10ThemeMonitor _win10ThemeMonitor;
+		private WindowIconDecorator _windowIcon;
+		private readonly Dictionary<Form, FirstFrameDecorator> _firstFrames =
+			new Dictionary<Form, FirstFrameDecorator>();
 		private bool _initialized;
 
 		public override bool Initialize(IPluginHost host)
@@ -42,6 +46,9 @@ namespace KeePassDarkMode
 			_options = new DarkModeOptions(host);
 			_controlVisitor = new ControlVisitor(HandleControlVisit);
 			_theme = new DarkMode(_options);
+
+			// Branding icon for the running main window (never the EXE/shortcuts).
+			_windowIcon = new WindowIconDecorator(host.MainWindow);
 
 			_win10ThemeMonitor = new Win10ThemeMonitor(_options);
 			_win10ThemeMonitor.Initialize();
@@ -76,7 +83,11 @@ namespace KeePassDarkMode
 		{
 			if (!_initialized)
 				InitializeTheme();
-			
+
+			// Cover the form with a transparent layer until the theme paint
+			// finished - removes the light first-frame flash on new dialogs.
+			PrepareFirstFrame(args.Form);
+
 			if (_theme.Enabled)
 				_controlVisitor.Visit(args.Form);
 			
@@ -114,6 +125,29 @@ namespace KeePassDarkMode
 			PwGeneratorMenuDecorator.TryFindAndDecorate(sender, _theme);
 		}
 
+		private void PrepareFirstFrame(Form form)
+		{
+			if (!_theme.Enabled || _firstFrames.ContainsKey(form))
+				return;
+
+			var name = form.GetType().FullName;
+			if (name != "KeePass.Forms.MainForm" && name != "KeePass.Forms.PwEntryForm" &&
+				name != "KeePass.Forms.GroupForm" && name != "KeePass.Forms.KeyPromptForm" &&
+				name != "KeePass.Forms.DatabaseSettingsForm")
+				return;
+
+			if (FirstFrameDecorator.IsNativeVisible(form))
+				return;
+
+			var frame = new FirstFrameDecorator(form);
+			_firstFrames.Add(form, frame);
+			form.Disposed += delegate
+			{
+				frame.Dispose();
+				_firstFrames.Remove(form);
+			};
+		}
+
 		private void HandleTriggerSystemRaisingEvent(object sender, EcasRaisingEventArgs e)
 		{
 			if (e.Event.Type.Equals(AppInitPost))
@@ -128,6 +162,8 @@ namespace KeePassDarkMode
 		{
 			if (_initialized) return; //Not required to fix issue #137
 			_theme.Enabled = _options.Enabled;
+			if (_windowIcon != null)
+				_windowIcon.Apply(_theme.Enabled);
 			if (_theme.Enabled)
 			{
 				if (Program.MainForm.InvokeRequired)
@@ -140,6 +176,8 @@ namespace KeePassDarkMode
 			_options.EnabledChanged += enable =>
 			{
 				_theme.Enabled = enable;
+				if (_windowIcon != null)
+					_windowIcon.Apply(enable);
 				ApplyThemeInOpenForms();
 			};
 			
@@ -209,6 +247,17 @@ namespace KeePassDarkMode
 		{
 			if (_win10ThemeMonitor != null)
 				_win10ThemeMonitor.Terminate();
+
+			foreach (var frame in _firstFrames.Values)
+				frame.Dispose();
+			_firstFrames.Clear();
+
+			if (_windowIcon != null)
+			{
+				_windowIcon.Apply(false);
+				_windowIcon.Dispose();
+				_windowIcon = null;
+			}
 
 			if (Program.TriggerSystem != null)
 				Program.TriggerSystem.RaisingEvent -= HandleTriggerSystemRaisingEvent;

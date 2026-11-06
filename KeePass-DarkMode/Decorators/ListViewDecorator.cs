@@ -301,6 +301,13 @@ namespace KeePassDarkMode.Decorators
 			var text = e.ItemIndex == -1 ? e.Item.Text : e.SubItem.Text;
 			var font = e.ItemIndex == -1 ? e.Item.Font : e.SubItem.Font;
 			var color = e.ItemIndex == -1 ? e.Item.ForeColor : e.SubItem.ForeColor;
+
+			// Selected items are painted with the native highlight background
+			// (see HandleListViewDrawItem); use the matching native text color so
+			// selected text stays readable (issue #112).
+			if (e.Item.Selected)
+				color = SystemColors.HighlightText;
+
 			var textBounds = new Rectangle(bounds.Location, bounds.Size);
 
 			var listItem = e.Item.Tag as PwListItem;

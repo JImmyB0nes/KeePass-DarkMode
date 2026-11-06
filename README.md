@@ -113,6 +113,6 @@ msbuild KeePass-DarkMode.sln /p:Configuration=Release
 cd build && build.cmd
 ```
 
-Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push; KeePass wird dazu als Referenz-Assembly automatisch heruntergeladen.
+Ein [Workflow](.github/workflows/build.yml) ist vorhanden, läuft aber **nur manuell** (über _Actions → Build → Run workflow_), damit kein Actions-Kontingent verbraucht wird. Gebaut wird typischerweise lokal unter Windows; der Workflow lädt dazu KeePass als Referenz-Assembly automatisch herunter.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.

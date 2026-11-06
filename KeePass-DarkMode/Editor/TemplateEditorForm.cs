@@ -5,6 +5,7 @@ using System.Drawing.Design;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using KeePass.Util;
 using KeePassLib.Utility;
 using KeePassDarkMode.Options;
 using KeePassDarkMode.Theme;
@@ -130,7 +131,14 @@ namespace KeePassDarkMode.Editor
 			if (_instance != null)
 				return _instance;
 			
-			var theme = new CustomThemeTemplate(TemplateReader.Get(options.Template));
+			var iniFile = TemplateReader.Get(options.Template);
+			if (iniFile == null)
+			{
+				MessageService.ShowWarning("Unable to load template:", options.Template);
+				return null;
+			}
+
+			var theme = new CustomThemeTemplate(iniFile);
 			_instance = new TemplateEditorForm(theme, options);
 			return _instance;
 		}

@@ -138,7 +138,7 @@ namespace KeePassDarkMode
 				return null;
 			
 			var themeSection = iniFile.GetSection("KeePass-DarkMode");
-			return themeSection["Name"];
+			return themeSection.ContainsKey("Name") ? themeSection["Name"] : null;
 		}
 	}
 }

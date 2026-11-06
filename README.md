@@ -20,7 +20,7 @@
 STRG+T    Theme umschalten
 ```
 
-oder über das Menü: **Tools → DarkTheme**
+oder über das Menü: **Tools → Dark Theme**
 
 ---
 

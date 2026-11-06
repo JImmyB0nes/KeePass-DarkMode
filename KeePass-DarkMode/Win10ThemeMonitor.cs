@@ -34,6 +34,15 @@ namespace KeePassDarkMode
 				SystemEvents.UserPreferenceChanged += HandleUserPreferenceChanged;
 			}
 		}
+
+		public void Terminate()
+		{
+			if (WinUtil.IsAtLeastWindows10)
+			{
+				_options.AutoSyncWithWin10ThemeChanged -= HandleAutoSyncWithWin10ThemeChanged;
+				SystemEvents.UserPreferenceChanged -= HandleUserPreferenceChanged;
+			}
+		}
 		
 		private void HandleAutoSyncWithWin10ThemeChanged(bool value)
 		{

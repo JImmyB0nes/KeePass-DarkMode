@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -199,6 +200,33 @@ namespace KeePassDarkMode
 		{
 			var optionsForm = (OptionsForm) sender;
 			OptionsPanel.Create(optionsForm, _options);
+		}
+
+		public override void Terminate()
+		{
+			if (_win10ThemeMonitor != null)
+				_win10ThemeMonitor.Terminate();
+
+			if (Program.TriggerSystem != null)
+				Program.TriggerSystem.RaisingEvent -= HandleTriggerSystemRaisingEvent;
+
+			if (_theme != null)
+				_theme.Enabled = false;
+
+			// Restore the original OpenForms list that we replaced in AttachApplicationOpenFormsHandler
+			var customArrayList = Application.OpenForms as FormsArrayList;
+			if (customArrayList != null)
+			{
+				customArrayList.Added -= HandleOpenFormsAdded;
+
+				var plainList = new ArrayList();
+				foreach (Form form in customArrayList)
+					plainList.Add(form);
+
+				var listField = typeof(ReadOnlyCollectionBase).GetField("list", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (listField != null)
+					listField.SetValue(Application.OpenForms, plainList);
+			}
 		}
 
 		public override string UpdateUrl

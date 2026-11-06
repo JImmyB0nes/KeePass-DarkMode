@@ -123,6 +123,9 @@ namespace KeePassDarkMode.Options
 			if (TemplateEditorForm.Instance == null)
 			{
 				var templateEditorForm = TemplateEditorForm.Create(_options);
+				if (templateEditorForm == null)
+					return;
+
 				templateEditorForm.PreviewButtonClick += HandleTemplateEditorPreviewButtonClick;
 				templateEditorForm.Closed += HandleTemplateEditorFormClosed;
 				templateEditorForm.Show();

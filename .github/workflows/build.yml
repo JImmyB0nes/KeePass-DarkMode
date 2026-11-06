@@ -1,10 +1,9 @@
 name: Build
 
+# Kein automatischer Lauf auf push/PR: Builds laufen lokal bzw. auf der
+# Windows-VM (localhost). GitHub-Actions-Quota ist erschöpflich, ein
+# manueller Lauf ist über workflow_dispatch weiterhin möglich.
 on:
-  push:
-    branches: [master]
-    tags: ['v*']
-  pull_request:
   workflow_dispatch:
 
 jobs:

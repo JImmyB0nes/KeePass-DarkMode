@@ -336,3 +336,7 @@ ASALocalRun/
 # Chocolatey artifacts
 /choco/choco.key
 /choco/KeeTheme.plgx
+.cptr
+
+# Git-Status-Export (Tippfehler-Fund)
+/tatus

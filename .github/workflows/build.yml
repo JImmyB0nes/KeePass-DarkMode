@@ -87,15 +87,18 @@ jobs:
 
       - name: Package KeePass-DarkMode.plgx
         shell: pwsh
-        continue-on-error: true
         run: |
           $plgxDir = Join-Path $env:GITHUB_WORKSPACE "build\PlgX"
           New-Item -ItemType Directory -Force $plgxDir | Out-Null
           robocopy "KeePass-DarkMode" $plgxDir /E /XD bin obj .git .vs .idea /XF *.pdb *.suo *.user KeePass-DarkMode.dll KeePass-DarkMode.plgx build.cmd plgxexclude.txt /NFL /NDL /NJH /NJS /NC /NS | Out-Null
           & "C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create $plgxDir --debug --plgx-prereq-net:4.0
-          Move-Item -LiteralPath "PlgX.plgx" -Destination "KeePass-DarkMode.plgx" -Force
+          # KeePass schreibt die Ausgabe als '<dir>.plgx' neben das Quellverzeichnis,
+          # nicht ins aktuelle Verzeichnis — genau dort abholen.
+          $plgxOut = "$plgxDir.plgx"
+          if (-not (Test-Path $plgxOut)) { throw "KeePass /plgx-create produced no output at $plgxOut" }
+          Move-Item -LiteralPath $plgxOut -Destination "KeePass-DarkMode.plgx" -Force
           Remove-Item -Recurse -Force $plgxDir
-          Write-Host "Created KeePass-DarkMode.plgx"
+          Write-Host "Created KeePass-DarkMode.plgx ($((Get-Item KeePass-DarkMode.plgx).Length) bytes)"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

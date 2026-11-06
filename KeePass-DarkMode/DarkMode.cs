@@ -59,6 +59,23 @@ namespace KeePassDarkMode
 			ApplyOther();
 		}
 
+		// Re-read the template and swap in the new theme without toggling
+		// Enabled - avoids the double repaint (flicker) of disable/enable.
+		public void Reload()
+		{
+			if (!_enabled)
+				return;
+
+			_customTheme = GetCustomTheme();
+			_theme = _customTheme;
+
+			ToolStripManager.Renderer = _theme.ToolStripRenderer;
+			ObjectListViewDecorator.Initialize();
+			KnownColorsDecorator.Apply(_theme, true);
+
+			ApplyOther();
+		}
+
 		private ITheme GetCustomTheme()
 		{
 			var templateFile = TemplateReader.Get(_options.Template) ?? TemplateReader.GetDefaultTemplate();
@@ -491,7 +508,13 @@ namespace KeePassDarkMode
 				var components = componentsField.GetValue(containerControl) as IContainer;
 				if (components != null)
 				{
-					return components.Components.OfType<Control>();
+					// Context menus (e.g. the tray icon's m_ctxTray) live in the
+					// components container and are Components, not Controls - they
+					// would be missed otherwise and stay light (tray menu issue).
+					return components.Components
+						.OfType<Control>()
+						.Concat(components.Components.OfType<ToolStrip>()
+							.Cast<Control>());
 				}
 			}
 

@@ -39,6 +39,7 @@ namespace KeePassDarkMode.Options
 			this.themeTemplate = new System.Windows.Forms.Label();
 			this.themeTemplateComboBox = new System.Windows.Forms.ComboBox();
 			this.editTemplateButton = new System.Windows.Forms.Button();
+			this.versionLink = new System.Windows.Forms.LinkLabel();
 			this.SuspendLayout();
 			// 
 			// hotKeyLabel
@@ -99,10 +100,20 @@ namespace KeePassDarkMode.Options
 			this.editTemplateButton.UseVisualStyleBackColor = true;
 			this.editTemplateButton.Click += new System.EventHandler(this.HandleEditTemplateButtonClick);
 			// 
+			// versionLink
+			// 
+			this.versionLink.AutoSize = true;
+			this.versionLink.Location = new System.Drawing.Point(9, 125);
+			this.versionLink.Name = "versionLink";
+			this.versionLink.Size = new System.Drawing.Size(0, 13);
+			this.versionLink.TabIndex = 8;
+			this.versionLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.HandleVersionLinkClicked);
+			// 
 			// OptionsPanel
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.versionLink);
 			this.Controls.Add(this.editTemplateButton);
 			this.Controls.Add(this.themeTemplateComboBox);
 			this.Controls.Add(this.themeTemplate);
@@ -117,6 +128,8 @@ namespace KeePassDarkMode.Options
 		}
 
 		private System.Windows.Forms.Button editTemplateButton;
+
+		private System.Windows.Forms.LinkLabel versionLink;
 
 		private System.Windows.Forms.Label themeTemplate;
 		private System.Windows.Forms.ComboBox themeTemplateComboBox;

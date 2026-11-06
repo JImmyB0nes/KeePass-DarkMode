@@ -147,8 +147,8 @@ namespace KeePassDarkMode
 			{
 				if (_theme.Enabled)
 				{
-					_theme.Enabled = false;
-					_theme.Enabled = true;
+					// Reload instead of disable/enable toggle - avoids double repaint.
+					_theme.Reload();
 
 					// GetMenuItem may not have been called yet (e.g. template restored
 					// from config before KeePass queries the menu) - guard against null.

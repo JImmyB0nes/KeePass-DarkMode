@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using KeePass.Forms;
 using KeePass.UI;
@@ -11,6 +14,9 @@ namespace KeePassDarkMode.Options
 {
 	public partial class OptionsPanel : UserControl
 	{
+		private const string ReleaseApiUrl = "https://api.github.com/repos/jimmybonesde/KeePass-DarkMode/releases/latest";
+		private const string ReleasesUrl = "https://github.com/jimmybonesde/KeePass-DarkMode/releases";
+
 		private readonly DarkModeOptions _options;
 
 		public OptionsPanel()
@@ -77,6 +83,77 @@ namespace KeePassDarkMode.Options
 			hotKeyTextBox.HotKey = _options.HotKey;
 			autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
 			LoadDarkModeTemplates();
+			LoadVersionInfo();
+		}
+
+		private static Version CurrentVersion
+		{
+			get
+			{
+				var version = Assembly.GetExecutingAssembly().GetName().Version;
+				return new Version(version.Major, version.Minor, version.Build);
+			}
+		}
+
+		private void LoadVersionInfo()
+		{
+			versionLink.Text = "Version " + CurrentVersion.ToString(3);
+			versionLink.LinkArea = new LinkArea(0, 0); // plain text until update known
+
+			// Background check against the GitHub releases API - never blocks the dialog.
+			var worker = new System.ComponentModel.BackgroundWorker();
+			worker.DoWork += (s, args) => args.Result = QueryLatestVersion();
+			worker.RunWorkerCompleted += HandleVersionCheckCompleted;
+			worker.RunWorkerAsync();
+		}
+
+		private static Version QueryLatestVersion()
+		{
+			try
+			{
+				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+				var request = (HttpWebRequest)WebRequest.Create(ReleaseApiUrl);
+				request.UserAgent = "KeePass-DarkMode";
+				request.Timeout = 5000;
+				using (var response = (HttpWebResponse)request.GetResponse())
+				using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+				{
+					var json = reader.ReadToEnd();
+					var match = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?(\\d+\\.\\d+\\.\\d+)\"");
+					if (match.Success)
+						return Version.Parse(match.Groups[1].Value);
+				}
+			}
+			catch (Exception)
+			{
+				// No internet, proxy, rate limit - just show the local version.
+			}
+
+			return null;
+		}
+
+		private void HandleVersionCheckCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs args)
+		{
+			var latest = args.Error == null ? args.Result as Version : null;
+			if (latest == null || latest <= CurrentVersion)
+				return;
+
+			versionLink.Text = string.Format("Version {0} - Update {1} available!",
+				CurrentVersion.ToString(3), latest.ToString(3));
+			versionLink.LinkArea = new LinkArea(versionLink.Text.IndexOf('-'),
+				versionLink.Text.Length - versionLink.Text.IndexOf('-'));
+		}
+
+		private void HandleVersionLinkClicked(object sender, LinkLabelLinkClickedEventArgs args)
+		{
+			try
+			{
+				System.Diagnostics.Process.Start(ReleasesUrl);
+			}
+			catch (Exception)
+			{
+				// Blocked by policy - nothing else we can do.
+			}
 		}
 
 		private void LoadDarkModeTemplates()

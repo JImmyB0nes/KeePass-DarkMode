@@ -111,8 +111,9 @@ namespace KeePassDarkMode.Options
 			var control = theme.Control;
 			var tree = theme.TreeView;
 			var listView = theme.ListView;
-			var menu = theme.MenuItem;
-			var strip = theme.ToolStrip;
+			// ToolStripLook carries no plain colors (gradient renderer), so the
+			// menu colors stand in for tool/status strips in the preview.
+			var strip = theme.MenuItem;
 
 			BackColor = form.BackColor;
 			ForeColor = form.ForeColor;

@@ -330,12 +330,12 @@ ASALocalRun/
 .mfractor/
 
 # Build artifacts
-/build/KeeTheme.dll
-/build/KeeTheme.plgx
+/build/KeePass-DarkMode.dll
+/build/KeePass-DarkMode.plgx
 
 # Chocolatey artifacts
 /choco/choco.key
-/choco/KeeTheme.plgx
+/choco/KeePass-DarkMode.plgx
 .cptr
 
 # Git-Status-Export (Tippfehler-Fund)

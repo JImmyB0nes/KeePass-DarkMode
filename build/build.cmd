@@ -18,10 +18,10 @@ if exist "%LOCALAPPDATA%\Programs\Rider\tools\MSBuild\Current\Bin\amd64\MSBuild.
 )
 
 echo Compiling Dll
-%msbuild_path% ..\KeeTheme.sln /p:Configuration=Release /p:LangVersion=3
+%msbuild_path% ..\KeePass-DarkMode.sln /p:Configuration=Release /p:LangVersion=3
 
 echo Releasing Dll
-copy ..\KeeTheme\bin\Release\KeeTheme.dll .\KeeTheme.dll
+copy ..\KeePass-DarkMode\bin\Release\KeePass-DarkMode.dll .\KeePass-DarkMode.dll
 
 rem Build plgx
 echo Deleting existing PlgX folder
@@ -31,13 +31,13 @@ echo Creating PlgX folder
 mkdir "PlgX"
 
 echo Copying files
-xcopy "..\KeeTheme\*" "PlgX" /s /e /exclude:PlgXExclude.txt
+xcopy "..\KeePass-DarkMode\*" "PlgX" /s /e /exclude:PlgXExclude.txt
 
 echo Compiling PlgX
 "C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create "%cd%\PlgX" --debug --plgx-prereq-net:3.5
 
 echo Releasing PlgX
-move /y "PlgX.plgx" "KeeTheme.plgx"
+move /y "PlgX.plgx" "KeePass-DarkMode.plgx"
 
 echo Cleaning up
 rmdir /s /q "PlgX"

@@ -6,10 +6,10 @@ if ($psver -ge 3) {
 	function Get-ChildItemDir {Get-ChildItem $args}
 }
 
-$packageName = 'keepass-plugin-keetheme'
-$fileName = 'KeeTheme.plgx'
+$packageName = 'keepass-plugin-keepass-darkmode'
+$fileName = 'KeePass-DarkMode.plgx'
 $packageSearch = 'KeePass Password Safe'
-$url = 'https://github.com/jimmybonesde/KeePass-DarkMode/releases/download/v1.0.3/KeeTheme.plgx'
+$url = 'https://github.com/jimmybonesde/KeePass-DarkMode/releases/download/v1.0.3/KeePass-DarkMode.plgx'
 $checksum = '285EAE535A7A08AB41AB5EA30A06541628C683849E641E206C541EB93E6D7B5A'
 $checksumType = 'sha256'
 

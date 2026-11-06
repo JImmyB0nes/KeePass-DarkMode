@@ -9,5 +9,5 @@ obj\
 .pdb
 build.cmd
 plgxexclude.txt
-KeeTheme.dll
-KeeTheme.plgx
+KeePass-DarkMode.dll
+KeePass-DarkMode.plgx

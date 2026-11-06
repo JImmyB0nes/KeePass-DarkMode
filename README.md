@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=flat-square&label=Version&color=blue" alt="Version"></a>
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
+  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=flat-square&label=Downloads&color=green" alt="Downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"></a>
   <a href="https://github.com/jimmybonesde/KeePass-DarkMode/actions"><img src="https://img.shields.io/github/actions/workflow/status/jimmybonesde/KeePass-DarkMode/build.yml?style=flat-square&label=Build" alt="Build"></a>
 </p>
@@ -40,8 +40,10 @@ oder über das Menü: **Tools → DarkTheme**
 
 ### Methode 1: Manuell
 
-1. [KeeTheme.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeeTheme.plgx) herunterladen
-2. In den Plugin-Ordner kopieren (Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`)
+1. [KeePass-DarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePass-DarkMode.plgx) herunterladen
+2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
+   - KeePass Standard: `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\`
+   - Pleasant Security Server: `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\`
 3. KeePass neu starten — fertig
 
 Alternativ funktioniert auch die klassische Variante über **Tools → Plugins → Add…**, einfach die `.plgx` dort reinziehen.
@@ -49,7 +51,7 @@ Alternativ funktioniert auch die klassische Variante über **Tools → Plugins �
 ### Methode 2: Über Chocolatey
 
 ```powershell
-choco install keepass-plugin-keetheme
+choco install keepass-plugin-keepass-darkmode
 ```
 
 KeePass danach einmal neu starten.
@@ -62,7 +64,7 @@ Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
 
 ![Theme-Editor](docs/KeePassDarkThemeEditor.png)
 
-Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen dann automatisch in der Theme-Auswahl unter **Tools → Optionen → KeeTheme**.
+Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen dann automatisch in der Theme-Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
 
 Zwei Startpunkte liegen bei:
 
@@ -83,7 +85,7 @@ KeePass basiert auf klassischen Windows-Controls, die sich nur eingeschränkt um
 
 ```bash
 # Build unter Windows (benötigt .NET Framework 4.x SDK)
-msbuild KeeTheme.sln /p:Configuration=Release
+msbuild KeePass-DarkMode.sln /p:Configuration=Release
 ```
 
 Der [CI-Workflow](.github/workflows/build.yml) baut automatisch bei jedem Push — KeePass wird dazu automatisch als Referenz-Assembly heruntergeladen.

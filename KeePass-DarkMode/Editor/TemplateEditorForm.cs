@@ -5,6 +5,7 @@ using System.Drawing.Design;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using KeePassLib.Utility;
 using KeePassDarkMode.Options;
 using KeePassDarkMode.Theme;
 

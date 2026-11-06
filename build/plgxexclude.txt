@@ -11,3 +11,5 @@ build.cmd
 plgxexclude.txt
 KeePass-DarkMode.dll
 KeePass-DarkMode.plgx
+KeePassDarkMode.dll
+KeePassDarkMode.plgx

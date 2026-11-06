@@ -121,6 +121,11 @@ namespace KeePassDarkMode.Decorators
 
 		private void DrawContentFrame(Graphics g)
 		{
+			// Guard against an empty tab control (SelectedIndex == -1) or missing tabs,
+			// where GetTabRect would throw.
+			if (_tabControl.SelectedIndex < 0 || _tabControl.SelectedIndex >= _tabControl.TabPages.Count)
+				return;
+
 			var displayRect = _tabControl.DisplayRectangle;
 			var activeTabBounds = _tabControl.GetTabRect(_tabControl.SelectedIndex);
     

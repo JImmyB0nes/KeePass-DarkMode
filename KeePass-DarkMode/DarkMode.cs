@@ -62,6 +62,11 @@ namespace KeePassDarkMode
 		private ITheme GetCustomTheme()
 		{
 			var templateFile = TemplateReader.Get(_options.Template) ?? TemplateReader.GetDefaultTemplate();
+			// Last resort: if even the embedded default cannot be read, fall back to
+			// the empty (light) theme instead of throwing during plugin load.
+			if (templateFile == null)
+				return _defaultTheme;
+
 			var themeTemplate = new CustomThemeTemplate(templateFile);
 			return new CustomTheme(themeTemplate);
 		}

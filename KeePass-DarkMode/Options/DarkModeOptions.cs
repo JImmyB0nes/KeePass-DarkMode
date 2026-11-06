@@ -79,7 +79,16 @@ namespace KeePassDarkMode.Options
 			
 			_enabled = pluginHost.CustomConfig.GetBool(EnabledOption, false);
 			var hotKey = pluginHost.CustomConfig.GetString(HotKeyOption, "T, Control");
-			_hotKey = (Keys) Enum.Parse(typeof(Keys), hotKey);
+			try
+			{
+				_hotKey = (Keys) Enum.Parse(typeof(Keys), hotKey);
+			}
+			catch (Exception)
+			{
+				// Corrupted config value - fall back to the default hot key
+				// instead of failing the whole plugin load.
+				_hotKey = Keys.Control | Keys.T;
+			}
 			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, false);
 			_template = pluginHost.CustomConfig.GetString(TemplateOption, TemplateReader.DefaultTemplatePath);
 		}

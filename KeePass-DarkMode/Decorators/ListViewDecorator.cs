@@ -117,7 +117,8 @@ namespace KeePassDarkMode.Decorators
 				listView.DrawColumnHeader += HandleListViewDrawColumnHeader;
 				listView.DrawItem += HandleListViewDrawItem;
 				listView.DrawSubItem += HandleListViewDrawSubItem;
-				listView.Parent.EnabledChanged += ListViewParentEnabledChanged;
+				if (listView.Parent != null)
+					listView.Parent.EnabledChanged += ListViewParentEnabledChanged;
 			}
 
 			listView.BorderStyle = _theme.ListView.BorderStyle;

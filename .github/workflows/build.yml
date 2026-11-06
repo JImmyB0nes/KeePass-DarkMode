@@ -113,7 +113,7 @@ jobs:
         with:
           name: KeePass-DarkMode
           path: |
-            KeePass-DarkMode/bin/Release/KeePass-DarkMode.dll
+            KeePass-DarkMode/bin/Release/KeePassDarkMode.dll
             KeePassDarkMode.plgx
 
       - name: Create GitHub Release
@@ -123,4 +123,4 @@ jobs:
           generate_release_notes: true
           files: |
             KeePassDarkMode.plgx
-            KeePass-DarkMode/bin/Release/KeePass-DarkMode.dll
+            KeePass-DarkMode/bin/Release/KeePassDarkMode.dll

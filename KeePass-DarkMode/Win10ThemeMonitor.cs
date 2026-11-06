@@ -62,8 +62,21 @@ namespace KeePassDarkMode
 
 		private bool IsDarkThemeEnabled()
 		{
-			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-			return key != null && (int) key.GetValue("AppsUseLightTheme", 1) != 1;
+			try
+			{
+				var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+				if (key == null)
+					return false;
+
+				// Registry values are not guaranteed to be int - use GetValueOrDefault
+				// so an unexpected type does not throw.
+				var value = key.GetValue("AppsUseLightTheme", 1);
+				return value is int && (int) value != 1;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 
 		public static void UseImmersiveDarkMode(Form form, bool enabled)

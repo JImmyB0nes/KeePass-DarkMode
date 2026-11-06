@@ -105,8 +105,11 @@ namespace KeePassDarkMode.Options
 				themeTemplateComboBox.Items.Add(template);
 			}
 
-			themeTemplateComboBox.SelectedItem = selectedTemplate ?? templates
-				.First(x => x.Path == TemplateReader.DefaultTemplatePath);
+			// First would throw if the default template is not in the list (e.g. after
+			// a partial plugin update) - use FirstOrDefault and fall back gracefully.
+			themeTemplateComboBox.SelectedItem = selectedTemplate
+				?? templates.FirstOrDefault(x => x.Path == TemplateReader.DefaultTemplatePath)
+				?? templates.FirstOrDefault();
 		}
 
 		private void SaveOptions()
@@ -115,7 +118,8 @@ namespace KeePassDarkMode.Options
 			_options.AutoSyncWithWin10Theme = autoSyncWin10ThemeCheckBox.Checked;
 
 			var template = (TemplateFile) themeTemplateComboBox.SelectedItem;
-			_options.Template = template.Path;
+			if (template != null)
+				_options.Template = template.Path;
 		}
 
 		private void HandleEditTemplateButtonClick(object sender, EventArgs e)

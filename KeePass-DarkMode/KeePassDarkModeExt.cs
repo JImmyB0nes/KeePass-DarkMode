@@ -151,7 +151,11 @@ namespace KeePassDarkMode
 					_theme.Enabled = false;
 					_theme.Enabled = true;
 
-					_menuItem.Text = TemplateReader.GetTemplateName(templatePath);
+					// GetMenuItem may not have been called yet (e.g. template restored
+					// from config before KeePass queries the menu) - guard against null.
+					var templateName = TemplateReader.GetTemplateName(templatePath);
+					if (_menuItem != null && !string.IsNullOrEmpty(templateName))
+						_menuItem.Text = templateName;
 
 					ApplyThemeInOpenForms();
 				}

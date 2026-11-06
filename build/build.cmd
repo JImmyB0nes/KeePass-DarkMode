@@ -20,8 +20,8 @@ if exist "%LOCALAPPDATA%\Programs\Rider\tools\MSBuild\Current\Bin\amd64\MSBuild.
 echo Compiling Dll
 %msbuild_path% ..\KeePass-DarkMode.sln /p:Configuration=Release /p:LangVersion=3
 
-echo Releasing Dll
-copy ..\KeePass-DarkMode\bin\Release\KeePass-DarkMode.dll .\KeePass-DarkMode.dll
+rem DLL nur noch buildintern - veroeffentlicht wird ausschliesslich die .plgx
+rem (KeePass baut die DLL beim ersten Laden selbst vor Ort)
 
 rem Build plgx
 echo Deleting existing PlgX folder

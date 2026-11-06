@@ -74,7 +74,7 @@ jobs:
           Add-Content -Path $env:GITHUB_ENV -Value "FRAMEWORK_PATH_OVERRIDE=$path"
           Write-Host "Using .NET Framework reference assemblies: $path"
 
-      - name: Build KeePass-DarkMode.dll
+      - name: Build plugin assembly
         shell: cmd
         run: msbuild KeePass-DarkMode.sln /p:Configuration=Release "/p:FrameworkPathOverride=%FRAMEWORK_PATH_OVERRIDE%" /m /fl "/flp:logfile=msbuild.log;verbosity=normal"
 
@@ -112,15 +112,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: KeePass-DarkMode
-          path: |
-            KeePass-DarkMode/bin/Release/KeePassDarkMode.dll
-            KeePassDarkMode.plgx
+          path: KeePassDarkMode.plgx
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: |
-            KeePassDarkMode.plgx
-            KeePass-DarkMode/bin/Release/KeePassDarkMode.dll
+          files: KeePassDarkMode.plgx

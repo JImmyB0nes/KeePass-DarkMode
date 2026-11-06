@@ -4,7 +4,6 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using KeePass;
 using KeePass.UI;
-using KeePassLib.Utility;
 using KeePassDarkMode.Theme;
 using CheckBoxState = System.Windows.Forms.VisualStyles.CheckBoxState;
 
@@ -24,14 +23,11 @@ namespace KeePassDarkMode.Decorators
 			_listView = listView;
 			_theme = theme;
 
-			if (!MonoWorkarounds.IsRequired())
-			{
-				_headerPainter = new ListViewHeaderPainter(_listView);
-				_headerPainter.Paint += HandleHeaderPaint;
+			_headerPainter = new ListViewHeaderPainter(_listView);
+			_headerPainter.Paint += HandleHeaderPaint;
 
-				_groupsPainter = new ListViewGroupsPainter(_listView);
-				_groupsPainter.Paint += HandleGroupsPaint;
-			}
+			_groupsPainter = new ListViewGroupsPainter(_listView);
+			_groupsPainter.Paint += HandleGroupsPaint;
 
 			_listView.Controls.Add(this);
 		}
@@ -124,9 +120,7 @@ namespace KeePassDarkMode.Decorators
 				listView.Parent.EnabledChanged += ListViewParentEnabledChanged;
 			}
 
-			// Setting borders style throws exception on Mono
-			if (!MonoWorkarounds.IsRequired())
-				listView.BorderStyle = _theme.ListView.BorderStyle;
+			listView.BorderStyle = _theme.ListView.BorderStyle;
 
 			listView.BackColor = _theme.ListView.BackColor;
 

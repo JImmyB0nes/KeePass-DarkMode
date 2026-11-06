@@ -67,8 +67,7 @@ namespace KeePassDarkMode
 			customArrayList.AddRange(Application.OpenForms);
 			customArrayList.Added += HandleOpenFormsAdded;
 			
-			var fieldName = MonoWorkarounds.IsRequired() ? "_list" : "list";
-			var listField = typeof(ReadOnlyCollectionBase).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+			var listField = typeof(ReadOnlyCollectionBase).GetField("list", BindingFlags.Instance | BindingFlags.NonPublic);
 			if (listField != null)
 				listField.SetValue(Application.OpenForms, customArrayList);
 		}
@@ -131,7 +130,7 @@ namespace KeePassDarkMode
 			_theme.Enabled = _options.Enabled;
 			if (_theme.Enabled)
 			{
-				if (Program.MainForm.InvokeRequired || KeePassLib.Utility.MonoWorkarounds.IsRequired(373134))
+				if (Program.MainForm.InvokeRequired)
 				{
 					Program.MainForm.BeginInvoke(new Action(() => { ApplyThemeInOpenForms(); }));
 				}

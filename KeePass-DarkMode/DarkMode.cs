@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using KeePass.App;
 using KeePass.UI;
-using KeePassLib.Utility;
 using KeePassDarkMode.Decorators;
 using KeePassDarkMode.Options;
 using KeePassDarkMode.Theme;
@@ -165,7 +164,7 @@ namespace KeePassDarkMode
 
 		private void OverrideScrollBarsSetExplorerTheme(Control control)
 		{
-			if (!CanHaveScrollBars(control) || MonoWorkarounds.IsRequired())
+			if (!CanHaveScrollBars(control))
 				return;
 
 			var useExplorerDarkMode = _theme.ScrollBar.UseExplorerDarkMode;
@@ -549,12 +548,9 @@ namespace KeePassDarkMode
 			treeView.BorderStyle = _theme.TreeView.BorderStyle;
 			treeView.BackColor = _theme.TreeView.BackColor;
 
-			if (!MonoWorkarounds.IsRequired())
-			{
-				treeView.DrawMode = _theme.TreeViewDrawMode;
-				treeView.DrawNode -= HandleTreeViewDrawNode;
-				treeView.DrawNode += HandleTreeViewDrawNode;
-			}
+			treeView.DrawMode = _theme.TreeViewDrawMode;
+			treeView.DrawNode -= HandleTreeViewDrawNode;
+			treeView.DrawNode += HandleTreeViewDrawNode;
 		}
 
 		[DllImport("UxTheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
@@ -562,7 +558,7 @@ namespace KeePassDarkMode
 
 		public static void TrySetWindowTheme(IntPtr hWnd, bool enable)
 		{
-			if (hWnd == IntPtr.Zero || MonoWorkarounds.IsRequired())
+			if (hWnd == IntPtr.Zero)
 				return;
 
 			try

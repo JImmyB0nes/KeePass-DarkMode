@@ -8,7 +8,8 @@
 
 <p align="center">
   <strong>Dunkles Theme für KeePass — augenfreundlich, auch nachts.</strong><br>
-  Kein Umstieg, kein Verlust: Alle Funktionen bleiben erhalten, nur die Optik ändert sich.
+  Kein Umstieg, kein Verlust: Alle Funktionen bleiben erhalten, nur die Optik ändert sich.<br>
+  <sub>Windows-only — unter Linux/macOS (Mono) läuft KeePass nicht zuverlässig.</sub>
 </p>
 
 ---

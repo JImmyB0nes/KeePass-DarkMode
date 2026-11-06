@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using KeePassLib.Utility;
 using KeePassDarkMode.Theme;
 
 namespace KeePassDarkMode.Decorators
@@ -20,16 +19,8 @@ namespace KeePassDarkMode.Decorators
 			_theme = theme;
 			_originalDrawMode = tabControl.DrawMode;
 
-			if (!MonoWorkarounds.IsRequired())
-			{
-				_painter = new TabControlPainter(_tabControl);
-				_painter.Paint += HandlePaint;
-			}
-			else
-			{
-				// Mono has no native WM_PAINT hook, so draw the tabs via owner-draw.
-				_tabControl.DrawItem += HandleDrawItem;
-			}
+			_painter = new TabControlPainter(_tabControl);
+			_painter.Paint += HandlePaint;
 
 			if (_tabControl.Parent != null)
 				_tabControl.Parent.Controls.Add(this);
@@ -128,75 +119,6 @@ namespace KeePassDarkMode.Decorators
 			}
 		}
 
-		private void HandleDrawItem(object sender, DrawItemEventArgs e)
-		{
-			if (!_enabled)
-				return;
-
-			var tabPage = _tabControl.TabPages[e.Index];
-			var tabBounds = e.Bounds;
-			var isSelected = e.Index == _tabControl.SelectedIndex;
-
-			var backColor = isSelected
-				? _theme.TabControl.SelectedTabColor
-				: _theme.TabControl.UnselectedTabColor;
-			var foreColor = _theme.Control.ForeColor;
-			var borderColor = isSelected
-				? _theme.TabControl.SelectedTabBorderColor
-				: _theme.TabControl.UnselectedTabBorderColor;
-
-			using (var backBrush = new SolidBrush(backColor))
-			{
-				e.Graphics.FillRectangle(backBrush, tabBounds);
-			}
-
-			using (var pen = new Pen(borderColor))
-			{
-				e.Graphics.DrawLine(pen, tabBounds.Left, tabBounds.Top, tabBounds.Right, tabBounds.Top);
-				e.Graphics.DrawLine(pen, tabBounds.Left, tabBounds.Top, tabBounds.Left, tabBounds.Bottom);
-				e.Graphics.DrawLine(pen, tabBounds.Right, tabBounds.Top, tabBounds.Right, tabBounds.Bottom);
-
-				if (!isSelected)
-				{
-					e.Graphics.DrawLine(pen, tabBounds.Left, tabBounds.Bottom, tabBounds.Right, tabBounds.Bottom);
-				}
-			}
-
-			var textBounds = tabBounds;
-
-			if (_tabControl.ImageList != null && tabPage.ImageIndex >= 0)
-			{
-				var image = _tabControl.ImageList.Images[tabPage.ImageIndex];
-				var iconX = tabBounds.Left + 4;
-				var iconY = tabBounds.Top + (tabBounds.Height - image.Height) / 2;
-
-				e.Graphics.DrawImage(image, iconX, iconY);
-
-				textBounds.X += image.Width + 8;
-				textBounds.Width -= image.Width + 8;
-			}
-			else if (_tabControl.ImageList != null && !string.IsNullOrEmpty(tabPage.ImageKey))
-			{
-				var image = _tabControl.ImageList.Images[tabPage.ImageKey];
-				var iconX = tabBounds.Left + 4;
-				var iconY = tabBounds.Top + (tabBounds.Height - image.Height) / 2;
-
-				e.Graphics.DrawImage(image, iconX, iconY);
-
-				textBounds.X += image.Width + 8;
-				textBounds.Width -= image.Width + 8;
-			}
-
-			TextRenderer.DrawText(
-				e.Graphics,
-				tabPage.Text,
-				_tabControl.Font,
-				textBounds,
-				foreColor,
-				TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
-			);
-		}
-		
 		private void DrawContentFrame(Graphics g)
 		{
 			var displayRect = _tabControl.DisplayRectangle;

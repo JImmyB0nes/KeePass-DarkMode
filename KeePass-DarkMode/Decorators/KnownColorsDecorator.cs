@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
-using KeePassLib.Utility;
 using KeePassDarkMode.Theme;
 
 namespace KeePassDarkMode.Decorators
@@ -12,9 +11,8 @@ namespace KeePassDarkMode.Decorators
         
         public static void Apply(ITheme theme, bool enabled)
         {
-            var colorTableFieldName = MonoWorkarounds.IsRequired() ? "s_colorTable" : "colorTable";
             var colorTableField = typeof(Color).Assembly.GetType("System.Drawing.KnownColorTable")
-                .GetField(colorTableFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                .GetField("colorTable", BindingFlags.Static | BindingFlags.NonPublic);
 
             if (colorTableField == null)
                 return;

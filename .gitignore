@@ -337,3 +337,4 @@ ASALocalRun/
 
 # Git-Status-Export (Tippfehler-Fund)
 /tatus
+dist/

@@ -33,6 +33,7 @@ namespace KeePassDarkMode
 		private DarkModeOptions _options;
 		private Win10ThemeMonitor _win10ThemeMonitor;
 		private WindowIconDecorator _windowIcon;
+		private NativeDialogWatcher _dialogWatcher;
 		private readonly Dictionary<Form, FirstFrameDecorator> _firstFrames =
 			new Dictionary<Form, FirstFrameDecorator>();
 		private bool _initialized;
@@ -50,6 +51,9 @@ namespace KeePassDarkMode
 
 			// Branding icon for the running main window (never the EXE/shortcuts).
 			_windowIcon = new WindowIconDecorator(host.MainWindow);
+
+			// Dark title bars for native dialogs (MessageBox, TaskDialog, ...).
+			_dialogWatcher = new NativeDialogWatcher();
 
 			_win10ThemeMonitor = new Win10ThemeMonitor(_options);
 			_win10ThemeMonitor.Initialize();
@@ -169,6 +173,8 @@ namespace KeePassDarkMode
 			_theme.Enabled = _options.Enabled;
 			if (_windowIcon != null)
 				_windowIcon.Apply(_theme.Enabled);
+			if (_dialogWatcher != null)
+				_dialogWatcher.Enable(_theme.Enabled);
 			if (_theme.Enabled)
 			{
 				if (Program.MainForm.InvokeRequired)
@@ -183,6 +189,8 @@ namespace KeePassDarkMode
 				_theme.Enabled = enable;
 				if (_windowIcon != null)
 					_windowIcon.Apply(enable);
+				if (_dialogWatcher != null)
+					_dialogWatcher.Enable(enable);
 				ApplyThemeInOpenForms();
 			};
 			
@@ -272,6 +280,8 @@ namespace KeePassDarkMode
 				_menuItem.Text = _theme.Name;
 
 			// Title bars must flip with the mode (immersive dark attribute).
+			if (_dialogWatcher != null)
+				_dialogWatcher.Enable(_theme.Enabled && !_theme.LightMode);
 			foreach (Form openForm in Application.OpenForms)
 				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
 
@@ -313,6 +323,12 @@ namespace KeePassDarkMode
 				_windowIcon.Apply(false);
 				_windowIcon.Dispose();
 				_windowIcon = null;
+			}
+
+			if (_dialogWatcher != null)
+			{
+				_dialogWatcher.Dispose();
+				_dialogWatcher = null;
 			}
 
 			if (Program.TriggerSystem != null)

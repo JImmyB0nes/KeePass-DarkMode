@@ -59,6 +59,7 @@
     <Compile Include="Decorators\ListViewGroupsPainter.cs" />
     <Compile Include="Decorators\ListViewHeaderPainter.cs" />
     <Compile Include="Decorators\ListViewNativeWindow.cs" />
+    <Compile Include="Decorators\NativeDialogWatcher.cs" />
     <Compile Include="Decorators\ListViewDecorator.cs">
       <SubType>Component</SubType>
     </Compile>

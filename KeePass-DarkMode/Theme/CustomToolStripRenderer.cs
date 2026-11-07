@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 using KeePass.UI.ToolStripRendering;
 
@@ -20,9 +20,18 @@ namespace KeePassDarkMode.Theme
 
 		protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 		{
+			var highlight = _customTheme.MenuItem.HighlightColor;
+
+			// The highlight color is only meant for light text on the selection
+			// background. If a theme accidentally sets it dark, fall back to the
+			// regular menu text color - dark text on the dark selection bar would
+			// flash unreadable while navigating (e.g. the parent item of a submenu).
+			if (!highlight.IsEmpty && highlight.GetBrightness() < 0.45)
+				highlight = _customTheme.MenuItem.ForeColor;
+
 			if (e.Item.Pressed || e.Item.Selected)
 			{
-				e.TextColor = _customTheme.MenuItem.HighlightColor;
+				e.TextColor = highlight.IsEmpty ? _customTheme.MenuItem.ForeColor : highlight;
 			}
 			else if (e.Item.Enabled)
 			{

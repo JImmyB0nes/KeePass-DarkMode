@@ -24,6 +24,16 @@ namespace KeePassDarkMode.Theme
 			{
 				e.TextColor = _customTheme.MenuItem.HighlightColor;
 			}
+			else if (e.Item.Enabled)
+			{
+				// Items that KeePass creates on the fly (entry views, "Open with
+				// browser", templates) keep the default dark gray ForeColor and
+				// sink into the dark menu. Any dark text on our dark background
+				// becomes the theme's menu text color.
+				var color = e.TextColor;
+				if (color.GetBrightness() < 0.45)
+					e.TextColor = _customTheme.MenuItem.ForeColor;
+			}
 
 			base.OnRenderItemText(e);
 		}

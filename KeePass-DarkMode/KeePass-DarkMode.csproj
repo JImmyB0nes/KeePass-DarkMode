@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlVisitor.cs" />
+    <Compile Include="Decorators\CalendarColorizer.cs" />
     <Compile Include="Decorators\CenteredSearchDecorator.cs" />
     <Compile Include="Decorators\ControlSnapshot.cs" />
     <Compile Include="Decorators\FirstFrameDecorator.cs" />

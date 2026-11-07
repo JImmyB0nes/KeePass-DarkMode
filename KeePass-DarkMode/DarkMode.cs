@@ -188,6 +188,9 @@ namespace KeePassDarkMode
 			var comboBox = control as ComboBox;
 			if (comboBox != null) Apply(comboBox);
 
+			var dateTimePicker = control as DateTimePicker;
+			if (dateTimePicker != null) Apply(dateTimePicker);
+
 			var checkBox = control as CheckBox;
 			if (checkBox != null) Apply(checkBox);
 
@@ -335,6 +338,35 @@ namespace KeePassDarkMode
 
 			comboBox.BackColorChanged -= HandleComboBoxBackColorChanged;
 			comboBox.BackColorChanged += HandleComboBoxBackColorChanged;
+		}
+
+		private void Apply(DateTimePicker dateTimePicker)
+		{
+			// Month calendar popup gets our palette when it opens (see CalendarColorizer).
+			dateTimePicker.DropDown -= HandleDateTimePickerDropDown;
+			dateTimePicker.DropDown += HandleDateTimePickerDropDown;
+			dateTimePicker.CloseUp -= HandleDateTimePickerCloseUp;
+			dateTimePicker.CloseUp += HandleDateTimePickerCloseUp;
+		}
+
+		private void HandleDateTimePickerDropDown(object sender, EventArgs e)
+		{
+			var picker = (DateTimePicker) sender;
+			if (!_enabled)
+				return;
+
+			var calendar = CalendarColorizer.GetCalendar(picker.Handle);
+			CalendarColorizer.Colorize(calendar,
+				_theme.Control.BackColor,
+				_theme.Control.ForeColor,
+				_theme.ListView.HeaderBackColor);
+		}
+
+		private void HandleDateTimePickerCloseUp(object sender, EventArgs e)
+		{
+			var picker = (DateTimePicker) sender;
+			var calendar = CalendarColorizer.GetCalendar(picker.Handle);
+			CalendarColorizer.Restore(calendar);
 		}
 
 		private void HandleComboBoxBackColorChanged(object sender, EventArgs e)

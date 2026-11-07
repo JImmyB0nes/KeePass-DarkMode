@@ -88,6 +88,7 @@
     <Compile Include="Options\DarkModeOptions.cs" />
     <Compile Include="Options\ThemePreviewControl.cs" />
     <Compile Include="TemplateFile.cs" />
+    <Compile Include="UpdateChecker.cs" />
     <Compile Include="TemplateReader.cs" />
     <Compile Include="Theme\ButtonLook.cs" />
     <Compile Include="Theme\CaptionTint.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Theme\CheckBoxButtonLook.cs" />
     <Compile Include="Theme\CheckBoxLook.cs" />
     <Compile Include="Theme\ControlLook.cs" />
+    <Compile Include="Theme\AccentColor.cs" />
     <Compile Include="Theme\CustomColorTable.cs" />
     <Compile Include="Theme\CustomThemeTemplate.cs" />
     <Compile Include="Theme\CustomToolStripRenderer.cs" />
@@ -144,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\DarkTheme.ini" />
+    <EmbeddedResource Include="Resources\LightTheme.ini" />
     <EmbeddedResource Include="Resources\DarkThemeDracula.ini" />
     <EmbeddedResource Include="Resources\DarkThemeWin11.ini" />
     <EmbeddedResource Include="Resources\DarkThemeHighContrast.ini" />

@@ -20,6 +20,7 @@ namespace KeePassDarkMode
 
 		private readonly DarkModeOptions _options;
 		private Timer _debounceTimer;
+		private bool _initializedDarkState;
 		private Timer _watchdogTimer;
 		private bool _lastKnownDark;
 
@@ -107,24 +108,52 @@ namespace KeePassDarkMode
 		private void SyncIfChanged()
 		{
 			var dark = IsDarkThemeEnabled();
-			if (dark == _lastKnownDark)
+			var changed = dark != _lastKnownDark || !_initializedDarkState;
+			_lastKnownDark = dark;
+			_initializedDarkState = true;
+
+			if (!_options.AutoSyncWithWin10Theme)
 				return;
 
-			_lastKnownDark = dark;
-
-			if (_options.AutoSyncWithWin10Theme && _options.Enabled != dark)
-				_options.Enabled = dark;
+			if (_options.AutoLightTheme)
+			{
+				// Auto mode: the plugin stays on and follows Windows with the
+				// matching template (dark/light) instead of switching off.
+				// A manual Ctrl+T disable stays valid until the next real
+				// Windows theme switch - do not re-enable on every poll.
+				if (!changed)
+					return;
+				if (!_options.Enabled)
+					_options.Enabled = true;
+				_options.NotifyThemeModeChanged();
+			}
+			else
+			{
+				// Legacy mode: dark = plugin on, light = plugin off.
+				if (_options.Enabled != dark)
+					_options.Enabled = dark;
+			}
 		}
 
 		private void SyncNow()
 		{
+			_initializedDarkState = true;
 			_lastKnownDark = IsDarkThemeEnabled();
 
-			if (_options.AutoSyncWithWin10Theme && _options.Enabled != _lastKnownDark)
+			if (!_options.AutoSyncWithWin10Theme)
+				return;
+
+			if (_options.AutoLightTheme)
+			{
+				if (!_options.Enabled)
+					_options.Enabled = true;
+				_options.NotifyThemeModeChanged();
+			}
+			else if (_options.Enabled != _lastKnownDark)
 				_options.Enabled = _lastKnownDark;
 		}
 
-		private static bool IsDarkThemeEnabled()
+		public static bool IsDarkThemeEnabled()
 		{
 			try
 			{

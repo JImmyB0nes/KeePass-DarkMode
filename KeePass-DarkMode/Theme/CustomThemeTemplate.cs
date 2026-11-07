@@ -133,9 +133,17 @@ namespace KeePassDarkMode.Theme
 			LoadLook(scrollBarSection, Palette, ScrollBar);		
 		}
 
+		// Applies the current Windows accent color over the palette (used when
+		// the "Follow Windows accent color" option is enabled).
+		public static void ApplySystemAccent(Palette palette)
+		{
+			palette.SetColor("Accent", AccentColor.Get());
+			ApplyAccent(palette);
+		}
+
 		// Optional [Palette] key "Accent": one color that drives the interactive
 		// highlights. Themes without it are untouched (backward compatible).
-		private static void ApplyAccent(Palette palette)
+		public static void ApplyAccent(Palette palette)
 		{
 			if (!palette.HasColor("Accent"))
 				return;

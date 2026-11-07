@@ -29,6 +29,7 @@ namespace KeePassDarkMode
 		private DarkMode _theme;
 		private IPluginHost _host;
 		private ToolStripMenuItem _menuItem;
+		private Version _pendingUpdate;
 		private DarkModeOptions _options;
 		private Win10ThemeMonitor _win10ThemeMonitor;
 		private WindowIconDecorator _windowIcon;
@@ -65,6 +66,10 @@ namespace KeePassDarkMode
 			
 			AttachApplicationOpenFormsAddedHandler();
 
+			// Silent background check - surfaces as a badge on the menu item.
+			UpdateChecker.UpdateAvailable += HandleUpdateAvailable;
+			UpdateChecker.Check(_options);
+
 			return true;
 		}
 
@@ -91,7 +96,7 @@ namespace KeePassDarkMode
 			if (_theme.Enabled)
 				_controlVisitor.Visit(args.Form);
 			
-			Win10ThemeMonitor.UseImmersiveDarkMode(args.Form, _theme.Enabled);
+			Win10ThemeMonitor.UseImmersiveDarkMode(args.Form, _theme.Enabled && !_theme.LightMode);
 			
 			var optionsForm = args.Form as OptionsForm;
 			if (optionsForm != null)
@@ -197,6 +202,11 @@ namespace KeePassDarkMode
 					ApplyThemeInOpenForms();
 				}
 			};
+
+			// Windows flipped between dark and light (auto-light mode) or the
+			// accent color changed - re-resolve the effective template.
+			_options.ThemeModeChanged += HandleThemeModeChanged;
+			_options.AccentFromWindowsChanged += accent => HandleThemeModeChanged();
 			
 			_initialized = true;
 		}
@@ -211,10 +221,39 @@ namespace KeePassDarkMode
 				_menuItem.ShortcutKeys = _options.HotKey;
 				_menuItem.Click += HandleToggleDarkModeMenuItemClick;
 				_options.HotKeyChanged += keys => _menuItem.ShortcutKeys = keys;
+				if (_pendingUpdate != null)
+					_menuItem.Text = MenuBaseText() + string.Format(" - Update {0} available!", _pendingUpdate.ToString(3));
 				return _menuItem;
 			}
 
 			return base.GetMenuItem(t);
+		}
+
+		private void HandleUpdateAvailable(Version latest)
+		{
+			_pendingUpdate = latest;
+			if (_menuItem == null)
+				return;
+
+			// Menu items can only be updated from the UI thread.
+			if (Program.MainForm != null && Program.MainForm.InvokeRequired)
+			{
+				Program.MainForm.BeginInvoke(new Action(UpdateMenuBadge));
+				return;
+			}
+
+			UpdateMenuBadge();
+		}
+
+		private void UpdateMenuBadge()
+		{
+			if (_menuItem != null && _pendingUpdate != null)
+				_menuItem.Text = MenuBaseText() + string.Format(" - Update {0} available!", _pendingUpdate.ToString(3));
+		}
+
+		private string MenuBaseText()
+		{
+			return _theme != null ? _theme.Name : "Dark Theme";
 		}
 
 		private void HandleToggleDarkModeMenuItemClick(object sender, EventArgs eventArgs)
@@ -222,11 +261,28 @@ namespace KeePassDarkMode
 			_options.Enabled = !_options.Enabled;
 		}
 
+		private void HandleThemeModeChanged()
+		{
+			if (!_theme.Enabled)
+				return;
+
+			_theme.Reload();
+
+			if (_menuItem != null)
+				_menuItem.Text = _theme.Name;
+
+			// Title bars must flip with the mode (immersive dark attribute).
+			foreach (Form openForm in Application.OpenForms)
+				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
+
+			ApplyThemeInOpenForms();
+		}
+
 		private void ApplyThemeInOpenForms()
 		{
 			foreach (Form openForm in Application.OpenForms)
 			{
-				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled);
+				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
 				_controlVisitor.Visit(openForm);
 			}
 			Program.MainForm.RefreshEntriesList();
@@ -261,6 +317,8 @@ namespace KeePassDarkMode
 
 			if (Program.TriggerSystem != null)
 				Program.TriggerSystem.RaisingEvent -= HandleTriggerSystemRaisingEvent;
+
+			UpdateChecker.UpdateAvailable -= HandleUpdateAvailable;
 
 			if (_theme != null)
 			{

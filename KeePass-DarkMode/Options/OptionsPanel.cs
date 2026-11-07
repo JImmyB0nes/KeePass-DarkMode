@@ -83,66 +83,39 @@ namespace KeePassDarkMode.Options
 		{
 			hotKeyTextBox.HotKey = _options.HotKey;
 			autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
+			autoLightThemeCheckBox.Checked = _options.AutoLightTheme;
+			accentFromWindowsCheckBox.Checked = _options.AccentFromWindows;
 			checkUpdatesCheckBox.Checked = _options.CheckUpdates;
 			LoadDarkModeTemplates();
 			UpdateThemePreview();
 			LoadVersionInfo();
 		}
 
-		private static Version CurrentVersion
-		{
-			get
-			{
-				var version = Assembly.GetExecutingAssembly().GetName().Version;
-				return new Version(version.Major, version.Minor, version.Build);
-			}
-		}
-
 		private void LoadVersionInfo()
 		{
-			versionLink.Text = "Version " + CurrentVersion.ToString(3);
+			versionLink.Text = "Version " + UpdateChecker.CurrentVersion.ToString(3);
 			versionLink.LinkArea = new LinkArea(0, 0); // plain text until update known
 
 			// Background check against the GitHub releases API - never blocks the dialog.
 			var worker = new System.ComponentModel.BackgroundWorker();
-			worker.DoWork += (s, args) => args.Result = QueryLatestVersion();
+			worker.DoWork += (s, args) => args.Result = UpdateChecker.QueryLatestVersion();
 			worker.RunWorkerCompleted += HandleVersionCheckCompleted;
 			worker.RunWorkerAsync();
 		}
 
 		private static Version QueryLatestVersion()
 		{
-			try
-			{
-				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-				var request = (HttpWebRequest)WebRequest.Create(ReleaseApiUrl);
-				request.UserAgent = "KeePass-DarkMode";
-				request.Timeout = 5000;
-				using (var response = (HttpWebResponse)request.GetResponse())
-				using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
-				{
-					var json = reader.ReadToEnd();
-					var match = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?(\\d+\\.\\d+\\.\\d+)\"");
-					if (match.Success)
-						return Version.Parse(match.Groups[1].Value);
-				}
-			}
-			catch (Exception)
-			{
-				// No internet, proxy, rate limit - just show the local version.
-			}
-
-			return null;
+			return UpdateChecker.QueryLatestVersion();
 		}
 
 		private void HandleVersionCheckCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs args)
 		{
 			var latest = args.Error == null ? args.Result as Version : null;
-			if (latest == null || latest <= CurrentVersion)
+			if (latest == null || latest <= UpdateChecker.CurrentVersion)
 				return;
 
 			versionLink.Text = string.Format("Version {0} - Update {1} available!",
-				CurrentVersion.ToString(3), latest.ToString(3));
+				UpdateChecker.CurrentVersion.ToString(3), latest.ToString(3));
 			versionLink.LinkArea = new LinkArea(versionLink.Text.IndexOf('-'),
 				versionLink.Text.Length - versionLink.Text.IndexOf('-'));
 		}
@@ -219,6 +192,8 @@ namespace KeePassDarkMode.Options
 		{
 			_options.HotKey = hotKeyTextBox.HotKey;
 			_options.AutoSyncWithWin10Theme = autoSyncWin10ThemeCheckBox.Checked;
+			_options.AutoLightTheme = autoLightThemeCheckBox.Checked;
+			_options.AccentFromWindows = accentFromWindowsCheckBox.Checked;
 			_options.CheckUpdates = checkUpdatesCheckBox.Checked;
 
 			var template = (TemplateFile) themeTemplateComboBox.SelectedItem;
@@ -303,6 +278,8 @@ namespace KeePassDarkMode.Options
 					// Reflect the imported values in the dialog.
 					hotKeyTextBox.HotKey = _options.HotKey;
 					autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
+					autoLightThemeCheckBox.Checked = _options.AutoLightTheme;
+					accentFromWindowsCheckBox.Checked = _options.AccentFromWindows;
 					checkUpdatesCheckBox.Checked = _options.CheckUpdates;
 					LoadDarkModeTemplates();
 				}

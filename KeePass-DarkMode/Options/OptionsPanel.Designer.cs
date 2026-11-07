@@ -133,12 +133,14 @@ namespace KeePassDarkMode.Options
 			this.behaviorGroup.Controls.Add(this.hotKeyLabel);
 			this.behaviorGroup.Controls.Add(this.hotKeyTextBox);
 			this.behaviorGroup.Controls.Add(this.autoSyncWin10ThemeCheckBox);
+			this.behaviorGroup.Controls.Add(this.autoLightThemeCheckBox);
+			this.behaviorGroup.Controls.Add(this.accentFromWindowsCheckBox);
 			this.behaviorGroup.Controls.Add(this.checkUpdatesCheckBox);
 			this.behaviorGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 										| System.Windows.Forms.AnchorStyles.Right)));
 			this.behaviorGroup.Location = new System.Drawing.Point(12, 141);
 			this.behaviorGroup.Name = "behaviorGroup";
-			this.behaviorGroup.Size = new System.Drawing.Size(432, 110);
+			this.behaviorGroup.Size = new System.Drawing.Size(432, 140);
 			this.behaviorGroup.TabIndex = 1;
 			this.behaviorGroup.TabStop = false;
 			this.behaviorGroup.Text = "Behavior";
@@ -170,13 +172,33 @@ namespace KeePassDarkMode.Options
 			this.autoSyncWin10ThemeCheckBox.Text = "Auto-sync with Windows theme";
 			this.autoSyncWin10ThemeCheckBox.UseVisualStyleBackColor = true;
 			// 
+			// autoLightThemeCheckBox
+			// 
+			this.autoLightThemeCheckBox.AutoSize = true;
+			this.autoLightThemeCheckBox.Location = new System.Drawing.Point(15, 88);
+			this.autoLightThemeCheckBox.Name = "autoLightThemeCheckBox";
+			this.autoLightThemeCheckBox.Size = new System.Drawing.Size(380, 24);
+			this.autoLightThemeCheckBox.TabIndex = 3;
+			this.autoLightThemeCheckBox.Text = "Follow Windows light/dark mode with matching theme";
+			this.autoLightThemeCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// accentFromWindowsCheckBox
+			// 
+			this.accentFromWindowsCheckBox.AutoSize = true;
+			this.accentFromWindowsCheckBox.Location = new System.Drawing.Point(15, 118);
+			this.accentFromWindowsCheckBox.Name = "accentFromWindowsCheckBox";
+			this.accentFromWindowsCheckBox.Size = new System.Drawing.Size(380, 24);
+			this.accentFromWindowsCheckBox.TabIndex = 4;
+			this.accentFromWindowsCheckBox.Text = "Use Windows accent color for highlights";
+			this.accentFromWindowsCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// checkUpdatesCheckBox
 			// 
 			this.checkUpdatesCheckBox.AutoSize = true;
-			this.checkUpdatesCheckBox.Location = new System.Drawing.Point(15, 88);
+			this.checkUpdatesCheckBox.Location = new System.Drawing.Point(210, 118);
 			this.checkUpdatesCheckBox.Name = "checkUpdatesCheckBox";
 			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(210, 24);
-			this.checkUpdatesCheckBox.TabIndex = 3;
+			this.checkUpdatesCheckBox.TabIndex = 5;
 			this.checkUpdatesCheckBox.Text = "Check for updates (GitHub)";
 			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -201,7 +223,7 @@ namespace KeePassDarkMode.Options
 			// versionLink
 			// 
 			this.versionLink.AutoSize = true;
-			this.versionLink.Location = new System.Drawing.Point(12, 262);
+			this.versionLink.Location = new System.Drawing.Point(12, 292);
 			this.versionLink.Name = "versionLink";
 			this.versionLink.Size = new System.Drawing.Size(0, 13);
 			this.versionLink.TabIndex = 4;
@@ -217,7 +239,7 @@ namespace KeePassDarkMode.Options
 			this.Controls.Add(this.themePreview);
 			this.Controls.Add(this.versionLink);
 			this.Name = "OptionsPanel";
-			this.Size = new System.Drawing.Size(767, 287);
+			this.Size = new System.Drawing.Size(767, 317);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
@@ -240,6 +262,8 @@ namespace KeePassDarkMode.Options
 		private System.Windows.Forms.ComboBox themeTemplateComboBox;
 
 		private System.Windows.Forms.CheckBox autoSyncWin10ThemeCheckBox;
+		private System.Windows.Forms.CheckBox autoLightThemeCheckBox;
+		private System.Windows.Forms.CheckBox accentFromWindowsCheckBox;
 
 		private System.Windows.Forms.Label hotKeyLabel;
 		private KeePass.UI.HotKeyControlEx hotKeyTextBox;

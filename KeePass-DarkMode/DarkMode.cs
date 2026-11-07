@@ -385,9 +385,12 @@ namespace KeePassDarkMode
 			var picker = (DateTimePicker) sender;
 			var rect = picker.ClientRectangle;
 
-			// Leave the trailing OS-drawn drop-down/calendar buttons untouched.
-			var fieldWidth = Math.Max(1, rect.Width - DpiUtil.ScaleIntX(36));
-			var field = new Rectangle(rect.X, rect.Y, fieldWidth, rect.Height);
+			// Keep the leading check box and the trailing OS-drawn calendar/
+			// drop-down buttons intact - only the value text area is repainted.
+			var leftInset = picker.ShowCheckBox ? DpiUtil.ScaleIntX(16) : 0;
+			var rightInset = DpiUtil.ScaleIntX(36);
+			var field = Rectangle.FromLTRB(rect.X + leftInset, rect.Y,
+				Math.Max(rect.X + leftInset + 1, rect.Right - rightInset), rect.Bottom);
 
 			using (var background = new SolidBrush(_theme.Control.BackColor))
 				e.Graphics.FillRectangle(background, field);

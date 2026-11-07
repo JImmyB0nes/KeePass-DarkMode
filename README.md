@@ -63,6 +63,9 @@ Alternativ über das Menü: **Tools → Dark Theme**
 | 🪟 **Windows-11-Support** | Eigenes Theme mit Windows-11-Flair (`DarkThemeWin11.ini`) |
 | 📦 **Plgx-Format** | Ein Dateisprung installiert/updatet das Plugin — ohne Kompilieren |
 | 🔧 **Theme-Erkennung** | Automatisches Erkennen des Windows-Farbschemas (Hell/Dunkel) |
+| 🌗 **Hell/Dunkel-Auto** | Folgt dem Windows-Modus mit passendem Theme (dunkel oder hell) |
+| 🎨 **Windows-Akzent** | optional: übernimmt die Windows-Akzentfarbe für Highlights |
+| 🔔 **Update-Hinweis** | zeigt eine neue Version direkt im Menü unter *Tools* an |
 
 ---
 
@@ -111,7 +114,7 @@ msbuild KeePass-DarkMode.sln /p:Configuration=Release
 cd build && build.cmd
 ```
 
-Ein [Workflow](.github/workflows/build.yml) ist vorhanden, läuft aber **nur manuell** (über _Actions → Build → Run workflow_), damit kein Actions-Kontingent verbraucht wird. Gebaut wird typischerweise lokal unter Windows; der Workflow lädt dazu KeePass als Referenz-Assembly automatisch herunter.
+Gebaut wird unter Windows mit MSBuild (.NET Framework 4.x) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
 

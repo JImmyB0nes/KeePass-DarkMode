@@ -24,6 +24,9 @@ namespace KeePassDarkMode
 		private readonly Dictionary<ToolStrip, CenteredSearchDecorator> _centeredSearch =
 			new Dictionary<ToolStrip, CenteredSearchDecorator>();
 
+		private readonly Dictionary<Button, ShieldButtonWindow> _shieldButtons =
+			new Dictionary<Button, ShieldButtonWindow>();
+
 		private ITheme _customTheme;
 		private ITheme _theme;
 		private bool _enabled;
@@ -56,6 +59,9 @@ namespace KeePassDarkMode
 			else
 				CleanupCenteredSearch();
 
+			foreach (var shield in _shieldButtons.Values)
+				shield.SetEnabled(_enabled);
+
 			_theme = _enabled ? _customTheme : _defaultTheme;
 
 			ToolStripManager.Renderer = _theme.ToolStripRenderer;
@@ -71,6 +77,17 @@ namespace KeePassDarkMode
 			foreach (var decorator in _centeredSearch.Values)
 				decorator.Dispose();
 			_centeredSearch.Clear();
+		}
+
+		// Restores native shield buttons and releases the interceptors.
+		public void CleanupShieldButtons()
+		{
+			foreach (var pair in _shieldButtons)
+			{
+				pair.Value.SetEnabled(false);
+				pair.Key.Paint -= HandleShieldButtonPaint;
+			}
+			_shieldButtons.Clear();
 		}
 
 		// Re-read the template and swap in the new theme without toggling
@@ -396,6 +413,20 @@ namespace KeePassDarkMode
 			qualityProgressBar.Invalidate();
 		}
 
+		private void HandleShieldButtonPaint(object sender, PaintEventArgs e)
+		{
+			if (!_enabled)
+				return;
+
+			var button = (Button) sender;
+			ShieldButtonWindow shield;
+			if (!_shieldButtons.TryGetValue(button, out shield) || !shield.ShieldRequested)
+				return;
+
+			// Native shield rendering was suppressed - draw it ourselves.
+			ShieldButtonWindow.DrawShield(e.Graphics, button.ClientRectangle);
+		}
+
 		private void HandleQualityBarPaint(object sender, PaintEventArgs e)
 		{
 			if (!_enabled)
@@ -653,6 +684,21 @@ namespace KeePassDarkMode
 			button.ForeColor = _theme.Button.ForeColor;
 			button.FlatAppearance.BorderColor = _theme.Button.BorderColor;
 			button.FlatStyle = _theme.Button.FlatStyle;
+
+			// UAC-shield buttons (OK on protected actions) are forced to
+			// FlatStyle.System by KeePass, which renders them native white.
+			ShieldButtonWindow shield;
+			if (!_shieldButtons.TryGetValue(button, out shield))
+			{
+				shield = new ShieldButtonWindow(button);
+				_shieldButtons.Add(button, shield);
+				button.Disposed += (s, e) => _shieldButtons.Remove(button);
+			}
+			shield.SetEnabled(_enabled);
+
+			button.Paint -= HandleShieldButtonPaint;
+			if (_enabled)
+				button.Paint += HandleShieldButtonPaint;
 
 			if (button is SplitButtonEx)
 			{

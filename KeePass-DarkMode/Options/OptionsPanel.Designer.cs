@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace KeePassDarkMode.Options
@@ -32,6 +32,8 @@ namespace KeePassDarkMode.Options
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.themeGroup = new System.Windows.Forms.GroupBox();
+			this.behaviorGroup = new System.Windows.Forms.GroupBox();
 			this.hotKeyLabel = new System.Windows.Forms.Label();
 			this.hotKeyTextBox = new KeePass.UI.HotKeyControlEx();
 			this.autoSyncWin10ThemeCheckBox = new System.Windows.Forms.CheckBox();
@@ -43,159 +45,195 @@ namespace KeePassDarkMode.Options
 			this.checkUpdatesLabel = new System.Windows.Forms.Label();
 			this.checkUpdatesCheckBox = new System.Windows.Forms.CheckBox();
 			this.themePreview = new KeePassDarkMode.Options.ThemePreviewControl();
+			this.previewLabel = new System.Windows.Forms.Label();
 			this.openThemeFolderButton = new System.Windows.Forms.Button();
 			this.importSettingsButton = new System.Windows.Forms.Button();
 			this.exportSettingsButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// hotKeyLabel
+			// themeGroup
 			// 
-			this.hotKeyLabel.Location = new System.Drawing.Point(9, 67);
-			this.hotKeyLabel.Name = "hotKeyLabel";
-			this.hotKeyLabel.Size = new System.Drawing.Size(110, 23);
-			this.hotKeyLabel.TabIndex = 0;
-			this.hotKeyLabel.Text = "KeePass-DarkMode hot key:";
-			// 
-			// hotKeyTextBox
-			// 
-			this.hotKeyTextBox.Location = new System.Drawing.Point(125, 64);
-			this.hotKeyTextBox.Name = "hotKeyTextBox";
-			this.hotKeyTextBox.Size = new System.Drawing.Size(166, 20);
-			this.hotKeyTextBox.TabIndex = 1;
-			// 
-			// autoSyncWin10ThemeCheckBox
-			// 
-			this.autoSyncWin10ThemeCheckBox.Location = new System.Drawing.Point(189, 90);
-			this.autoSyncWin10ThemeCheckBox.Name = "autoSyncWin10ThemeCheckBox";
-			this.autoSyncWin10ThemeCheckBox.Size = new System.Drawing.Size(102, 24);
-			this.autoSyncWin10ThemeCheckBox.TabIndex = 2;
-			this.autoSyncWin10ThemeCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// autoSyncWin10ThemeLabel
-			// 
-			this.autoSyncWin10ThemeLabel.Location = new System.Drawing.Point(9, 95);
-			this.autoSyncWin10ThemeLabel.Name = "autoSyncWin10ThemeLabel";
-			this.autoSyncWin10ThemeLabel.Size = new System.Drawing.Size(174, 23);
-			this.autoSyncWin10ThemeLabel.TabIndex = 3;
-			this.autoSyncWin10ThemeLabel.Text = "Auto-sync with Windows 10 theme:";
+			this.themeGroup.Controls.Add(this.themeTemplate);
+			this.themeGroup.Controls.Add(this.themeTemplateComboBox);
+			this.themeGroup.Controls.Add(this.editTemplateButton);
+			this.themeGroup.Controls.Add(this.openThemeFolderButton);
+			this.themeGroup.Controls.Add(this.importSettingsButton);
+			this.themeGroup.Controls.Add(this.exportSettingsButton);
+			this.themeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+										| System.Windows.Forms.AnchorStyles.Right)));
+			this.themeGroup.Location = new System.Drawing.Point(12, 9);
+			this.themeGroup.Name = "themeGroup";
+			this.themeGroup.Size = new System.Drawing.Size(402, 118);
+			this.themeGroup.TabIndex = 0;
+			this.themeGroup.TabStop = false;
+			this.themeGroup.Text = "Theme";
 			// 
 			// themeTemplate
 			// 
-			this.themeTemplate.Location = new System.Drawing.Point(9, 11);
+			this.themeTemplate.Location = new System.Drawing.Point(12, 25);
 			this.themeTemplate.Name = "themeTemplate";
 			this.themeTemplate.Size = new System.Drawing.Size(110, 23);
-			this.themeTemplate.TabIndex = 4;
-			this.themeTemplate.Text = "KeePass-DarkMode template:";
+			this.themeTemplate.TabIndex = 0;
+			this.themeTemplate.Text = "Template:";
 			// 
 			// themeTemplateComboBox
 			// 
 			this.themeTemplateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.themeTemplateComboBox.FormattingEnabled = true;
-			this.themeTemplateComboBox.Location = new System.Drawing.Point(125, 8);
+			this.themeTemplateComboBox.Location = new System.Drawing.Point(128, 22);
 			this.themeTemplateComboBox.Name = "themeTemplateComboBox";
-			this.themeTemplateComboBox.Size = new System.Drawing.Size(166, 21);
-			this.themeTemplateComboBox.TabIndex = 6;
+			this.themeTemplateComboBox.Size = new System.Drawing.Size(262, 21);
+			this.themeTemplateComboBox.TabIndex = 1;
 			this.themeTemplateComboBox.SelectedIndexChanged += new System.EventHandler(this.HandleTemplateSelectionChanged);
 			// 
 			// editTemplateButton
 			// 
-			this.editTemplateButton.Location = new System.Drawing.Point(125, 35);
+			this.editTemplateButton.Location = new System.Drawing.Point(128, 51);
 			this.editTemplateButton.Name = "editTemplateButton";
-			this.editTemplateButton.Size = new System.Drawing.Size(166, 23);
-			this.editTemplateButton.TabIndex = 7;
+			this.editTemplateButton.Size = new System.Drawing.Size(127, 25);
+			this.editTemplateButton.TabIndex = 2;
 			this.editTemplateButton.Text = "Open Editor";
 			this.editTemplateButton.UseVisualStyleBackColor = true;
 			this.editTemplateButton.Click += new System.EventHandler(this.HandleEditTemplateButtonClick);
 			// 
-			// versionLink
-			// 
-			this.versionLink.AutoSize = true;
-			this.versionLink.Location = new System.Drawing.Point(9, 170);
-			// 
-			// checkUpdatesLabel
-			// 
-			this.checkUpdatesLabel.Location = new System.Drawing.Point(9, 140);
-			this.checkUpdatesLabel.Name = "checkUpdatesLabel";
-			this.checkUpdatesLabel.Size = new System.Drawing.Size(174, 23);
-			this.checkUpdatesLabel.TabIndex = 9;
-			this.checkUpdatesLabel.Text = "Check for updates (GitHub):";
-			// 
-			// checkUpdatesCheckBox
-			// 
-			this.checkUpdatesCheckBox.Location = new System.Drawing.Point(189, 140);
-			this.checkUpdatesCheckBox.Name = "checkUpdatesCheckBox";
-			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(102, 24);
-			this.checkUpdatesCheckBox.TabIndex = 10;
-			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
-			// 
 			// openThemeFolderButton
 			// 
-			// 
-			// themePreview
-			// 
-			this.themePreview.Location = new System.Drawing.Point(430, 8);
-			this.themePreview.Name = "themePreview";
-			this.themePreview.Size = new System.Drawing.Size(205, 185);
-			this.themePreview.TabIndex = 14;
-			// 
-			// openThemeFolderButton
-			// 
-			this.openThemeFolderButton.Location = new System.Drawing.Point(311, 8);
+			this.openThemeFolderButton.Location = new System.Drawing.Point(263, 51);
 			this.openThemeFolderButton.Name = "openThemeFolderButton";
-			this.openThemeFolderButton.Size = new System.Drawing.Size(110, 23);
-			this.openThemeFolderButton.TabIndex = 11;
+			this.openThemeFolderButton.Size = new System.Drawing.Size(127, 25);
+			this.openThemeFolderButton.TabIndex = 3;
 			this.openThemeFolderButton.Text = "Theme folder";
 			this.openThemeFolderButton.UseVisualStyleBackColor = true;
 			this.openThemeFolderButton.Click += new System.EventHandler(this.HandleOpenThemeFolderButtonClick);
 			// 
 			// importSettingsButton
 			// 
-			this.importSettingsButton.Location = new System.Drawing.Point(311, 35);
+			this.importSettingsButton.Location = new System.Drawing.Point(128, 82);
 			this.importSettingsButton.Name = "importSettingsButton";
-			this.importSettingsButton.Size = new System.Drawing.Size(110, 23);
-			this.importSettingsButton.TabIndex = 12;
+			this.importSettingsButton.Size = new System.Drawing.Size(127, 25);
+			this.importSettingsButton.TabIndex = 4;
 			this.importSettingsButton.Text = "Import settings";
 			this.importSettingsButton.UseVisualStyleBackColor = true;
 			this.importSettingsButton.Click += new System.EventHandler(this.HandleImportSettingsButtonClick);
 			// 
 			// exportSettingsButton
 			// 
-			this.exportSettingsButton.Location = new System.Drawing.Point(311, 62);
+			this.exportSettingsButton.Location = new System.Drawing.Point(263, 82);
 			this.exportSettingsButton.Name = "exportSettingsButton";
-			this.exportSettingsButton.Size = new System.Drawing.Size(110, 23);
-			this.exportSettingsButton.TabIndex = 13;
+			this.exportSettingsButton.Size = new System.Drawing.Size(127, 25);
+			this.exportSettingsButton.TabIndex = 5;
 			this.exportSettingsButton.Text = "Export settings";
 			this.exportSettingsButton.UseVisualStyleBackColor = true;
 			this.exportSettingsButton.Click += new System.EventHandler(this.HandleExportSettingsButtonClick);
+			// 
+			// behaviorGroup
+			// 
+			this.behaviorGroup.Controls.Add(this.hotKeyLabel);
+			this.behaviorGroup.Controls.Add(this.hotKeyTextBox);
+			this.behaviorGroup.Controls.Add(this.autoSyncWin10ThemeLabel);
+			this.behaviorGroup.Controls.Add(this.autoSyncWin10ThemeCheckBox);
+			this.behaviorGroup.Controls.Add(this.checkUpdatesLabel);
+			this.behaviorGroup.Controls.Add(this.checkUpdatesCheckBox);
+			this.behaviorGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+										| System.Windows.Forms.AnchorStyles.Right)));
+			this.behaviorGroup.Location = new System.Drawing.Point(12, 137);
+			this.behaviorGroup.Name = "behaviorGroup";
+			this.behaviorGroup.Size = new System.Drawing.Size(402, 112);
+			this.behaviorGroup.TabIndex = 1;
+			this.behaviorGroup.TabStop = false;
+			this.behaviorGroup.Text = "Behavior";
+			// 
+			// hotKeyLabel
+			// 
+			this.hotKeyLabel.Location = new System.Drawing.Point(12, 26);
+			this.hotKeyLabel.Name = "hotKeyLabel";
+			this.hotKeyLabel.Size = new System.Drawing.Size(190, 23);
+			this.hotKeyLabel.TabIndex = 0;
+			this.hotKeyLabel.Text = "Toggle hot key:";
+			// 
+			// hotKeyTextBox
+			// 
+			this.hotKeyTextBox.Location = new System.Drawing.Point(208, 28);
+			this.hotKeyTextBox.Name = "hotKeyTextBox";
+			this.hotKeyTextBox.Size = new System.Drawing.Size(182, 20);
+			this.hotKeyTextBox.TabIndex = 1;
+			// 
+			// autoSyncWin10ThemeLabel
+			// 
+			this.autoSyncWin10ThemeLabel.Location = new System.Drawing.Point(12, 56);
+			this.autoSyncWin10ThemeLabel.Name = "autoSyncWin10ThemeLabel";
+			this.autoSyncWin10ThemeLabel.Size = new System.Drawing.Size(190, 23);
+			this.autoSyncWin10ThemeLabel.TabIndex = 2;
+			this.autoSyncWin10ThemeLabel.Text = "Auto-sync with Windows theme:";
+			// 
+			// autoSyncWin10ThemeCheckBox
+			// 
+			this.autoSyncWin10ThemeCheckBox.Location = new System.Drawing.Point(208, 56);
+			this.autoSyncWin10ThemeCheckBox.Name = "autoSyncWin10ThemeCheckBox";
+			this.autoSyncWin10ThemeCheckBox.Size = new System.Drawing.Size(182, 24);
+			this.autoSyncWin10ThemeCheckBox.TabIndex = 3;
+			this.autoSyncWin10ThemeCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// checkUpdatesLabel
+			// 
+			this.checkUpdatesLabel.Location = new System.Drawing.Point(12, 86);
+			this.checkUpdatesLabel.Name = "checkUpdatesLabel";
+			this.checkUpdatesLabel.Size = new System.Drawing.Size(190, 23);
+			this.checkUpdatesLabel.TabIndex = 4;
+			this.checkUpdatesLabel.Text = "Check for updates (GitHub):";
+			// 
+			// checkUpdatesCheckBox
+			// 
+			this.checkUpdatesCheckBox.Location = new System.Drawing.Point(208, 86);
+			this.checkUpdatesCheckBox.Name = "checkUpdatesCheckBox";
+			this.checkUpdatesCheckBox.Size = new System.Drawing.Size(182, 24);
+			this.checkUpdatesCheckBox.TabIndex = 5;
+			this.checkUpdatesCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// previewLabel
+			// 
+			this.previewLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+			this.previewLabel.AutoSize = true;
+			this.previewLabel.Location = new System.Drawing.Point(429, 15);
+			this.previewLabel.Name = "previewLabel";
+			this.previewLabel.Size = new System.Drawing.Size(74, 13);
+			this.previewLabel.TabIndex = 2;
+			this.previewLabel.Text = "Live preview";
+			// 
+			// themePreview
+			// 
+			this.themePreview.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+			this.themePreview.Location = new System.Drawing.Point(432, 31);
+			this.themePreview.Name = "themePreview";
+			this.themePreview.Size = new System.Drawing.Size(205, 218);
+			this.themePreview.TabIndex = 3;
+			// 
+			// versionLink
+			// 
+			this.versionLink.AutoSize = true;
+			this.versionLink.Location = new System.Drawing.Point(12, 259);
 			this.versionLink.Name = "versionLink";
 			this.versionLink.Size = new System.Drawing.Size(0, 13);
-			this.versionLink.TabIndex = 8;
+			this.versionLink.TabIndex = 4;
 			this.versionLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.HandleVersionLinkClicked);
 			// 
 			// OptionsPanel
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.themeGroup);
+			this.Controls.Add(this.behaviorGroup);
+			this.Controls.Add(this.previewLabel);
 			this.Controls.Add(this.themePreview);
 			this.Controls.Add(this.versionLink);
-			this.Controls.Add(this.openThemeFolderButton);
-			this.Controls.Add(this.importSettingsButton);
-			this.Controls.Add(this.exportSettingsButton);
-			this.Controls.Add(this.checkUpdatesCheckBox);
-			this.Controls.Add(this.checkUpdatesLabel);
-			this.Controls.Add(this.editTemplateButton);
-			this.Controls.Add(this.themeTemplateComboBox);
-			this.Controls.Add(this.themeTemplate);
-			this.Controls.Add(this.autoSyncWin10ThemeLabel);
-			this.Controls.Add(this.autoSyncWin10ThemeCheckBox);
-			this.Controls.Add(this.hotKeyTextBox);
-			this.Controls.Add(this.hotKeyLabel);
 			this.Name = "OptionsPanel";
-			this.Size = new System.Drawing.Size(645, 200);
+			this.Size = new System.Drawing.Size(645, 282);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
 
+		private System.Windows.Forms.GroupBox themeGroup;
+		private System.Windows.Forms.GroupBox behaviorGroup;
 		private System.Windows.Forms.Button editTemplateButton;
 
 		private System.Windows.Forms.LinkLabel versionLink;
@@ -204,6 +242,7 @@ namespace KeePassDarkMode.Options
 		private System.Windows.Forms.CheckBox checkUpdatesCheckBox;
 
 		private KeePassDarkMode.Options.ThemePreviewControl themePreview;
+		private System.Windows.Forms.Label previewLabel;
 		private System.Windows.Forms.Button openThemeFolderButton;
 		private System.Windows.Forms.Button importSettingsButton;
 		private System.Windows.Forms.Button exportSettingsButton;

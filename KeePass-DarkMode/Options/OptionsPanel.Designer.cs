@@ -37,6 +37,8 @@ namespace KeePassDarkMode.Options
 			this.hotKeyLabel = new System.Windows.Forms.Label();
 			this.hotKeyTextBox = new KeePass.UI.HotKeyControlEx();
 			this.autoSyncWin10ThemeCheckBox = new System.Windows.Forms.CheckBox();
+			this.autoLightThemeCheckBox = new System.Windows.Forms.CheckBox();
+			this.accentFromWindowsCheckBox = new System.Windows.Forms.CheckBox();
 			this.themeTemplate = new System.Windows.Forms.Label();
 			this.themeTemplateComboBox = new System.Windows.Forms.ComboBox();
 			this.editTemplateButton = new System.Windows.Forms.Button();

@@ -1,6 +1,8 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.3.0
+KeePass-DarkMode:1.8.4.0
 :::
+- Fix: Suchbox-Rahmen, Combo-Pfeile und Kalender-Overlays folgen jetzt dem Theme (korrekt auch im Light-Theme)
+- Fix: Tab-Reiter-Textfarbe respektier TabControl.ForeColor
 - Fix: Mehrere Handler-Leaks behoben (Theme-Reload, Titlebar-Hooks, Hotkey-Menue)
 - Fix: Theme-Hintergrundbild sperrt die Bilddatei nicht mehr
 - Fix: Nullzugriff auf MainForm bei Splash-/Wiederherstellungs-Fenstern

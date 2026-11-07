@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -410,7 +411,7 @@ namespace KeePassDarkMode
 			var range = bar.Maximum - bar.Minimum;
 			if (range > 0)
 			{
-				var position = Math.Max(0, Math.Min(range, bar.Position - bar.Minimum));
+				var position = Math.Max(0, Math.Min(range, bar.Value - bar.Minimum));
 				var width = (int) ((float) rect.Width * position / range);
 				if (width > 0)
 				{

@@ -292,7 +292,7 @@ namespace KeePassDarkMode
 		{
 			// KeePass's Update Check parses a plain text file "Name:Version" -
 			// a releases page (HTML) would only yield "Unknown".
-			get { return "https://raw.githubusercontent.com/jimmybonesde/KeePass-DarkMode/master/update.txt"; }
+			get { return "https://raw.githubusercontent.com/JImmyB0nes/KeePass-DarkMode/master/update.txt"; }
 		}
 
 		public override Image SmallIcon

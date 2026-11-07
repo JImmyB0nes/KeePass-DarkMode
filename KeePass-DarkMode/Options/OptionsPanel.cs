@@ -15,8 +15,8 @@ namespace KeePassDarkMode.Options
 {
 	public partial class OptionsPanel : UserControl
 	{
-		private const string ReleaseApiUrl = "https://api.github.com/repos/jimmybonesde/KeePass-DarkMode/releases/latest";
-		private const string ReleasesUrl = "https://github.com/jimmybonesde/KeePass-DarkMode/releases";
+		private const string ReleaseApiUrl = "https://api.github.com/repos/JImmyB0nes/KeePass-DarkMode/releases/latest";
+		private const string ReleasesUrl = "https://github.com/JImmyB0nes/KeePass-DarkMode/releases";
 
 		private readonly DarkModeOptions _options;
 

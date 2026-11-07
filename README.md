@@ -3,8 +3,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Windows-blue?style=for-the-badge&logo=windows&logoColor=white" alt="Platform">
   <img src="https://img.shields.io/badge/.NET-4.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/jimmybonesde/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
-  <a href="https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/jimmybonesde/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
+  <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/JImmyB0nes/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
+  <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/JImmyB0nes/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
 </p>
 
 <p align="center">
@@ -38,7 +38,7 @@ Alternativ über das Menü: **Tools → Dark Theme**
 
 ## 🚀 Installation
 
-1. **[KeePassDarkMode.plgx](https://github.com/jimmybonesde/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx)** von der Release-Seite herunterladen
+1. **[KeePassDarkMode.plgx](https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx)** von der Release-Seite herunterladen
 2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
 
    | Version | Pfad |

@@ -14,7 +14,6 @@ namespace KeePassDarkMode.Options
 		private readonly ListView _listView;
 		private readonly TextBox _textBox;
 		private readonly Button _button;
-		private readonly LinkLabel _linkLabel;
 		private readonly StatusStrip _statusStrip;
 
 		public ThemePreviewControl()
@@ -41,10 +40,11 @@ namespace KeePassDarkMode.Options
 			var split = new SplitContainer
 			{
 				Dock = DockStyle.Fill,
-				SplitterDistance = 90
+				FixedPanel = SplitContainerFixedPanel.Panel1,
+				IsSplitterFixed = true
 			};
 
-			_treeView = new TreeView { Dock = DockStyle.Fill, HideSelection = false };
+			_treeView = new TreeView { Dock = DockStyle.Fill, HideSelection = false, ShowRootLines = false };
 			_treeView.Nodes.Add("Root");
 			_treeView.Nodes[0].Nodes.Add("General");
 			_treeView.Nodes[0].Nodes.Add("Email");
@@ -74,17 +74,11 @@ namespace KeePassDarkMode.Options
 			{
 				Dock = DockStyle.Bottom,
 				Height = 30,
-				FlowDirection = FlowDirection.LeftToRight
+				FlowDirection = FlowDirection.RightToLeft,
+				Padding = new Padding(4, 3, 4, 0)
 			};
 			_button = new Button { Text = "OK", Size = new Size(60, 23) };
-			_linkLabel = new LinkLabel
-			{
-				Text = "keepass.info",
-				AutoSize = true,
-				Margin = new Padding(10, 5, 0, 0)
-			};
 			bottomPanel.Controls.Add(_button);
-			bottomPanel.Controls.Add(_linkLabel);
 
 			_statusStrip = new StatusStrip
 			{
@@ -96,6 +90,9 @@ namespace KeePassDarkMode.Options
 			split.Panel1.Controls.Add(_treeView);
 			split.Panel2.Controls.Add(rightPanel);
 			split.Panel2.Controls.Add(bottomPanel);
+
+			// Set after parenting so the distance applies against the real width.
+			split.SplitterDistance = 95;
 
 			Controls.Add(split);
 			Controls.Add(_menuStrip);
@@ -135,9 +132,6 @@ namespace KeePassDarkMode.Options
 
 			_button.BackColor = theme.Button.BackColor;
 			_button.ForeColor = theme.Button.ForeColor;
-
-			_linkLabel.LinkColor = theme.LinkLabel.LinkColor;
-			_linkLabel.ForeColor = control.ForeColor;
 
 			_statusStrip.BackColor = strip.BackColor;
 			_statusStrip.ForeColor = strip.ForeColor;

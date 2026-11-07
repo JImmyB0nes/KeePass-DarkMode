@@ -1,3 +1,6 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.7.4.0
+KeePass-DarkMode:1.7.5.0
 :::
+- Um Umzugs des Projekts zu JImmyB0nes/KeePass-DarkMode zeigt die Update-Prüfung jetzt auf die neue Repository
+- Auto-Sync mit Windows-Dark-Mode (Registry-Watch, Debounce, Watchdog-Polling)
+- Hinweis: Ältere Versionen prüfen noch die alte Repo-URL — dieses Update bitte manuell von der neuen Release-Seite herunterladen

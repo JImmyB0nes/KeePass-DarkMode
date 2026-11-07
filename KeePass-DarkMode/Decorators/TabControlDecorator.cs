@@ -54,7 +54,8 @@ namespace KeePassDarkMode.Decorators
 				var backColor = isSelected
 					? _theme.TabControl.SelectedTabColor
 					: _theme.TabControl.UnselectedTabColor;
-				var foreColor = _theme.Control.ForeColor;
+				var foreColor = _theme.TabControl.ForeColor;
+				if (foreColor.IsEmpty) foreColor = _theme.Control.ForeColor;
 
 			
 				using (var backBrush = new SolidBrush(backColor))

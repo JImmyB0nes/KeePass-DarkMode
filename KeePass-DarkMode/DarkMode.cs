@@ -611,7 +611,7 @@ namespace KeePassDarkMode
 			if (_enabled && search != null && ownerForm != null &&
 				ownerForm.GetType().FullName == "KeePass.Forms.MainForm")
 			{
-				_centeredSearch.Add(toolStrip, new CenteredSearchDecorator(toolStrip, search));
+				_centeredSearch.Add(toolStrip, new CenteredSearchDecorator(toolStrip, search, _theme));
 				toolStrip.Disposed -= HandleCenteredStripDisposed;
 				toolStrip.Disposed += HandleCenteredStripDisposed;
 			}

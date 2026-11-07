@@ -47,7 +47,6 @@ namespace KeePassDarkMode.Options
 			this.themePreview = new KeePassDarkMode.Options.ThemePreviewControl();
 			this.previewLabel = new System.Windows.Forms.Label();
 			this.openThemeFolderButton = new System.Windows.Forms.Button();
-			this.importSettingsButton = new System.Windows.Forms.Button();
 			this.exportSettingsButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
@@ -57,7 +56,6 @@ namespace KeePassDarkMode.Options
 			this.themeGroup.Controls.Add(this.themeTemplateComboBox);
 			this.themeGroup.Controls.Add(this.editTemplateButton);
 			this.themeGroup.Controls.Add(this.openThemeFolderButton);
-			this.themeGroup.Controls.Add(this.importSettingsButton);
 			this.themeGroup.Controls.Add(this.exportSettingsButton);
 			this.themeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 										| System.Windows.Forms.AnchorStyles.Right)));
@@ -109,20 +107,9 @@ namespace KeePassDarkMode.Options
 			this.openThemeFolderButton.UseVisualStyleBackColor = true;
 			this.openThemeFolderButton.Click += new System.EventHandler(this.HandleOpenThemeFolderButtonClick);
 			// 
-			// importSettingsButton
-			// 
-			this.importSettingsButton.Location = new System.Drawing.Point(12, 85);
-			this.importSettingsButton.Name = "importSettingsButton";
-			this.importSettingsButton.Size = new System.Drawing.Size(200, 27);
-			this.importSettingsButton.TabIndex = 4;
-			this.importSettingsButton.Text = "Import settings";
-			this.importSettingsButton.UseVisualStyleBackColor = true;
-			this.importSettingsButton.Click += new System.EventHandler(this.HandleImportSettingsButtonClick);
-			// 
 			// exportSettingsButton
 			// 
-			this.exportSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.exportSettingsButton.Location = new System.Drawing.Point(219, 85);
+			this.exportSettingsButton.Location = new System.Drawing.Point(12, 85);
 			this.exportSettingsButton.Name = "exportSettingsButton";
 			this.exportSettingsButton.Size = new System.Drawing.Size(200, 27);
 			this.exportSettingsButton.TabIndex = 5;
@@ -254,7 +241,6 @@ namespace KeePassDarkMode.Options
 		private KeePassDarkMode.Options.ThemePreviewControl themePreview;
 		private System.Windows.Forms.Label previewLabel;
 		private System.Windows.Forms.Button openThemeFolderButton;
-		private System.Windows.Forms.Button importSettingsButton;
 		private System.Windows.Forms.Button exportSettingsButton;
 
 		private System.Windows.Forms.Label themeTemplate;

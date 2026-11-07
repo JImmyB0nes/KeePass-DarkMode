@@ -1,6 +1,7 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.1.0
+KeePass-DarkMode:1.8.2.0
 :::
+- Entfernt: Import-Settings-Button im Options-Dialog (Export bleibt erhalten)
 - Fix: Behavior-Gruppe im Options-Dialog zu niedrig, Haken beschriften sich jetzt selbst
 - Neu: Folgt dem Windows-Hell/Dunkel-Modus mit passendem Theme (Auto-Light-Theme)
 - Neu: Update-Hinweis direkt im Menuepunkt "Tools"

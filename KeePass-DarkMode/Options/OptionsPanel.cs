@@ -263,32 +263,5 @@ namespace KeePassDarkMode.Options
 			}
 		}
 
-		private void HandleImportSettingsButtonClick(object sender, EventArgs e)
-		{
-			using (var dialog = new OpenFileDialog())
-			{
-				dialog.Title = "Import KeePass-DarkMode settings";
-				dialog.Filter = "KeePass-DarkMode settings (*.kdmconfig)|*.kdmconfig|All files (*.*)|*.*";
-				if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
-					return;
-
-				try
-				{
-					_options.ImportSettings(System.IO.File.ReadAllText(dialog.FileName));
-					// Reflect the imported values in the dialog.
-					hotKeyTextBox.HotKey = _options.HotKey;
-					autoSyncWin10ThemeCheckBox.Checked = _options.AutoSyncWithWin10Theme;
-					autoLightThemeCheckBox.Checked = _options.AutoLightTheme;
-					accentFromWindowsCheckBox.Checked = _options.AccentFromWindows;
-					checkUpdatesCheckBox.Checked = _options.CheckUpdates;
-					LoadDarkModeTemplates();
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(FindForm(), "Could not import settings: " + ex.Message,
-						"KeePass-DarkMode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				}
-			}
-		}
 	}
 }

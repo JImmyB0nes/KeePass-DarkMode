@@ -19,8 +19,9 @@ namespace KeePassDarkMode
 			@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
 
 		private readonly DarkModeOptions _options;
-		private RegistryKey _personalizeKey;
 		private Timer _debounceTimer;
+		private Timer _watchdogTimer;
+		private bool _lastKnownDark;
 
 		public Win10ThemeMonitor(DarkModeOptions options)
 		{
@@ -37,7 +38,13 @@ namespace KeePassDarkMode
 
 			_options.AutoSyncWithWin10ThemeChanged += HandleAutoSyncWithWin10ThemeChanged;
 			SystemEvents.UserPreferenceChanged += HandleUserPreferenceChanged;
-			StartRegistryWatch();
+
+			// Slow watchdog: catches theme switches that the UserPreferenceChanged
+			// broadcast may miss (remote sessions, some Windows 11 paths). A single
+			// cached registry read every few seconds is negligible.
+			_watchdogTimer = new Timer { Interval = 5000 };
+			_watchdogTimer.Tick += delegate { SyncIfChanged(); };
+			_watchdogTimer.Start();
 		}
 
 		public void Terminate()
@@ -47,12 +54,17 @@ namespace KeePassDarkMode
 
 			_options.AutoSyncWithWin10ThemeChanged -= HandleAutoSyncWithWin10ThemeChanged;
 			SystemEvents.UserPreferenceChanged -= HandleUserPreferenceChanged;
-			StopRegistryWatch();
 
 			if (_debounceTimer != null)
 			{
 				_debounceTimer.Dispose();
 				_debounceTimer = null;
+			}
+
+			if (_watchdogTimer != null)
+			{
+				_watchdogTimer.Dispose();
+				_watchdogTimer = null;
 			}
 		}
 
@@ -65,13 +77,8 @@ namespace KeePassDarkMode
 
 		private void HandleUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
 		{
-			// Fires for wallpaper, accent color, high contrast, ... - the
-			// registry watcher and the debounced re-read keep it cheap.
-			ScheduleSync();
-		}
-
-		private void HandleRegistryNotifyChanged(object sender, RegistryEventArgs e)
-		{
+			// Fires for wallpaper, accent color, high contrast, ... - the sync
+			// only acts when the dark/light value really changed.
 			ScheduleSync();
 		}
 
@@ -86,7 +93,7 @@ namespace KeePassDarkMode
 				_debounceTimer.Tick += delegate
 				{
 					_debounceTimer.Stop();
-					SyncNow();
+					SyncIfChanged();
 				};
 			}
 
@@ -94,53 +101,29 @@ namespace KeePassDarkMode
 			_debounceTimer.Start();
 		}
 
-		private void SyncNow()
+		private void SyncIfChanged()
 		{
 			if (!_options.AutoSyncWithWin10Theme)
 				return;
 
 			var dark = IsDarkThemeEnabled();
+			if (dark == _lastKnownDark)
+				return;
 
-			// Only touch the option when it actually differs - avoids config
-			// churn and a full theme repaint on unrelated preference events.
+			_lastKnownDark = dark;
+
+			// Only touch the option when it actually differs from the stored
+			// state - avoids config churn and full theme repaints.
 			if (_options.Enabled != dark)
 				_options.Enabled = dark;
 		}
 
-		private void StartRegistryWatch()
+		private void SyncNow()
 		{
-			try
-			{
-				// A plain read-open already includes KEY_NOTIFY in its access
-				// mask (.NET Framework: KEY_READ = Query|Enumerate|Notify), so
-				// no write access is needed for the change notification.
-				_personalizeKey = Registry.CurrentUser.OpenSubKey(PersonalizeKeyPath);
-				if (_personalizeKey != null)
-					_personalizeKey.NotifyChanged += HandleRegistryNotifyChanged;
-			}
-			catch (Exception)
-			{
-				// Not readable (restricted policy) - the broadcast path still works.
-				_personalizeKey = null;
-			}
-		}
+			_lastKnownDark = IsDarkThemeEnabled();
 
-		private void StopRegistryWatch()
-		{
-			if (_personalizeKey == null)
-				return;
-
-			try
-			{
-				_personalizeKey.NotifyChanged -= HandleRegistryNotifyChanged;
-				_personalizeKey.Close();
-			}
-			catch (Exception)
-			{
-				// ignored
-			}
-
-			_personalizeKey = null;
+			if (_options.AutoSyncWithWin10Theme && _options.Enabled != _lastKnownDark)
+				_options.Enabled = _lastKnownDark;
 		}
 
 		private static bool IsDarkThemeEnabled()

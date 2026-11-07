@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KeePass.Util;
@@ -15,7 +15,12 @@ namespace KeePassDarkMode
 		private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
 		private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 
+		private const string PersonalizeKeyPath =
+			@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+
 		private readonly DarkModeOptions _options;
+		private RegistryKey _personalizeKey;
+		private Timer _debounceTimer;
 
 		public Win10ThemeMonitor(DarkModeOptions options)
 		{
@@ -24,54 +29,136 @@ namespace KeePassDarkMode
 
 		public void Initialize()
 		{
-			if (WinUtil.IsAtLeastWindows10)
-			{
-				if (_options.AutoSyncWithWin10Theme)
-				{
-					_options.Enabled = IsDarkThemeEnabled();
-				}
-				_options.AutoSyncWithWin10ThemeChanged += HandleAutoSyncWithWin10ThemeChanged;
-				SystemEvents.UserPreferenceChanged += HandleUserPreferenceChanged;
-			}
+			if (!WinUtil.IsAtLeastWindows10)
+				return;
+
+			if (_options.AutoSyncWithWin10Theme)
+				SyncNow();
+
+			_options.AutoSyncWithWin10ThemeChanged += HandleAutoSyncWithWin10ThemeChanged;
+			SystemEvents.UserPreferenceChanged += HandleUserPreferenceChanged;
+			StartRegistryWatch();
 		}
 
 		public void Terminate()
 		{
-			if (WinUtil.IsAtLeastWindows10)
+			if (!WinUtil.IsAtLeastWindows10)
+				return;
+
+			_options.AutoSyncWithWin10ThemeChanged -= HandleAutoSyncWithWin10ThemeChanged;
+			SystemEvents.UserPreferenceChanged -= HandleUserPreferenceChanged;
+			StopRegistryWatch();
+
+			if (_debounceTimer != null)
 			{
-				_options.AutoSyncWithWin10ThemeChanged -= HandleAutoSyncWithWin10ThemeChanged;
-				SystemEvents.UserPreferenceChanged -= HandleUserPreferenceChanged;
+				_debounceTimer.Dispose();
+				_debounceTimer = null;
 			}
 		}
-		
+
 		private void HandleAutoSyncWithWin10ThemeChanged(bool value)
 		{
-			ApplyTheme();
+			// Toggling the option itself should follow the current Windows theme
+			// immediately, not only on the next preference change.
+			ScheduleSync();
 		}
 
 		private void HandleUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
 		{
-			ApplyTheme();
+			// Fires for wallpaper, accent color, high contrast, ... - the
+			// registry watcher and the debounced re-read keep it cheap.
+			ScheduleSync();
 		}
 
-		private void ApplyTheme()
+		private void HandleRegistryNotifyChanged(object sender, RegistryEventArgs e)
 		{
-			if (_options.AutoSyncWithWin10Theme) 
-				_options.Enabled = IsDarkThemeEnabled();
+			ScheduleSync();
 		}
 
-		private bool IsDarkThemeEnabled()
+		// The registry write and the preference broadcast can race, and the
+		// broadcast can arrive before AppsUseLightTheme is updated. Re-read
+		// shortly after the event so the final value always wins.
+		private void ScheduleSync()
+		{
+			if (_debounceTimer == null)
+			{
+				_debounceTimer = new Timer { Interval = 300 };
+				_debounceTimer.Tick += delegate
+				{
+					_debounceTimer.Stop();
+					SyncNow();
+				};
+			}
+
+			_debounceTimer.Stop();
+			_debounceTimer.Start();
+		}
+
+		private void SyncNow()
+		{
+			if (!_options.AutoSyncWithWin10Theme)
+				return;
+
+			var dark = IsDarkThemeEnabled();
+
+			// Only touch the option when it actually differs - avoids config
+			// churn and a full theme repaint on unrelated preference events.
+			if (_options.Enabled != dark)
+				_options.Enabled = dark;
+		}
+
+		private void StartRegistryWatch()
 		{
 			try
 			{
-				var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-				if (key == null)
-					return false;
+				// A plain read-open already includes KEY_NOTIFY in its access
+				// mask (.NET Framework: KEY_READ = Query|Enumerate|Notify), so
+				// no write access is needed for the change notification.
+				_personalizeKey = Registry.CurrentUser.OpenSubKey(PersonalizeKeyPath);
+				if (_personalizeKey != null)
+					_personalizeKey.NotifyChanged += HandleRegistryNotifyChanged;
+			}
+			catch (Exception)
+			{
+				// Not readable (restricted policy) - the broadcast path still works.
+				_personalizeKey = null;
+			}
+		}
 
-				// Registry values are not guaranteed to be int - use GetValueOrDefault
-				// so an unexpected type does not throw.
-				var value = key.GetValue("AppsUseLightTheme", 1);
-				return value is int && (int) value != 1;
+		private void StopRegistryWatch()
+		{
+			if (_personalizeKey == null)
+				return;
+
+			try
+			{
+				_personalizeKey.NotifyChanged -= HandleRegistryNotifyChanged;
+				_personalizeKey.Close();
+			}
+			catch (Exception)
+			{
+				// ignored
+			}
+
+			_personalizeKey = null;
+		}
+
+		private static bool IsDarkThemeEnabled()
+		{
+			try
+			{
+				using (var key = Registry.CurrentUser.OpenSubKey(PersonalizeKeyPath))
+				{
+					if (key == null)
+						return false;
+
+					var value = key.GetValue("AppsUseLightTheme");
+					if (value == null)
+						return false;
+
+					// DWORD is the normal type, but be tolerant about odd types.
+					return Convert.ToInt32(value) != 1;
+				}
 			}
 			catch (Exception)
 			{
@@ -96,7 +183,7 @@ namespace KeePassDarkMode
 				form.HandleCreated += (o, args) => UseImmersiveDarkMode(form.Handle, enabled);
 			}
 		}
-		
+
 		private static bool UseImmersiveDarkMode(IntPtr handle, bool enabled)
 		{
 			if (IsWindows10OrGreater(17763))
@@ -118,7 +205,7 @@ namespace KeePassDarkMode
 		{
 			if (!WinUtil.IsAtLeastWindows10)
 				return false;
-			
+
 			try
 			{
 				var registryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", false);
@@ -136,6 +223,5 @@ namespace KeePassDarkMode
 
 			return false;
 		}
-
 	}
 }

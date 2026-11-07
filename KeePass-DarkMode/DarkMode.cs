@@ -360,16 +360,46 @@ namespace KeePassDarkMode
 
 		private void Apply(DateTimePicker dateTimePicker)
 		{
-			// The display field honors BackColor/ForeColor; only the popup
-			// calendar needs the native colorizing below.
 			dateTimePicker.BackColor = _theme.Control.BackColor;
 			dateTimePicker.ForeColor = _theme.Control.ForeColor;
+
+			// The themed display field is painted by the OS and ignores
+			// BackColor, so the value text gets overpainted dark (Paint runs
+			// after the OS painting). Only the popup calendar is colorized
+			// natively via CalendarColorizer.
+			dateTimePicker.Paint -= HandleDateTimePickerPaint;
+			dateTimePicker.Paint += HandleDateTimePickerPaint;
 
 			// Month calendar popup gets our palette when it opens (see CalendarColorizer).
 			dateTimePicker.DropDown -= HandleDateTimePickerDropDown;
 			dateTimePicker.DropDown += HandleDateTimePickerDropDown;
 			dateTimePicker.CloseUp -= HandleDateTimePickerCloseUp;
 			dateTimePicker.CloseUp += HandleDateTimePickerCloseUp;
+		}
+
+		private void HandleDateTimePickerPaint(object sender, PaintEventArgs e)
+		{
+			if (!_enabled)
+				return;
+
+			var picker = (DateTimePicker) sender;
+			var rect = picker.ClientRectangle;
+
+			// Leave the trailing OS-drawn drop-down/calendar buttons untouched.
+			var fieldWidth = Math.Max(1, rect.Width - DpiUtil.ScaleIntX(36));
+			var field = new Rectangle(rect.X, rect.Y, fieldWidth, rect.Height);
+
+			using (var background = new SolidBrush(_theme.Control.BackColor))
+				e.Graphics.FillRectangle(background, field);
+
+			var textColor = picker.Enabled
+				? _theme.Control.ForeColor
+				: Color.FromArgb(150, _theme.Control.ForeColor);
+
+			var textRect = new Rectangle(field.X + DpiUtil.ScaleIntX(3), field.Y,
+				field.Width - DpiUtil.ScaleIntX(6), field.Height);
+			TextRenderer.DrawText(e.Graphics, picker.Text, picker.Font, textRect,
+				textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
 		}
 
 		private void HandleDateTimePickerDropDown(object sender, EventArgs e)

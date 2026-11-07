@@ -40,7 +40,6 @@ namespace KeePassDarkMode.Options
 			var split = new SplitContainer
 			{
 				Dock = DockStyle.Fill,
-				FixedPanel = SplitContainerFixedPanel.Panel1,
 				IsSplitterFixed = true
 			};
 

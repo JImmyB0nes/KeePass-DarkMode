@@ -1,6 +1,10 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.2.0
+KeePass-DarkMode:1.8.3.0
 :::
+- Fix: Mehrere Handler-Leaks behoben (Theme-Reload, Titlebar-Hooks, Hotkey-Menue)
+- Fix: Theme-Hintergrundbild sperrt die Bilddatei nicht mehr
+- Fix: Nullzugriff auf MainForm bei Splash-/Wiederherstellungs-Fenstern
+- Fix: Temp-Dateien der Theme-Vorschau werden beim Schliessen geloescht
 - Entfernt: Import-Settings-Button im Options-Dialog (Export bleibt erhalten)
 - Fix: Behavior-Gruppe im Options-Dialog zu niedrig, Haken beschriften sich jetzt selbst
 - Neu: Folgt dem Windows-Hell/Dunkel-Modus mit passendem Theme (Auto-Light-Theme)

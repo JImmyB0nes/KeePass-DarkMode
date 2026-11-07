@@ -101,20 +101,18 @@ namespace KeePassDarkMode
 			_debounceTimer.Start();
 		}
 
+		// Acts only when the Windows setting itself changed. A manual Ctrl+T
+		// toggle must stay valid until the next real Windows theme switch,
+		// so the watchdog must not "correct" Enabled back on every poll.
 		private void SyncIfChanged()
 		{
-			if (!_options.AutoSyncWithWin10Theme)
-				return;
-
 			var dark = IsDarkThemeEnabled();
 			if (dark == _lastKnownDark)
 				return;
 
 			_lastKnownDark = dark;
 
-			// Only touch the option when it actually differs from the stored
-			// state - avoids config churn and full theme repaints.
-			if (_options.Enabled != dark)
+			if (_options.AutoSyncWithWin10Theme && _options.Enabled != dark)
 				_options.Enabled = dark;
 		}
 

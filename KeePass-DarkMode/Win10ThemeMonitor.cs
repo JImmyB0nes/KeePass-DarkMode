@@ -190,7 +190,15 @@ namespace KeePassDarkMode
 			}
 			else
 			{
-				form.HandleCreated += (o, args) => UseImmersiveDarkMode(form.Handle, enabled);
+				// Named handler that unsubscribes itself: a lambda per call would
+				// stack one handler per repeat invocation until the handle exists.
+				EventHandler hook = null;
+				hook = (s, e) =>
+				{
+					form.HandleCreated -= hook;
+					UseImmersiveDarkMode(form.Handle, enabled);
+				};
+				form.HandleCreated += hook;
 			}
 		}
 

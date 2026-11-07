@@ -306,23 +306,21 @@ namespace KeePassDarkMode
 
 		private void OverrideResetBackground(Control control)
 		{
-			if (control.Name == "m_cmbStringName" && control.Parent.Name == "EditStringForm")
+			// Named handler instead of a lambda: a fresh closure per Visit() would
+			// defeat -=, so re-applied themes would stack handlers on every reload.
+			if ((control.Name == "m_cmbStringName" && control.Parent.Name == "EditStringForm") ||
+			    (control.Name == "m_tbSearch" && control.Parent.Name == "OptionsForm"))
 			{
-				control.BackColorChanged += (sender, args) =>
-				{
-					if (control.BackColor.IsSystemColor)
-						control.BackColor = _theme.Control.BackColor;
-				};
+				control.BackColorChanged -= HandleSystemColorReset;
+				control.BackColorChanged += HandleSystemColorReset;
 			}
+		}
 
-			if (control.Name == "m_tbSearch" && control.Parent.Name == "OptionsForm")
-			{
-				control.BackColorChanged += (sender, args) =>
-				{
-					if (control.BackColor.IsSystemColor)
-						control.BackColor = _theme.Control.BackColor;
-				};
-			}
+		private void HandleSystemColorReset(object sender, EventArgs args)
+		{
+			var control = (Control) sender;
+			if (control.BackColor.IsSystemColor)
+				control.BackColor = _theme.Control.BackColor;
 		}
 
 		private void Apply(DataGridView dataGridView)

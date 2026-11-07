@@ -78,7 +78,11 @@ namespace KeePassDarkMode.Theme
 				var imagePath = Path.Combine(TemplateReader.GetTemplatesDir(), ListView.BackgroundImage);
 
 				if (File.Exists(imagePath))
-					ListViewBackground = Image.FromFile(imagePath);
+					// FromFile locks the image until dispose. FromStream additionally
+					// needs its stream for the image lifetime - take a detached copy.
+					using (var ms = new MemoryStream(File.ReadAllBytes(imagePath)))
+					using (var image = Image.FromStream(ms))
+						ListViewBackground = new Bitmap(image);
 			}
 
 			if (ListView.BackColor != Color.Empty && ListViewBackground == null)

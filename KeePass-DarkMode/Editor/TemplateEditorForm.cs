@@ -63,6 +63,17 @@ namespace KeePassDarkMode.Editor
 				_options.Template = _template;
 			}
 
+			// Preview writes a temp ini that nobody else cleans up.
+			try
+			{
+				if (File.Exists(_tempFileName))
+					File.Delete(_tempFileName);
+			}
+			catch (Exception)
+			{
+				// Locked or already gone - leave it for the OS temp cleanup.
+			}
+
 			_instance = null;
 		}
 

@@ -175,7 +175,9 @@ namespace KeePassDarkMode
 				_windowIcon.Apply(_theme.Enabled);
 			if (_dialogWatcher != null)
 				_dialogWatcher.Enable(_theme.Enabled);
-			if (_theme.Enabled)
+			// A splash or restored dialog can enter OpenForms before MainForm is
+			// assigned - those forms get themed via HandleOpenFormsAdded instead.
+			if (_theme.Enabled && Program.MainForm != null)
 			{
 				if (Program.MainForm.InvokeRequired)
 				{
@@ -295,7 +297,8 @@ namespace KeePassDarkMode
 				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
 				_controlVisitor.Visit(openForm);
 			}
-			Program.MainForm.RefreshEntriesList();
+			if (Program.MainForm != null)
+				Program.MainForm.RefreshEntriesList();
 		}
 
 		private void HandleControlVisit(Control control)

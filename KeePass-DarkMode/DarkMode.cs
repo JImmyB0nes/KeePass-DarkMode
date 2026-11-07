@@ -342,6 +342,11 @@ namespace KeePassDarkMode
 
 		private void Apply(DateTimePicker dateTimePicker)
 		{
+			// The display field honors BackColor/ForeColor; only the popup
+			// calendar needs the native colorizing below.
+			dateTimePicker.BackColor = _theme.Control.BackColor;
+			dateTimePicker.ForeColor = _theme.Control.ForeColor;
+
 			// Month calendar popup gets our palette when it opens (see CalendarColorizer).
 			dateTimePicker.DropDown -= HandleDateTimePickerDropDown;
 			dateTimePicker.DropDown += HandleDateTimePickerDropDown;
@@ -383,7 +388,47 @@ namespace KeePassDarkMode
 
 		private void Apply(QualityProgressBar qualityProgressBar)
 		{
-			qualityProgressBar.ForeColor = _theme.Form.BackColor;
+			// Paint runs after the control's own Visual-Styles painting, so the
+			// overpaint below wins: dark track, gradient fill, light text.
+			qualityProgressBar.Paint -= HandleQualityBarPaint;
+			qualityProgressBar.Paint += HandleQualityBarPaint;
+			qualityProgressBar.Invalidate();
+		}
+
+		private void HandleQualityBarPaint(object sender, PaintEventArgs e)
+		{
+			if (!_enabled)
+				return;
+
+			var bar = (QualityProgressBar) sender;
+			var rect = bar.ClientRectangle;
+			var g = e.Graphics;
+
+			using (var background = new SolidBrush(_theme.Control.BackColor))
+				g.FillRectangle(background, rect);
+
+			var range = bar.Maximum - bar.Minimum;
+			if (range > 0)
+			{
+				var position = Math.Max(0, Math.Min(range, bar.Position - bar.Minimum));
+				var width = (int) ((float) rect.Width * position / range);
+				if (width > 0)
+				{
+					using (var gradient = new LinearGradientBrush(rect,
+						AppDefs.ColorQualityLow, AppDefs.ColorQualityHigh,
+						LinearGradientMode.Horizontal))
+					{
+						g.FillRectangle(gradient, rect.X, rect.Y, width, rect.Height);
+					}
+				}
+			}
+
+			if (!string.IsNullOrEmpty(bar.Text))
+			{
+				TextRenderer.DrawText(g, bar.Text, bar.Font, rect,
+					_theme.Control.ForeColor,
+					TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+			}
 		}
 
 		private void Apply(TabControl tabControl)

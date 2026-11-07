@@ -263,7 +263,11 @@ namespace KeePassDarkMode
 				Program.TriggerSystem.RaisingEvent -= HandleTriggerSystemRaisingEvent;
 
 			if (_theme != null)
+			{
 				_theme.Enabled = false;
+				_theme.CleanupCenteredSearch();
+				_theme.CleanupShieldButtons();
+			}
 
 			// Restore the original OpenForms list that we replaced in AttachApplicationOpenFormsHandler.
 			// Application.OpenForms is a sealed FormCollection, so our FormsArrayList lives in its

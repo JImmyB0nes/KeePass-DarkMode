@@ -10,7 +10,7 @@ namespace KeePassDarkMode.Decorators
     {
         // All chrome colors are derived from the active theme so the search box
         // and its native overlays (combo arrow, calendar, field borders) stay
-        // correct in light themes and under Auto-Light switching.
+        // correct for any custom theme, dark or light.
         internal struct SearchColors
         {
             public Color Back;      // field background

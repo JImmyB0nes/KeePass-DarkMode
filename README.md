@@ -62,8 +62,7 @@ Alternativ über das Menü: **Tools → Dark Theme**
 | 🎨 **Theme-Editor** | Eigene Farbwelten per GUI erstellen, ohne Textdateien zu editieren |
 | 🪟 **Windows-11-Support** | Eigenes Theme mit Windows-11-Flair (`DarkThemeWin11.ini`) |
 | 📦 **Plgx-Format** | Ein Dateisprung installiert/updatet das Plugin — ohne Kompilieren |
-| 🔧 **Theme-Erkennung** | Automatisches Erkennen des Windows-Farbschemas (Hell/Dunkel) |
-| 🌗 **Hell/Dunkel-Auto** | Folgt dem Windows-Modus mit passendem Theme (dunkel oder hell) |
+| 🔧 **Theme-Erkennung** | Folgt dem Windows-Farbschema — im Dunkel-Modus aktiv, im Hell-Modus aus |
 | 🎨 **Windows-Akzent** | optional: übernimmt die Windows-Akzentfarbe für Highlights |
 | 🔔 **Update-Hinweis** | zeigt eine neue Version direkt im Menü unter *Tools* an |
 

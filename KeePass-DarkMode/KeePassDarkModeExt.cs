@@ -100,7 +100,7 @@ namespace KeePassDarkMode
 			if (_theme.Enabled)
 				_controlVisitor.Visit(args.Form);
 			
-			Win10ThemeMonitor.UseImmersiveDarkMode(args.Form, _theme.Enabled && !_theme.LightMode);
+			Win10ThemeMonitor.UseImmersiveDarkMode(args.Form, _theme.Enabled);
 			
 			var optionsForm = args.Form as OptionsForm;
 			if (optionsForm != null)
@@ -213,8 +213,8 @@ namespace KeePassDarkMode
 				}
 			};
 
-			// Windows flipped between dark and light (auto-light mode) or the
-			// accent color changed - re-resolve the effective template.
+			// Windows theme flipped or the accent color changed - re-resolve
+			// the effective template.
 			_options.ThemeModeChanged += HandleThemeModeChanged;
 			_options.AccentFromWindowsChanged += accent => HandleThemeModeChanged();
 			
@@ -283,9 +283,9 @@ namespace KeePassDarkMode
 
 			// Title bars must flip with the mode (immersive dark attribute).
 			if (_dialogWatcher != null)
-				_dialogWatcher.Enable(_theme.Enabled && !_theme.LightMode);
+				_dialogWatcher.Enable(_theme.Enabled);
 			foreach (Form openForm in Application.OpenForms)
-				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
+				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled);
 
 			ApplyThemeInOpenForms();
 		}
@@ -294,7 +294,7 @@ namespace KeePassDarkMode
 		{
 			foreach (Form openForm in Application.OpenForms)
 			{
-				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled && !_theme.LightMode);
+				Win10ThemeMonitor.UseImmersiveDarkMode(openForm, _theme.Enabled);
 				_controlVisitor.Visit(openForm);
 			}
 			if (Program.MainForm != null)

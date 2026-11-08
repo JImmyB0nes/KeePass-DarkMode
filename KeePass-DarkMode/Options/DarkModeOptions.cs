@@ -9,23 +9,7 @@ namespace KeePassDarkMode.Options
 		private const string TemplateOption = "KeePass-DarkMode.Template";
 		private const string EnabledOption = "KeePass-DarkMode.Enabled";
 		private const string HotKeyOption = "KeePass-DarkMode.HotKey";
-		private const string AutoSyncWithWin10ThemeOption = "KeePass-DarkMode.AutoSyncWithWin10Theme";
-		private const string AutoLightThemeOption = "KeePass-DarkMode.AutoLightTheme";
-		private const string LightTemplateOption = "KeePass-DarkMode.LightTemplate";
-		private const string AccentFromWindowsOption = "KeePass-DarkMode.AccentFromWindows";
-		private const string CheckUpdatesOption = "KeePass-DarkMode.CheckUpdates";
-		private const string LastUpdateCheckOption = "KeePass-DarkMode.LastUpdateCheck";
-		private const string LatestVersionOption = "KeePass-DarkMode.LatestVersion";
-		
-		private readonly IPluginHost _pluginHost;
-		private bool _enabled;
-		private Keys _hotKey;
-		private bool _autoSyncWithWin10Theme;
-		private bool _autoLightTheme;
-		private string _lightTemplate;
-		private bool _accentFromWindows;
-		private bool _checkUpdates;
-		private string _template;
+
 
 		public bool Enabled
 		{
@@ -63,43 +47,7 @@ namespace KeePassDarkMode.Options
 			}
 		}
 
-		/// <summary>
-		/// In auto-sync mode, apply the light template when Windows is in
-		/// light mode instead of switching the plugin off.
-		/// </summary>
-		public bool AutoLightTheme
-		{
-			get { return _autoLightTheme; }
-			set
-			{
-				_autoLightTheme = value;
-				_pluginHost.CustomConfig.SetBool(AutoLightThemeOption, value);
-				if (AutoLightThemeChanged != null)
-					AutoLightThemeChanged.Invoke(value);
-			}
-		}
 
-		/// <summary>
-		/// Template path used when Windows runs in light mode.
-		/// </summary>
-		public string LightTemplate
-		{
-			get { return _lightTemplate; }
-			set
-			{
-				if (_lightTemplate == value)
-					return;
-
-				_lightTemplate = value;
-				_pluginHost.CustomConfig.SetString(LightTemplateOption, value);
-				if (LightTemplateChanged != null)
-					LightTemplateChanged.Invoke(value);
-			}
-		}
-
-		/// <summary>
-		/// Override the theme's highlight colors with the current Windows accent color.
-		/// </summary>
 		public bool AccentFromWindows
 		{
 			get { return _accentFromWindows; }
@@ -176,21 +124,12 @@ namespace KeePassDarkMode.Options
 				TemplateOption + "=" + _template,
 				EnabledOption + "=" + _enabled,
 				HotKeyOption + "=" + _hotKey,
-				AutoSyncWithWin10ThemeOption + "=" + _autoSyncWithWin10Theme,
-				AutoLightThemeOption + "=" + _autoLightTheme,
-				LightTemplateOption + "=" + _lightTemplate,
-				AccentFromWindowsOption + "=" + _accentFromWindows,
+
 				CheckUpdatesOption + "=" + _checkUpdates
 			});
 		}
 
-		public event Action<bool> EnabledChanged;
-		public event Action<Keys> HotKeyChanged;
-		public event Action<bool> AutoSyncWithWin10ThemeChanged;
-		public event Action<bool> AutoLightThemeChanged;
-		public event Action<string> LightTemplateChanged;
-		public event Action<bool> AccentFromWindowsChanged;
-		public event Action<string> TemplateChanged;
+
 
 		/// <summary>
 		/// Raised when the effective theme mode changed (dark/light switch by
@@ -220,12 +159,7 @@ namespace KeePassDarkMode.Options
 				// instead of failing the whole plugin load.
 				_hotKey = Keys.Control | Keys.T;
 			}
-			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, true);
-			_autoLightTheme = pluginHost.CustomConfig.GetBool(AutoLightThemeOption, true);
-			_accentFromWindows = pluginHost.CustomConfig.GetBool(AccentFromWindowsOption, false);
-			_checkUpdates = pluginHost.CustomConfig.GetBool(CheckUpdatesOption, true);
-			_template = pluginHost.CustomConfig.GetString(TemplateOption, TemplateReader.DefaultTemplatePath);
-			_lightTemplate = pluginHost.CustomConfig.GetString(LightTemplateOption, TemplateReader.DefaultLightTemplatePath);
+
 		}
 	}
 }

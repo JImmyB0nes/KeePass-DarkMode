@@ -30,14 +30,6 @@ namespace KeePassDarkMode
 		private ITheme _customTheme;
 		private ITheme _theme;
 		private bool _enabled;
-		private bool _lightMode;
-
-		// True while the current effective theme is the light variant
-		// (auto-sync + light Windows) - drives template and title bar choices.
-		internal bool LightMode
-		{
-			get { return _lightMode; }
-		}
 
 		public bool Enabled
 		{
@@ -131,18 +123,8 @@ namespace KeePassDarkMode
 			return new CustomTheme(themeTemplate);
 		}
 
-		// In auto-sync + auto-light mode the effective template follows the
-		// current Windows app mode: dark template for dark, light template for light.
 		private string ResolveTemplatePath()
 		{
-			_lightMode = false;
-			if (_options.Enabled && _options.AutoSyncWithWin10Theme && _options.AutoLightTheme &&
-			    Win10ThemeMonitor.IsDarkThemeEnabled() == false)
-			{
-				_lightMode = true;
-				return _options.LightTemplate;
-			}
-
 			return _options.Template;
 		}
 

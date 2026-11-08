@@ -11,7 +11,6 @@ namespace KeePassDarkMode
 	public static class TemplateReader
 	{
 		public const string DefaultTemplatePath = "KeePassDarkMode.Resources.DarkTheme.ini";
-		public const string DefaultLightTemplatePath = "KeePassDarkMode.Resources.LightTheme.ini";
 
 		internal static IniFile GetDefaultTemplate()
 		{

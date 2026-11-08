@@ -1,7 +1,8 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.4.0
+KeePass-DarkMode:1.8.5.0
 :::
-- Fix: Suchbox-Rahmen, Combo-Pfeile und Kalender-Overlays folgen jetzt dem Theme (korrekt auch im Light-Theme)
+- Entfernt: Light-Theme und Auto-Light-Funktion (Plugin folgt Windows nur noch dunkel/aus)
+- Fix: Suchbox-Rahmen, Combo-Pfeile und Kalender-Overlays folgen jetzt dem Theme
 - Fix: Tab-Reiter-Textfarbe respektier TabControl.ForeColor
 - Fix: Mehrere Handler-Leaks behoben (Theme-Reload, Titlebar-Hooks, Hotkey-Menue)
 - Fix: Theme-Hintergrundbild sperrt die Bilddatei nicht mehr
@@ -9,8 +10,6 @@ KeePass-DarkMode:1.8.4.0
 - Fix: Temp-Dateien der Theme-Vorschau werden beim Schliessen geloescht
 - Entfernt: Import-Settings-Button im Options-Dialog (Export bleibt erhalten)
 - Fix: Behavior-Gruppe im Options-Dialog zu niedrig, Haken beschriften sich jetzt selbst
-- Neu: Folgt dem Windows-Hell/Dunkel-Modus mit passendem Theme (Auto-Light-Theme)
 - Neu: Update-Hinweis direkt im Menuepunkt "Tools"
 - Neu: Windows-Akzentfarbe fuer Highlights uebernehmbar
 - Neu: Native Dialoge (Message-Boxen) mit dunkler Titelzeile
-- Neu: LightTheme.ini als eigenes Theme

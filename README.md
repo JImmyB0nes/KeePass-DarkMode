@@ -16,6 +16,7 @@
 
 ## Inhalt
 
+- [Screenshots](#-screenshots)
 - [Quick Start](#-quick-start)
 - [Installation](#-installation)
 - [Features](#-features)
@@ -23,6 +24,22 @@
 - [Troubleshooting](#-troubleshooting)
 - [Kompatibilität](#-kompatibilität)
 - [Entwicklung](#-entwicklung)
+
+---
+
+## 📸 Screenshots
+
+| Hauptfenster im Dark Mode | Bearbeiten-Dialog |
+|---|---|
+| ![Hauptfenster](docs/images/main-window.png) | ![Edit Entry](docs/images/edit-entry.png) |
+
+| Tools-Menü mit Dark-Theme-Schalter | Optionen (Reiter KeePass-DarkMode) |
+|---|---|
+| ![Tools-Menü](docs/images/tools-menu.png) | ![Optionen](docs/images/options-security.png) |
+
+| Theme-Konfiguration mit Live-Vorschau |
+|---|
+| ![Theme-Optionen](docs/images/options-darkmode.png) |
 
 ---
 

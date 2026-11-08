@@ -9,7 +9,19 @@ namespace KeePassDarkMode.Options
 		private const string TemplateOption = "KeePass-DarkMode.Template";
 		private const string EnabledOption = "KeePass-DarkMode.Enabled";
 		private const string HotKeyOption = "KeePass-DarkMode.HotKey";
+		private const string AutoSyncWithWin10ThemeOption = "KeePass-DarkMode.AutoSyncWithWin10Theme";
+		private const string AccentFromWindowsOption = "KeePass-DarkMode.AccentFromWindows";
+		private const string CheckUpdatesOption = "KeePass-DarkMode.CheckUpdates";
+		private const string LastUpdateCheckOption = "KeePass-DarkMode.LastUpdateCheck";
+		private const string LatestVersionOption = "KeePass-DarkMode.LatestVersion";
 
+		private readonly IPluginHost _pluginHost;
+		private bool _enabled;
+		private Keys _hotKey;
+		private bool _autoSyncWithWin10Theme;
+		private bool _accentFromWindows;
+		private bool _checkUpdates;
+		private string _template;
 
 		public bool Enabled
 		{
@@ -124,16 +136,21 @@ namespace KeePassDarkMode.Options
 				TemplateOption + "=" + _template,
 				EnabledOption + "=" + _enabled,
 				HotKeyOption + "=" + _hotKey,
-
+				AutoSyncWithWin10ThemeOption + "=" + _autoSyncWithWin10Theme,
+				AccentFromWindowsOption + "=" + _accentFromWindows,
 				CheckUpdatesOption + "=" + _checkUpdates
 			});
 		}
 
-
+		public event Action<bool> EnabledChanged;
+		public event Action<Keys> HotKeyChanged;
+		public event Action<bool> AutoSyncWithWin10ThemeChanged;
+		public event Action<bool> AccentFromWindowsChanged;
+		public event Action<string> TemplateChanged;
 
 		/// <summary>
-		/// Raised when the effective theme mode changed (dark/light switch by
-		/// Windows, accent color change) although no option value changed.
+		/// Raised when the accent color setting changed although no template
+		/// option value changed.
 		/// </summary>
 		public event Action ThemeModeChanged;
 
@@ -159,7 +176,10 @@ namespace KeePassDarkMode.Options
 				// instead of failing the whole plugin load.
 				_hotKey = Keys.Control | Keys.T;
 			}
-
+			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, true);
+			_accentFromWindows = pluginHost.CustomConfig.GetBool(AccentFromWindowsOption, false);
+			_checkUpdates = pluginHost.CustomConfig.GetBool(CheckUpdatesOption, true);
+			_template = pluginHost.CustomConfig.GetString(TemplateOption, TemplateReader.DefaultTemplatePath);
 		}
 	}
 }

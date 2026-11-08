@@ -82,6 +82,9 @@ namespace KeePassDarkMode.Theme
 
 			var paletteSection = iniFile.GetSection("Palette");
 			Palette = new Palette(paletteSection);
+			// Themes without an explicit "Accent" key stay untouched (see
+			// ApplyAccent) - the shipped Okabe-Ito/high-contrast palettes rely
+			// on that to keep their deliberate Link/selection colors.
 			ApplyAccent(Palette);
 
 			var otherSection = iniFile.GetSection("Other");

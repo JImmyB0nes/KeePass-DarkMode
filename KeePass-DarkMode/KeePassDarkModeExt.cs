@@ -189,6 +189,10 @@ namespace KeePassDarkMode
 			_options.EnabledChanged += enable =>
 			{
 				_theme.Enabled = enable;
+				// Keep the menu check mark in sync when the toggle comes from
+				// somewhere other than the menu click (Win10 auto-sync, hotkey).
+				if (_menuItem != null && _menuItem.Checked != enable)
+					_menuItem.Checked = enable;
 				if (_windowIcon != null)
 					_windowIcon.Apply(enable);
 				if (_dialogWatcher != null)

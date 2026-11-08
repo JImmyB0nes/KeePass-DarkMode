@@ -17,6 +17,9 @@ namespace KeePassDarkMode.Decorators
 
 		private ITheme _theme;
 		private bool _enabled;
+		// The background image we assigned ourselves - so we can remove it again
+		// when the theme is switched off, without touching user-supplied images.
+		private Image _assignedBackground;
 
 		public ListViewDecorator(ListView listView, ITheme theme)
 		{
@@ -129,6 +132,15 @@ namespace KeePassDarkMode.Decorators
 			{
 				listView.BackgroundImage = _theme.ListViewBackground;
 				listView.BackgroundImageTiled = _theme.ListViewBackgroundTiled;
+				_assignedBackground = _theme.ListViewBackground;
+			}
+			else if (_assignedBackground != null &&
+			         ReferenceEquals(listView.BackgroundImage, _assignedBackground))
+			{
+				// Theme switched off (or to one without a tiled background): drop
+				// the stale dark tile, otherwise the list stays tinted.
+				listView.BackgroundImage = null;
+				_assignedBackground = null;
 			}
 		}
 
@@ -149,6 +161,7 @@ namespace KeePassDarkMode.Decorators
 						listView.BackgroundImage.Dispose();
 
 					listView.BackgroundImage = null;
+					_assignedBackground = null;
 				}
 
 				return;

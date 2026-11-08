@@ -20,6 +20,10 @@ namespace KeePassDarkMode.Decorators
 		private readonly ContentAlignment _imageAlign;
 		private readonly Image _image;
 		private readonly EventHandler _clickHandler;
+		// Reused across EnableTheme calls - assigning a fresh bitmap every
+		// reload would leak one GDI object per theme change.
+		private Image _arrowImage;
+		private Color _arrowForeColor;
 
 		public SplitButtonExDecorator(SplitButtonEx button, ITheme theme)
 		{
@@ -92,6 +96,16 @@ namespace KeePassDarkMode.Decorators
 
 		private Image GetButtonDownArrow()
 		{
+			// Cached: same bitmap is reused for every theme reload.
+			if (_arrowImage != null && _arrowForeColor == ForeColor)
+				return _arrowImage;
+
+			if (_arrowImage != null)
+			{
+				_arrowImage.Dispose();
+				_arrowImage = null;
+			}
+
 			var bitmap = new Bitmap(16, 16);
 			using (var g = Graphics.FromImage(bitmap))
 			using (var brush = new SolidBrush(ForeColor))
@@ -100,7 +114,9 @@ namespace KeePassDarkMode.Decorators
 				g.FillPolygon(brush, new[] {new Point(4, 6), new Point(12, 6), new Point(8, 10)});
 			}
 
-			return bitmap;
+			_arrowImage = bitmap;
+			_arrowForeColor = ForeColor;
+			return _arrowImage;
 		}
 
 		public void EnableTheme(bool enabled, ITheme theme)
@@ -130,6 +146,17 @@ namespace KeePassDarkMode.Decorators
 				button.MouseClick -= HandleButtonMouseClick;
 				button.Click += _clickHandler;
 			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && _arrowImage != null)
+			{
+				_arrowImage.Dispose();
+				_arrowImage = null;
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }

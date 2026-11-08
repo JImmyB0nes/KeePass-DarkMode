@@ -115,12 +115,22 @@ namespace KeePassDarkMode
 			if (templateFile == null)
 				return _defaultTheme;
 
-			var themeTemplate = new CustomThemeTemplate(templateFile);
+			try
+			{
+				var themeTemplate = new CustomThemeTemplate(templateFile);
 
-			if (_options.AccentFromWindows)
-				CustomThemeTemplate.ApplySystemAccent(themeTemplate.Palette);
+				if (_options.AccentFromWindows)
+					CustomThemeTemplate.ApplySystemAccent(themeTemplate.Palette);
 
-			return new CustomTheme(themeTemplate);
+				return new CustomTheme(themeTemplate);
+			}
+			catch (Exception)
+			{
+				// A broken custom template (bad color syntax, unparseable enum
+				// value) must not fail the whole plugin load - fall back to the
+				// built-in default theme instead.
+				return _defaultTheme;
+			}
 		}
 
 		private string ResolveTemplatePath()
@@ -328,6 +338,11 @@ namespace KeePassDarkMode
 
 			checkBox.EnabledChanged -= HandleCheckBoxEnabledChanged;
 			checkBox.EnabledChanged += HandleCheckBoxEnabledChanged;
+
+			// Same as buttons (issue #146): checkboxes that are already disabled
+			// when the form opens never fire EnabledChanged - apply the state now.
+			if (!checkBox.Enabled)
+				HandleCheckBoxEnabledChanged(checkBox, EventArgs.Empty);
 		}
 
 		private void HandleCheckBoxEnabledChanged(object sender, EventArgs e)
@@ -340,6 +355,9 @@ namespace KeePassDarkMode
 			}
 			else
 			{
+				// -= first: Apply/reload can call this repeatedly for a checkbox
+				// that stays disabled, which would otherwise stack Paint handlers.
+				checkBox.Paint -= HandleCheckBoxPaint;
 				checkBox.Paint += HandleCheckBoxPaint;
 			}
 		}
@@ -506,8 +524,9 @@ namespace KeePassDarkMode
 		private void Apply(TabControl tabControl)
 		{
 			var decoratorName = tabControl.Name + "_decorator";
-			var decorator =
-				tabControl.Parent.Controls.Find(decoratorName, false).FirstOrDefault() as TabControlDecorator;
+			var decorator = tabControl.Parent == null
+				? null
+				: tabControl.Parent.Controls.Find(decoratorName, false).FirstOrDefault() as TabControlDecorator;
 
 			if (decorator == null)
 			{

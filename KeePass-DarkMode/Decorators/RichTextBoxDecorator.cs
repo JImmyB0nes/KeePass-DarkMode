@@ -219,11 +219,17 @@ namespace KeePassDarkMode.Decorators
 			// default format for future input, without touching the selection or caret.
 			// SelectAll() + SelectionColor would cancel an active IME composition on
 			// every keystroke, which is why Chinese/Japanese/Korean input failed.
+			// ForeColor is the theme's regular text color; SelectionColor is
+			// only the fallback for themes that never set a ForeColor.
+			var textColor = _theme.RichTextBox.ForeColor;
+			if (textColor == Color.Empty)
+				textColor = _theme.RichTextBox.SelectionColor;
+
 			var cf = new RichTextBoxNativeWindow.CHARFORMAT2();
 			cf.cbSize = (uint) Marshal.SizeOf(typeof(RichTextBoxNativeWindow.CHARFORMAT2));
 			cf.dwMask = CFM_COLOR;
 			cf.dwEffects = 0;
-			cf.crTextColor = (uint) ColorTranslator.ToWin32(_theme.RichTextBox.SelectionColor);
+			cf.crTextColor = (uint) ColorTranslator.ToWin32(textColor);
 			SendMessage(richTextBox.Handle, EM_SETCHARFORMAT, (IntPtr) SCF_ALL, ref cf);
 		}
 

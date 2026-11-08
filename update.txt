@@ -1,6 +1,15 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.5.0
+KeePass-DarkMode:1.8.6.0
 :::
+- Fix: Windows-Akzentfarbe wurde rot/vertauscht ausgelesen (falsche Farbe bei "Akzent uebernehmen")
+- Fix: Beschaedigte Theme-Datei im Plugins-Ordner laesst KeePass jetzt mit Standard-Theme starten
+- Fix: Haekchen im Tools-Menue folgt dem Windows-Autosync
+- Fix: Dunkler Listview-Hintergrund bleibt nach Theme-Abschalten bestehen
+- Fix: Graue Disabled-Texte bei beim Start deaktivierten Checkboxen
+- Fix: GDI-Speicherleck beim Theme-Reload (Split-Button-Pfeil)
+- Fix: TLS-Einstellung von KeePass-Plugins wird nicht mehr global ueberschrieben
+- Neu: Dracula-Theme konsequent an die Dracula-Palette angepasst
+- Fix: Colorblind-/HighContrast-Theme behalten ihre definierten Link-/Selektionsfarben
 - Entfernt: Light-Theme und Auto-Light-Funktion (Plugin folgt Windows nur noch dunkel/aus)
 - Fix: Suchbox-Rahmen, Combo-Pfeile und Kalender-Overlays folgen jetzt dem Theme
 - Fix: Tab-Reiter-Textfarbe respektier TabControl.ForeColor

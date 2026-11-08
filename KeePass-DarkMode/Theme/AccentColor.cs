@@ -24,9 +24,9 @@ namespace KeePassDarkMode.Theme
 							// DWORD format: 0xAABBGGRR - alpha is ignored.
 							var argb = Convert.ToInt32(value);
 							var color = Color.FromArgb(
-								(argb >> 16) & 0xFF,   // R
+								argb & 0xFF,           // R
 								(argb >> 8) & 0xFF,    // G
-								argb & 0xFF);          // B
+								(argb >> 16) & 0xFF);  // B
 
 							// A fully transparent or black value means the
 							// DWM composition is off - fall back to the

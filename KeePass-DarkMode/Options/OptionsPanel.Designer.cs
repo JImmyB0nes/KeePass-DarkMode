@@ -200,6 +200,10 @@ namespace KeePassDarkMode.Options
 			// versionLink
 			// 
 			this.versionLink.AutoSize = true;
+			// Anchored to the bottom: in shorter dialogs (the panel's design
+			// height of 360 is not always available) the label would otherwise
+			// fall off the visible area.
+			this.versionLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.versionLink.Location = new System.Drawing.Point(12, 335);
 			this.versionLink.Name = "versionLink";
 			this.versionLink.Size = new System.Drawing.Size(0, 13);

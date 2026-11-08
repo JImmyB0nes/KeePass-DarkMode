@@ -1,6 +1,7 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.6.0
+KeePass-DarkMode:1.8.7.0
 :::
+- Fix: Versionsanzeige unten im Options-Dialog abschnieden, wenn der Dialog zu niedrig ist
 - Fix: Windows-Akzentfarbe wurde rot/vertauscht ausgelesen (falsche Farbe bei "Akzent uebernehmen")
 - Fix: Beschaedigte Theme-Datei im Plugins-Ordner laesst KeePass jetzt mit Standard-Theme starten
 - Fix: Haekchen im Tools-Menue folgt dem Windows-Autosync

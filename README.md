@@ -75,13 +75,14 @@ Alternativ über das Menü: **Tools → Dark Theme**
 | | |
 |---|---|
 | 🌑 **Dunkles Theme** | Ruhige, moderne Farbpalette für die gesamte KeePass-Oberfläche |
+| 🎨 **Fünf Themes** | Standard, Windows 11, Dracula, Colorblind und High Contrast — per Dropdown wechselbar |
 | ⌨️ **Hotkey** | `STRG+T` zum Umschalten — frei konfigurierbar |
-| 🎨 **Theme-Editor** | Eigene Farbwelten per GUI erstellen, ohne Textdateien zu editieren |
-| 🪟 **Windows-11-Support** | Eigenes Theme mit Windows-11-Flair (`DarkThemeWin11.ini`) |
+| 🖌️ **Theme-Editor** | Eigene Farbwelten per GUI erstellen, ohne Textdateien zu editieren |
 | 📦 **Plgx-Format** | Ein Dateisprung installiert/updatet das Plugin — ohne Kompilieren |
 | 🔧 **Theme-Erkennung** | Folgt dem Windows-Farbschema — im Dunkel-Modus aktiv, im Hell-Modus aus |
 | 🎨 **Windows-Akzent** | optional: übernimmt die Windows-Akzentfarbe für Highlights |
 | 🔔 **Update-Hinweis** | zeigt eine neue Version direkt im Menü unter *Tools* an |
+| 🪟 **Flackerfrei** | Dialoge und Textfelder werden dunkel aufgebaut, bevor sie das erste Mal malen |
 
 ---
 
@@ -91,12 +92,15 @@ Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
 
 Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen automatisch in der Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
 
-Zwei Startpunkte liegen bei:
+Fünf mitgelieferte Themes liegen bei:
 
 | Theme | Beschreibung |
 |---|---|
-| `DarkTheme.ini` | Klassisches dunkles Theme |
+| `DarkTheme.ini` | Klassisches dunkles Theme (Standard) |
 | `DarkThemeWin11.ini` | An Windows-11-Optik angepasst |
+| `DarkThemeDracula.ini` | Nach der Dracula-Palette |
+| `DarkThemeColorblind.ini` | Für Farbfehlsichtigkeit optimierte Kontraste |
+| `DarkThemeHighContrast.ini` | Hoher Kontrast für barrierefreies Sehen |
 
 ---
 

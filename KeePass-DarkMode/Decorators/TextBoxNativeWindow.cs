@@ -91,7 +91,7 @@ namespace KeePassDarkMode.Decorators
 				using (var background = new SolidBrush(backColor))
 					graphics.FillRectangle(background, _textBox.ClientRectangle);
 
-				m.Result = IntPtr.One;
+				m.Result = new IntPtr(1);
 				return;
 			}
 

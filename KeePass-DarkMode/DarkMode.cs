@@ -198,10 +198,9 @@ namespace KeePassDarkMode
 			var secureTextBoxEx = control as SecureTextBoxEx;
 			if (secureTextBoxEx != null) Apply(secureTextBoxEx);
 
-			var plainTextBox = control as TextBox;
-			if (plainTextBox != null && !(plainTextBox is TextBoxBase) &&
-			    !(plainTextBox is SecureTextBoxEx) && !(plainTextBox is HotKeyControlEx))
-				Apply(plainTextBox);
+			var textBoxBase = control as TextBoxBase;
+			if (textBoxBase != null && !(textBoxBase is RichTextBox))
+				Apply(textBoxBase);
 
 			var hotKeyControlEx = control as HotKeyControlEx;
 			if (hotKeyControlEx != null) Apply(hotKeyControlEx);
@@ -656,20 +655,20 @@ namespace KeePassDarkMode
 			Apply(menuItem.DropDownItems);
 		}
 
-		private void Apply(TextBox textBox)
-		{
-			textBox.BackColorChanged -= HandlePlainTextBoxBackColorChanged;
-			textBox.BackColorChanged += HandlePlainTextBoxBackColorChanged;
-		}
+		private readonly Dictionary<TextBoxBase, TextBoxNativeWindow> _textBoxSubclasses =
+			new Dictionary<TextBoxBase, TextBoxNativeWindow>();
 
-		private void HandlePlainTextBoxBackColorChanged(object sender, EventArgs e)
+		private void Apply(TextBoxBase textBox)
 		{
-			if (!_enabled)
-				return;
+			TextBoxNativeWindow subclass;
+			if (!_textBoxSubclasses.TryGetValue(textBox, out subclass))
+			{
+				subclass = new TextBoxNativeWindow(textBox, _theme);
+				_textBoxSubclasses.Add(textBox, subclass);
+				textBox.Disposed += (s, e) => _textBoxSubclasses.Remove(textBox);
+			}
 
-			var textBox = (TextBox) sender;
-			if (IsLightReset(textBox.BackColor))
-				textBox.BackColor = _theme.Control.BackColor;
+			subclass.EnableTheme(_enabled, _theme);
 		}
 
 		private void Apply(SecureTextBoxEx secureTextBoxEx)

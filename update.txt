@@ -1,6 +1,7 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.10.0
+KeePass-DarkMode:1.8.11.0
 :::
+- Fix: Flackern beim Fokuswechsel - weisses Hintergrund-Wischen der Textfelder (EDIT-Klass brush) per Fenster-Subclassing entfernt
 - Fix: Flackern beim Oeffnen von Dialogen - Theme wird jetzt spaetestens beim Handle-Aufbau und erneut nach KeePass-Farbreset im Form_Load gesetzt, bevor das erste Frame malt
 - Fix: Flackern beim Oeffnen ALLER Dialoge - First-Frame-Schutz greift jetzt ueberall (WS_EX_COMPOSITED + Transparenz bis Shown)
 - Fix: Flackern (weiss->dunkel) beim Oeffnen des Edit-Eintrag-Fensters - KeePass-Farbresets werden jetzt sofort gefangen

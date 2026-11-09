@@ -73,6 +73,7 @@
     <Compile Include="Decorators\StandardIconPickerDecorator.cs" />
     <Compile Include="Decorators\WindowIconDecorator.cs" />
     <Compile Include="Decorators\TabControlDecorator.cs" />
+    <Compile Include="Decorators\TextBoxNativeWindow.cs" />
     <Compile Include="Decorators\TabControlPainter.cs" />
     <Compile Include="Editor\ColorConverter.cs" />
     <Compile Include="Editor\PaletteTypeConverter.cs" />

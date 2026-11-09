@@ -81,9 +81,14 @@ namespace KeePassDarkMode.Decorators
 			if (_enabled && m.Msg == WM_ERASEBKGND)
 			{
 				// Deliberately no base call: DefWindowProc would fill with the
-				// white class brush.
+				// white class brush. Use the control's own BackColor - KeePass
+				// may intentionally set a different one (error fields).
+				var backColor = _textBox.BackColor;
+				if (backColor.IsEmpty)
+					backColor = _theme.Control.BackColor;
+
 				using (var graphics = Graphics.FromHwnd(m.HWnd))
-				using (var background = new SolidBrush(_theme.Control.BackColor))
+				using (var background = new SolidBrush(backColor))
 					graphics.FillRectangle(background, _textBox.ClientRectangle);
 
 				m.Result = IntPtr.One;

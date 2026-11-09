@@ -9,12 +9,10 @@ namespace KeePassDarkMode.Decorators
     internal sealed class FirstFrameDecorator : IDisposable
     {
         private const int WS_EX_LAYERED = 0x80000;
-        private const int WS_EX_COMPOSITED = 0x02000000;
 
         private readonly Form _form;
         private int _originalStyle;
         private bool _armed;
-        private bool _composited;
 
         [DllImport("user32.dll")]
         private static extern bool RedrawWindow(IntPtr window, IntPtr rectangle, IntPtr region, uint flags);
@@ -56,15 +54,10 @@ namespace KeePassDarkMode.Decorators
         {
             _originalStyle = GetWindowLong(_form.Handle, -20);
 
-            // Fallback for every dialog: double-buffer all native children while
-            // the form is first shown, so the white-then-dark sequence is
-            // composited off screen and only the final frame appears. Removed
-            // again on Shown - WS_EX_COMPOSITED is too slow to keep.
-            if ((_originalStyle & WS_EX_COMPOSITED) == 0)
-            {
-                SetWindowLong(_form.Handle, -20, _originalStyle | WS_EX_COMPOSITED);
-                _composited = true;
-            }
+            // No WS_EX_COMPOSITED here: the off-screen buffer starts black, so
+            // dialogs whose children have not painted yet (e.g. the Options
+            // form, built in Shown) appear as black blocks until repainted.
+            // The layered alpha trick below covers the first frame instead.
 
             // Form.Opacity calls UpdateStyles while managed Visible is true during
             // Load. That can show the HWND before its final monitor position.
@@ -94,24 +87,14 @@ namespace KeePassDarkMode.Decorators
 
         private void Restore()
         {
-            if (!_armed && !_composited) return;
-            bool wasArmed = _armed;
+            if (!_armed) return;
             _armed = false;
             if (!_form.IsDisposed && !_form.Disposing && _form.IsHandleCreated)
             {
+                SetLayeredWindowAttributes(_form.Handle, 0, 255, 2);
+                // Restore only our bit; preserve changes made by KeePass in Load.
                 int style = GetWindowLong(_form.Handle, -20);
-                if (_composited)
-                {
-                    _composited = false;
-                    style &= ~WS_EX_COMPOSITED;
-                }
-                if (wasArmed || (_originalStyle & WS_EX_LAYERED) == 0)
-                {
-                    SetLayeredWindowAttributes(_form.Handle, 0, 255, 2);
-                    style &= ~WS_EX_LAYERED;
-                }
-                // Restore only our bits; preserve changes made by KeePass in Load.
-                SetWindowLong(_form.Handle, -20, style);
+                SetWindowLong(_form.Handle, -20, style & ~WS_EX_LAYERED);
             }
         }
 

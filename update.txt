@@ -1,6 +1,7 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.12.0
+KeePass-DarkMode:1.8.13.0
 :::
+- Fix: Review-Fixes 1.8.13 - Split-Button-Mehrfachausloesung, Akzentfarbe (R/B vertauscht), Theme-Fallback bei defektem Template, Dialog-Hook nur noch fuer KeePass-Prozess, Update-Check respektiert Opt-out, Speicher-/Handle-Lecks, .NET 4.5 (TLS 1.2)
 - Fix: Schwarze Blocke im Options-Dialog (WS_EX_COMPOSITED zurueckgebaut)
 - Fix: Fokus-Flackern der Textfelder per WM_ERASEBKGND-Subclassing, dabei respektiert die Felder eigene BackColor (z.B. Error-Felder)
 - Fix: Flackern beim Fokuswechsel - weisses Hintergrund-Wischen der Textfelder (EDIT-Klass brush) per Fenster-Subclassing entfernt

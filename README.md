@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Windows-blue?style=for-the-badge&logo=windows&logoColor=white" alt="Platform">
-  <img src="https://img.shields.io/badge/.NET-4.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
+  <img src="https://img.shields.io/badge/.NET-4.5-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
   <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/JImmyB0nes/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
   <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/JImmyB0nes/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
 </p>
@@ -49,7 +49,7 @@
 STRG + T          Theme umschalten
 ```
 
-Alternativ über das Menü: **Tools → Dark Theme**
+Alternativ über das Menü: **Tools → Dark Theme** (der Menüpunkt trägt den Namen des gewählten Themes)
 
 ---
 
@@ -60,13 +60,14 @@ Alternativ über das Menü: **Tools → Dark Theme**
 
    | Version | Pfad |
    |---|---|
-   | KeePass Standard | `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\` |
+   | KeePass Standard | `C:\Program Files\KeePass Password Safe 2\Plugins\` |
+   | KeePass Standard (ältere 32-Bit-Installation) | `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\` |
    | Pleasant PPS | `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\` |
 
 3. KeePass neu starten — fertig.
 
 > [!TIP]
-> Alternativ: **Tools → Plugins → Add…** und die `.plgx` dort reinziehen. KeePass lädt und aktiviert Plugins dann zur Laufzeit.
+> Den Plugin-Ordner öffnet **Tools → Plugins → Open Folder** direkt. KeePass lädt Plugins nur beim Start — nach dem Kopieren ist ein Neustart nötig.
 
 ---
 
@@ -120,20 +121,20 @@ KeePass nutzt klassische Windows-Controls, die sich nur eingeschränkt umfärben
 
 - **KeePass:** 2.4x und neuer (gegen 2.42 gebaut, lauffähig mit aktuellen Versionen)
 - **Windows:** 10 und 11
-- **.NET Framework:** 4.0 oder neuer
+- **.NET Framework:** 4.5 oder neuer
 
 ---
 
 ## 🛠️ Entwicklung
 
 ```bash
-# Build unter Windows (benötigt .NET Framework 4.x)
+# Build unter Windows (benötigt .NET Framework 4.5)
 msbuild KeePass-DarkMode.sln /p:Configuration=Release
 
 # plgx-Paket erzeugen
 cd build && build.cmd
 ```
 
-Gebaut wird unter Windows mit MSBuild (.NET Framework 4.x) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
+Gebaut wird unter Windows mit MSBuild (.NET Framework 4.5) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.

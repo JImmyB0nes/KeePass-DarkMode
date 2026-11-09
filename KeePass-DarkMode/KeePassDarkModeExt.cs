@@ -139,10 +139,10 @@ namespace KeePassDarkMode
 			if (!_theme.Enabled || _firstFrames.ContainsKey(form))
 				return;
 
+			// All dialogs: the layered/composited first-frame trick is removed
+			// again on Shown, so it is cheap enough for every KeePass form.
 			var name = form.GetType().FullName;
-			if (name != "KeePass.Forms.MainForm" && name != "KeePass.Forms.PwEntryForm" &&
-				name != "KeePass.Forms.GroupForm" && name != "KeePass.Forms.KeyPromptForm" &&
-				name != "KeePass.Forms.DatabaseSettingsForm")
+			if (!name.StartsWith("KeePass.Forms."))
 				return;
 
 			if (FirstFrameDecorator.IsNativeVisible(form))

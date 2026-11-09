@@ -1,6 +1,7 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.8.0
+KeePass-DarkMode:1.8.9.0
 :::
+- Fix: Flackern beim Oeffnen ALLER Dialoge - First-Frame-Schutz greift jetzt ueberall (WS_EX_COMPOSITED + Transparenz bis Shown)
 - Fix: Flackern (weiss->dunkel) beim Oeffnen des Edit-Eintrag-Fensters - KeePass-Farbresets werden jetzt sofort gefangen
 - Fix: Versionsanzeige unten im Options-Dialog abschnieden, wenn der Dialog zu niedrig ist
 - Fix: Windows-Akzentfarbe wurde rot/vertauscht ausgelesen (falsche Farbe bei "Akzent uebernehmen")

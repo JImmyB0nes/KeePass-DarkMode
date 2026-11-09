@@ -74,8 +74,9 @@ namespace KeePassDarkMode
 			try
 			{
 				// Add TLS 1.2 for the GitHub handshake without replacing the
-				// protocols KeePass or other plugins may rely on.
-				ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+				// protocols KeePass or other plugins may rely on. 3072 = Tls12
+				// (numeric, so the source also compiles against older references).
+				ServicePointManager.SecurityProtocol |= (SecurityProtocolType) 3072;
 				var request = (HttpWebRequest)WebRequest.Create(ReleaseApiUrl);
 				request.UserAgent = "KeePass-DarkMode";
 				request.Timeout = 5000;

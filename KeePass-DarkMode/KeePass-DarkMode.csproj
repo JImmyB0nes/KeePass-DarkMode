@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeePassDarkMode</RootNamespace>
     <AssemblyName>KeePassDarkMode</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -157,6 +157,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)\..\KeePass\Plugins</PostBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)..\KeePass\Plugins\" copy /Y "$(TargetPath)" "$(SolutionDir)..\KeePass\Plugins\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

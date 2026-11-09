@@ -109,11 +109,19 @@ namespace KeePassDarkMode
 
 		private ITheme GetCustomTheme()
 		{
-			var templateFile = TemplateReader.Get(ResolveTemplatePath()) ?? TemplateReader.GetDefaultTemplate();
-			// Last resort: if even the embedded default cannot be read, fall back to
-			// the empty (light) theme instead of throwing during plugin load.
+			// A broken custom template (bad color syntax, unparseable enum
+			// value) must not fail the whole plugin load - fall back to the
+			// embedded Dark Theme first, and only if even that cannot be read
+			// to the empty (light) theme.
+			return TryCreateTheme(TemplateReader.Get(ResolveTemplatePath()))
+			       ?? TryCreateTheme(TemplateReader.GetDefaultTemplate())
+			       ?? _defaultTheme;
+		}
+
+		private ITheme TryCreateTheme(IniFile templateFile)
+		{
 			if (templateFile == null)
-				return _defaultTheme;
+				return null;
 
 			try
 			{
@@ -126,10 +134,7 @@ namespace KeePassDarkMode
 			}
 			catch (Exception)
 			{
-				// A broken custom template (bad color syntax, unparseable enum
-				// value) must not fail the whole plugin load - fall back to the
-				// built-in default theme instead.
-				return _defaultTheme;
+				return null;
 			}
 		}
 
@@ -247,8 +252,10 @@ namespace KeePassDarkMode
 			if (!CanHaveScrollBars(control))
 				return;
 
-			var useExplorerDarkMode = _theme.ScrollBar.UseExplorerDarkMode;
-			TrySetWindowTheme(control.Handle, _enabled && useExplorerDarkMode);
+			// Never force handle creation here (hidden tab pages, ...): controls
+			// without a handle get their theme in HandleControlCreated.
+			if (control.IsHandleCreated)
+				TrySetWindowTheme(control.Handle, _enabled && _theme.ScrollBar.UseExplorerDarkMode);
 
 			control.HandleCreated -= HandleControlCreated;
 			control.HandleCreated += HandleControlCreated;
@@ -304,8 +311,12 @@ namespace KeePassDarkMode
 		{
 			// Named handler instead of a lambda: a fresh closure per Visit() would
 			// defeat -=, so re-applied themes would stack handlers on every reload.
-			if ((control.Name == "m_cmbStringName" && control.Parent.Name == "EditStringForm") ||
-			    (control.Name == "m_tbSearch" && control.Parent.Name == "OptionsForm"))
+			var parent = control.Parent;
+			if (parent == null)
+				return;
+
+			if ((control.Name == "m_cmbStringName" && parent.Name == "EditStringForm") ||
+			    (control.Name == "m_tbSearch" && parent.Name == "OptionsForm"))
 			{
 				control.BackColorChanged -= HandleSystemColorReset;
 				control.BackColorChanged += HandleSystemColorReset;
@@ -368,6 +379,9 @@ namespace KeePassDarkMode
 
 		private void HandleCheckBoxPaint(object sender, PaintEventArgs e)
 		{
+			if (!_enabled)
+				return;
+
 			var checkBox = (CheckBox) sender;
 			var disabledForeColor = ControlPaint.Dark(_theme.Button.ForeColor, 0.25f);
 			var glyphSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, CheckBoxState.UncheckedNormal);
@@ -528,9 +542,21 @@ namespace KeePassDarkMode
 		private void Apply(TabControl tabControl)
 		{
 			var decoratorName = tabControl.Name + "_decorator";
-			var decorator = tabControl.Parent == null
-				? null
-				: tabControl.Parent.Controls.Find(decoratorName, false).FirstOrDefault() as TabControlDecorator;
+			TabControlDecorator decorator = null;
+			if (tabControl.Parent != null)
+			{
+				// Match by reference, not by name: unnamed tab controls on the
+				// same parent would otherwise share one decorator.
+				foreach (Control sibling in tabControl.Parent.Controls)
+				{
+					var candidate = sibling as TabControlDecorator;
+					if (candidate != null && candidate.Target == tabControl)
+					{
+						decorator = candidate;
+						break;
+					}
+				}
+			}
 
 			if (decorator == null)
 			{
@@ -815,18 +841,18 @@ namespace KeePassDarkMode
 		private void HandleButtonEnabledChanged(object sender, EventArgs e)
 		{
 			var button = (Button) sender;
-			if (button.Enabled)
-			{
-				button.Paint -= HandleButtonPaint;
-			}
-			else
-			{
+			// -= first: Apply/reload calls this repeatedly for a button that
+			// stays disabled, which would otherwise stack Paint handlers.
+			button.Paint -= HandleButtonPaint;
+			if (!button.Enabled)
 				button.Paint += HandleButtonPaint;
-			}
 		}
 
 		private void HandleButtonPaint(object sender, PaintEventArgs e)
 		{
+			if (!_enabled)
+				return;
+
 			var button = (Button) sender;
 			var disabledForeColor = ControlPaint.Dark(_theme.Button.ForeColor, 0.25f);
 			if (button.Enabled)
@@ -864,6 +890,8 @@ namespace KeePassDarkMode
 
 			try
 			{
+				// "explorer" (not null/null) on disable on purpose: KeePass itself
+				// assigns the explorer theme to its lists (UIUtil.SetExplorerTheme).
 				SetWindowTheme(hWnd, enable ? "DarkMode_Explorer" : "explorer", null);
 			}
 			catch (Exception)
@@ -910,6 +938,16 @@ namespace KeePassDarkMode
 			{
 				decorator = new RichTextBoxDecorator(richTextBox, _theme);
 				_richTextBoxDecorators.Add(richTextBox, decorator);
+				// Release the box (and its text, e.g. entry notes) with the dialog.
+				richTextBox.Disposed += (s, e) =>
+				{
+					RichTextBoxDecorator disposed;
+					if (_richTextBoxDecorators.TryGetValue(richTextBox, out disposed))
+					{
+						_richTextBoxDecorators.Remove(richTextBox);
+						disposed.Dispose();
+					}
+				};
 			}
 
 			decorator.EnableTheme(_enabled, _theme);

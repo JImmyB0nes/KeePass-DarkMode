@@ -6,12 +6,13 @@ namespace KeePassDarkMode.Decorators
 {
 	// KeePass shows native Win32 dialogs (message boxes, security warnings,
 	// the Windows credential picker) that our control visitor never sees.
-	// A global WinEvent hook catches every dialog window the moment it is
-	// shown and applies the immersive dark title bar - the same trick the
+	// A WinEvent hook limited to the KeePass process catches every dialog
+	// window the moment it is shown and applies the immersive dark title bar - the same trick the
 	// main forms use, so message boxes finally match the theme.
 	internal class NativeDialogWatcher : IDisposable
 	{
-		private delegate IntPtr WinEventDelegate(IntPtr hWinEventHook, uint eventType,
+		// WINEVENTPROC returns void.
+		private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
 			IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
 		private const uint WINEVENT_OUTOFCONTEXT = 0;
@@ -51,8 +52,11 @@ namespace KeePassDarkMode.Decorators
 
 			if (dark && _hook == IntPtr.Zero)
 			{
+				// Only events of our own process - idProcess 0 would deliver
+				// every window shown on the whole desktop (all applications).
+				var processId = (uint) System.Diagnostics.Process.GetCurrentProcess().Id;
 				_hook = SetWinEventHook(EVENT_OBJECT_SHOW, EVENT_OBJECT_SHOW, IntPtr.Zero,
-					_callback, 0, 0, WINEVENT_OUTOFCONTEXT);
+					_callback, processId, 0, WINEVENT_OUTOFCONTEXT);
 			}
 			else if (!dark && _hook != IntPtr.Zero)
 			{
@@ -61,17 +65,17 @@ namespace KeePassDarkMode.Decorators
 			}
 		}
 
-		private IntPtr HandleWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd,
+		private void HandleWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd,
 			int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
 		{
 			if (!_dark || idObject != OBJID_WINDOW || hwnd == IntPtr.Zero)
-				return IntPtr.Zero;
+				return;
 
 			try
 			{
 				var className = new System.Text.StringBuilder(64);
 				if (GetClassName(hwnd, className, 64) == 0)
-					return IntPtr.Zero;
+					return;
 
 				// #32770 = dialog boxes (MessageBox, TaskDialog, credential prompts).
 				if (className.ToString() == "#32770")
@@ -81,8 +85,6 @@ namespace KeePassDarkMode.Decorators
 			{
 				// Never let a hook callback throw across the WinEvent boundary.
 			}
-
-			return IntPtr.Zero;
 		}
 
 		private static void SetDark(IntPtr hwnd)

@@ -82,6 +82,13 @@ namespace KeePassDarkMode.Decorators
             }
         }
         
+        internal void Release()
+        {
+            _richTextBox.HandleCreated -= HandleRichTextBoxHandleCreated;
+            _richTextBox.HandleDestroyed -= HandleRichTextBoxHandleDestroyed;
+            ReleaseHandle();
+        }
+
         private void HandleRichTextBoxHandleCreated(object sender, EventArgs e)
         {
             if (_richTextBox != null) 

@@ -36,7 +36,6 @@ namespace KeePassDarkMode.Decorators
 			// re-creates its native window, which breaks the IME input context so that
 			// Chinese/Japanese/Korean composition no longer works (e.g. in the Notes
 			// field). The RichTextBox keeps its own default border instead.
-			EnabledChanged += HandleEnabledChanged;
 
 			var parent = richTextBox.Parent;
 			if (parent != null && parent.GetType() == typeof(DataEditorForm))
@@ -72,18 +71,6 @@ namespace KeePassDarkMode.Decorators
 			Control c = sender as Control;
 			if (c == null) return;
 			Size = c.Size;
-        }
-
-        private void HandleTabStopChanges(object sender, EventArgs e)
-        {
-			HandleTabStop(sender as RichTextBox);
-        }
-
-        private void HandleTabStop(RichTextBox richTextBox)
-        {
-			if (richTextBox == null) return;
-			TabStop = richTextBox.TabStop;
-			TabIndex = richTextBox.TabIndex;
         }
 
         private void HandleRichTextBoxLinkCreated(object sender, EventArgs e)
@@ -172,12 +159,6 @@ namespace KeePassDarkMode.Decorators
 			Dock = ((RichTextBox) sender).Dock;
 		}
 
-		private void HandleEnabledChanged(object sender, EventArgs e)
-		{
-			if (_enabled)
-				ControlSnapshot.Make(_richTextBox);
-		}
-
 		private void HandleRichTextBoxTextChanged(object sender, EventArgs e)
 		{
 			if (!_enabled)
@@ -239,8 +220,28 @@ namespace KeePassDarkMode.Decorators
 			_enabled = enabled;
 			if (!enabled)
 				ApplyFontColor(_richTextBox);
+		}
 
-			BorderStyle = _theme.RichTextBox.BorderStyle;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				_richTextBox.TextChanged -= HandleRichTextBoxTextChanged;
+				_richTextBox.DockChanged -= HandleRichTextBoxDockChanged;
+				_richTextBox.SizeChanged -= HandleRichTextBoxSizeChanged;
+				if (_richTextBoxNativeWindow != null)
+				{
+					_richTextBoxNativeWindow.Paint -= HandleRichTextBoxPaint;
+					_richTextBoxNativeWindow.LinkCreated -= HandleRichTextBoxLinkCreated;
+					_richTextBoxNativeWindow.Release();
+				}
+
+				// Do not keep entry notes in memory longer than the dialog.
+				_detectedLinks.Clear();
+				_lastText = null;
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }

@@ -34,7 +34,7 @@ echo Copying files
 xcopy "..\KeePass-DarkMode\*" "PlgX" /s /e /exclude:PlgXExclude.txt
 
 echo Compiling PlgX
-"C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create "%cd%\PlgX" --debug --plgx-prereq-net:3.5
+"C:\Program Files\KeePass Password Safe 2\KeePass.exe" /plgx-create "%cd%\PlgX" --debug --plgx-prereq-kp:2.42 --plgx-prereq-net:4.5
 
 echo Releasing PlgX
 rem KeePass leitet den Plugin-Typ aus dem plgx-Dateinamen ab:

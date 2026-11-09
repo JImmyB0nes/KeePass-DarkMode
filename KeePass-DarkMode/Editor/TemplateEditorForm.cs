@@ -86,14 +86,28 @@ namespace KeePassDarkMode.Editor
 				fileDialog.InitialDirectory = TemplateReader.GetTemplatesDir();
 				if (fileDialog.ShowDialog() == DialogResult.OK)
 				{
-					var template = TemplateReader.Get("file:" + fileDialog.FileName);
-					if (template == null || TemplateReader.GetTemplateName(fileDialog.FileName) == null)
+					var templatePath = "file:" + fileDialog.FileName;
+					var template = TemplateReader.Get(templatePath);
+					CustomThemeTemplate loaded = null;
+					if (template != null && TemplateReader.GetTemplateName(templatePath) != null)
+					{
+						try
+						{
+							loaded = new CustomThemeTemplate(template);
+						}
+						catch (Exception)
+						{
+							loaded = null;
+						}
+					}
+
+					if (loaded == null)
 					{
 						MessageService.ShowWarning("Unable to load template from file:", fileDialog.FileName);
 						return;
 					}
 					
-					_customTheme = new CustomThemeTemplate(template);
+					_customTheme = loaded;
 					propertyGrid.SelectedObject = _customTheme;
 					_previewMode = false;
 				}
@@ -110,7 +124,8 @@ namespace KeePassDarkMode.Editor
 				if (fileDialog.ShowDialog() == DialogResult.OK)
 				{
 					var iniFile = _customTheme.GetIniFile();
-					iniFile.SaveFile(fileDialog.FileName);
+					if (!TrySave(iniFile, fileDialog.FileName))
+						return;
 					_options.Template = _template;
 					_options.Template = "file:" + fileDialog.FileName;
 					_previewMode = false;
@@ -128,11 +143,28 @@ namespace KeePassDarkMode.Editor
 			
 			var iniFile = _customTheme.GetIniFile();
 			_customTheme.Name = name;
-			iniFile.SaveFile(_tempFileName);
+			if (!TrySave(iniFile, _tempFileName))
+				return;
 			_options.Template = _template;
 			_options.Template = "file:" + _tempFileName;
 			
 			_previewMode = true;
+		}
+
+		// The plugins folder below Program Files is usually not writable
+		// without admin rights - report it instead of crashing the dialog.
+		private static bool TrySave(Theme.IniFile iniFile, string path)
+		{
+			try
+			{
+				iniFile.SaveFile(path);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				MessageService.ShowWarning("Unable to save template:", path, ex.Message);
+				return false;
+			}
 		}
 
 		public static TemplateEditorForm Create(DarkModeOptions options)
@@ -141,13 +173,25 @@ namespace KeePassDarkMode.Editor
 				return _instance;
 			
 			var iniFile = TemplateReader.Get(options.Template);
-			if (iniFile == null)
+			CustomThemeTemplate theme = null;
+			if (iniFile != null)
+			{
+				try
+				{
+					theme = new CustomThemeTemplate(iniFile);
+				}
+				catch (Exception)
+				{
+					theme = null;
+				}
+			}
+
+			if (theme == null)
 			{
 				MessageService.ShowWarning("Unable to load template:", options.Template);
 				return null;
 			}
 
-			var theme = new CustomThemeTemplate(iniFile);
 			_instance = new TemplateEditorForm(theme, options);
 			return _instance;
 		}

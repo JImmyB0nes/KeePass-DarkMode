@@ -21,12 +21,13 @@ namespace KeePassDarkMode.Theme
 						var value = key.GetValue("ColorizationColor");
 						if (value != null)
 						{
-							// DWORD format: 0xAABBGGRR - alpha is ignored.
+							// DWORD format of ColorizationColor: 0xAARRGGBB (same as
+							// DwmGetColorizationColor) - alpha is ignored.
 							var argb = Convert.ToInt32(value);
 							var color = Color.FromArgb(
-								argb & 0xFF,           // R
+								(argb >> 16) & 0xFF,   // R
 								(argb >> 8) & 0xFF,    // G
-								(argb >> 16) & 0xFF);  // B
+								argb & 0xFF);          // B
 
 							// A fully transparent or black value means the
 							// DWM composition is off - fall back to the

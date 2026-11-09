@@ -24,6 +24,9 @@ namespace KeePassDarkMode.Decorators
 		// reload would leak one GDI object per theme change.
 		private Image _arrowImage;
 		private Color _arrowForeColor;
+		// Tracks whether our click routing is installed - EnableTheme runs
+		// several times per dialog, every switch must happen exactly once.
+		private bool _themedClickInstalled;
 
 		public SplitButtonExDecorator(SplitButtonEx button, ITheme theme)
 		{
@@ -83,7 +86,7 @@ namespace KeePassDarkMode.Decorators
 			if (rect.Contains(e.Location))
 			{
 				_button.SplitDropDownMenu.ShowEx(_button);
-				// The menu is not showing for the first time. I've got no idea why.
+				// Kept as a safety net: re-show only if the menu is not visible.
 				if (!_button.SplitDropDownMenu.Visible)
 					_button.SplitDropDownMenu.ShowEx(_button);
 			}
@@ -136,15 +139,28 @@ namespace KeePassDarkMode.Decorators
 			{
 				button.ImageAlign = ContentAlignment.MiddleRight;
 				button.Image = GetButtonDownArrow();
-				button.MouseClick += HandleButtonMouseClick;
-				RemoveClickEvent(_button);
+				if (!_themedClickInstalled)
+				{
+					button.MouseClick -= HandleButtonMouseClick;
+					button.MouseClick += HandleButtonMouseClick;
+					RemoveClickEvent(_button);
+					_themedClickInstalled = true;
+				}
 			}
 			else
 			{
 				button.ImageAlign = _imageAlign;
 				button.Image = _image;
-				button.MouseClick -= HandleButtonMouseClick;
-				button.Click += _clickHandler;
+				if (_themedClickInstalled)
+				{
+					button.MouseClick -= HandleButtonMouseClick;
+					if (_clickHandler != null)
+					{
+						button.Click -= _clickHandler;
+						button.Click += _clickHandler;
+					}
+					_themedClickInstalled = false;
+				}
 			}
 		}
 

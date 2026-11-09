@@ -24,14 +24,16 @@ namespace KeePassDarkMode.Decorators
                 Array.Copy(colorTable, _originalColorTable, colorTable.Length);
             }
             
+            // Always start from the original system colors, so a theme without
+            // Control colors (Color.Empty) never writes 0 (transparent black).
+            Array.Copy(_originalColorTable, colorTable, colorTable.Length);
+
             if (enabled)
             {
-                colorTable[(int) KnownColor.ControlText] = theme.Control.ForeColor.ToArgb();
-                colorTable[(int) KnownColor.Control] = theme.Control.BackColor.ToArgb();
-            }
-            else
-            {
-                Array.Copy(_originalColorTable, colorTable, colorTable.Length);
+                if (!theme.Control.ForeColor.IsEmpty)
+                    colorTable[(int) KnownColor.ControlText] = theme.Control.ForeColor.ToArgb();
+                if (!theme.Control.BackColor.IsEmpty)
+                    colorTable[(int) KnownColor.Control] = theme.Control.BackColor.ToArgb();
             }
         }
     }

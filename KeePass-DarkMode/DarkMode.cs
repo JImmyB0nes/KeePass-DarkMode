@@ -198,6 +198,11 @@ namespace KeePassDarkMode
 			var secureTextBoxEx = control as SecureTextBoxEx;
 			if (secureTextBoxEx != null) Apply(secureTextBoxEx);
 
+			var plainTextBox = control as TextBox;
+			if (plainTextBox != null && !(plainTextBox is TextBoxBase) &&
+			    !(plainTextBox is SecureTextBoxEx) && !(plainTextBox is HotKeyControlEx))
+				Apply(plainTextBox);
+
 			var hotKeyControlEx = control as HotKeyControlEx;
 			if (hotKeyControlEx != null) Apply(hotKeyControlEx);
 
@@ -458,7 +463,7 @@ namespace KeePassDarkMode
 			}
 
 			var comboBox = (ComboBox) sender;
-			if (comboBox.BackColor == SystemColors.Window)
+			if (IsLightReset(comboBox.BackColor))
 				comboBox.BackColor = _theme.Control.BackColor;
 		}
 
@@ -651,6 +656,22 @@ namespace KeePassDarkMode
 			Apply(menuItem.DropDownItems);
 		}
 
+		private void Apply(TextBox textBox)
+		{
+			textBox.BackColorChanged -= HandlePlainTextBoxBackColorChanged;
+			textBox.BackColorChanged += HandlePlainTextBoxBackColorChanged;
+		}
+
+		private void HandlePlainTextBoxBackColorChanged(object sender, EventArgs e)
+		{
+			if (!_enabled)
+				return;
+
+			var textBox = (TextBox) sender;
+			if (IsLightReset(textBox.BackColor))
+				textBox.BackColor = _theme.Control.BackColor;
+		}
+
 		private void Apply(SecureTextBoxEx secureTextBoxEx)
 		{
 			secureTextBoxEx.BackColorChanged -= HandleSecureTextBoxExOnBackColorChanged;
@@ -665,8 +686,24 @@ namespace KeePassDarkMode
 			}
 
 			var textBox = (SecureTextBoxEx) sender;
-			if (textBox.BackColor == SystemColors.Window)
+			if (IsLightReset(textBox.BackColor))
 				textBox.BackColor = _theme.SecureTextBox.BackColor;
+		}
+
+		// KeePass resets control colors during Form_Load - not only to
+		// SystemColors.Window but sometimes to explicit white/gray (e.g. after
+		// SecureTextBox.SetupPasswordBox or ResetBackColor). Treating every
+		// near-white color as a reset catches all of them and stops the
+		// white-then-dark flicker on dialog open.
+		private bool IsLightReset(Color color)
+		{
+			if (color.IsEmpty)
+				return false;
+
+			if (color == AppDefs.ColorEditError)
+				return false;
+
+			return color.GetBrightness() > 0.9f;
 		}
 
 		private void Apply(HotKeyControlEx hotKeyControlEx)
@@ -683,7 +720,7 @@ namespace KeePassDarkMode
 			}
 
 			var textBox = (HotKeyControlEx) sender;
-			if (textBox.BackColor == SystemColors.Window)
+			if (IsLightReset(textBox.BackColor))
 				textBox.BackColor = _theme.Control.BackColor;
 		}
 

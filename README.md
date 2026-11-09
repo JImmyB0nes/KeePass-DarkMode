@@ -133,9 +133,3 @@ cd build && build.cmd
 Gebaut wird unter Windows mit MSBuild (.NET Framework 4.x) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
-
----
-
-## 🙏 Danksagung
-
-Basierend auf [KeeTheme](https://github.com/xatupal/KeeTheme) von Krzysztof Łaputa (MIT-Lizenz). Einige Dekoratoren (First-Frame-Flimmer-Schutz, zentrierte Suche, moderne Vektor-Icons, Icon-Picker) wurden aus [Pleasant KeePass Dark Mode](https://github.com/kulmi84/Pleasant-KeePass-Dark-Mode) von Marcin Kulmaczewski portiert (ebenfalls MIT, KeeTheme-Fork) — Dank an beide Autoren.

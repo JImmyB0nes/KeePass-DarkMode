@@ -90,17 +90,31 @@ namespace KeePassDarkMode
 
 		private void HandleOpenFormsAdded(object sender, FormAddedEventArgs args)
 		{
+			var form = args.Form;
+
 			if (!_initialized)
 				InitializeTheme();
 
 			// Cover the form with a transparent layer until the theme paint
 			// finished - removes the light first-frame flash on new dialogs.
-			PrepareFirstFrame(args.Form);
+			PrepareFirstFrame(form);
+
+			// OpenForms.Add can fire before the HWND exists: apply the moment
+			// the handle is created, so no child ever paints in default white.
+			form.HandleCreated -= HandleFormHandleCreated;
+			form.HandleCreated += HandleFormHandleCreated;
 
 			if (_theme.Enabled)
-				_controlVisitor.Visit(args.Form);
-			
-			Win10ThemeMonitor.UseImmersiveDarkMode(args.Form, _theme.Enabled);
+				_controlVisitor.Visit(form);
+
+			// KeePass resets control colors inside Form_Load (SetupPasswordBox,
+			// ResetBackColor) - that is after the visit above and before the
+			// first WM_PAINT. Re-apply there, layout-paused, so the very first
+			// painted frame is already dark.
+			form.Load -= HandleFormLoadReapply;
+			form.Load += HandleFormLoadReapply;
+
+			Win10ThemeMonitor.UseImmersiveDarkMode(form, _theme.Enabled);
 			
 			var optionsForm = args.Form as OptionsForm;
 			if (optionsForm != null)
@@ -121,6 +135,46 @@ namespace KeePassDarkMode
 			{
 				pwEntryForm.Load -= HandlePwEntryFormFormLoad;
 				pwEntryForm.Load += HandlePwEntryFormFormLoad;
+			}
+		}
+
+		private void HandleFormHandleCreated(object sender, EventArgs e)
+		{
+			var form = (Form) sender;
+			form.HandleCreated -= HandleFormHandleCreated;
+
+			if (!_theme.Enabled || form.IsDisposed)
+				return;
+
+			// Child handles are created with this message - color them before
+			// any WM_PAINT can reach them.
+			ApplySuspended(form);
+		}
+
+		private void HandleFormLoadReapply(object sender, EventArgs e)
+		{
+			var form = (Form) sender;
+			form.Load -= HandleFormLoadReapply;
+
+			if (!_theme.Enabled || form.IsDisposed)
+				return;
+
+			// Form_Load is where KeePass resets colors - re-apply before the
+			// first frame is painted, with layout paused to avoid intermediate
+			// repaints of every child.
+			ApplySuspended(form);
+		}
+
+		private void ApplySuspended(Control root)
+		{
+			root.SuspendLayout();
+			try
+			{
+				_controlVisitor.Visit(root);
+			}
+			finally
+			{
+				root.ResumeLayout(false);
 			}
 		}
 

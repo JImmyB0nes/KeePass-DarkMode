@@ -95,6 +95,16 @@ namespace KeePassDarkMode.Options
 			versionLink.Text = "Version " + UpdateChecker.CurrentVersion.ToString(3);
 			versionLink.LinkArea = new LinkArea(0, 0); // plain text until update known
 
+			// Respect the opt-out: no network access when update checks are
+			// disabled. Only the cached result of an earlier check is shown.
+			if (!_options.CheckUpdates)
+			{
+				Version cached;
+				if (Version.TryParse(_options.LatestVersion, out cached))
+					ShowLatestVersion(cached);
+				return;
+			}
+
 			// Background check against the GitHub releases API - never blocks the dialog.
 			var worker = new System.ComponentModel.BackgroundWorker();
 			worker.DoWork += (s, args) => args.Result = UpdateChecker.QueryLatestVersion();
@@ -102,14 +112,17 @@ namespace KeePassDarkMode.Options
 			worker.RunWorkerAsync();
 		}
 
-		private static Version QueryLatestVersion()
-		{
-			return UpdateChecker.QueryLatestVersion();
-		}
-
 		private void HandleVersionCheckCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs args)
 		{
 			var latest = args.Error == null ? args.Result as Version : null;
+			if (IsDisposed || versionLink.IsDisposed)
+				return;
+
+			ShowLatestVersion(latest);
+		}
+
+		private void ShowLatestVersion(Version latest)
+		{
 			if (latest == null || latest <= UpdateChecker.CurrentVersion)
 				return;
 

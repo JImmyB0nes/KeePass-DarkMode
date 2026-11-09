@@ -61,19 +61,37 @@ namespace KeePassDarkMode
 			if (!Directory.Exists(templateDir))
 				return result;
 			
-			var files = Directory.GetFiles(templateDir, "*.ini");
+			string[] files;
+			try
+			{
+				files = Directory.GetFiles(templateDir, "*.ini");
+			}
+			catch (Exception)
+			{
+				return result;
+			}
+
 			foreach (var file in files)
 			{
-				using (var sr = File.OpenText(file))
+				// One locked or unreadable .ini (e.g. another plugin's config)
+				// must not break the whole options page.
+				try
 				{
-					var templateName = GetTemplateName(sr);
-					if (templateName == null)
-						continue;
+					using (var sr = File.OpenText(file))
+					{
+						var templateName = GetTemplateName(sr);
+						if (templateName == null)
+							continue;
 
-					var template = new TemplateFile();
-					template.Name = templateName;
-					template.Path = "file:" + Path.GetFileName(file);
-					result.Add(template);
+						var template = new TemplateFile();
+						template.Name = templateName;
+						template.Path = "file:" + Path.GetFileName(file);
+						result.Add(template);
+					}
+				}
+				catch (Exception)
+				{
+					// Skip this file.
 				}
 			}
 

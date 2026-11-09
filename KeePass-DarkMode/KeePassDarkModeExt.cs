@@ -90,6 +90,20 @@ namespace KeePassDarkMode
 
 		private void HandleOpenFormsAdded(object sender, FormAddedEventArgs args)
 		{
+			// Runs inside Application.OpenForms.Add (start of Form.OnLoad): an
+			// exception here would break the dialog of KeePass or another plugin.
+			try
+			{
+				ApplyToAddedForm(args);
+			}
+			catch (Exception)
+			{
+				// Theming is cosmetic - never prevent a form from loading.
+			}
+		}
+
+		private void ApplyToAddedForm(FormAddedEventArgs args)
+		{
 			var form = args.Form;
 
 			if (!_initialized)
@@ -99,8 +113,9 @@ namespace KeePassDarkMode
 			// finished - removes the light first-frame flash on new dialogs.
 			PrepareFirstFrame(form);
 
-			// OpenForms.Add can fire before the HWND exists: apply the moment
-			// the handle is created, so no child ever paints in default white.
+			// OpenForms.Add runs in Form.OnLoad, i.e. the HWND usually exists
+			// already. Kept as a safety net for forms whose handle is created
+			// later (then the theme is applied the moment it exists).
 			form.HandleCreated -= HandleFormHandleCreated;
 			form.HandleCreated += HandleFormHandleCreated;
 
@@ -265,7 +280,7 @@ namespace KeePassDarkMode
 					// from config before KeePass queries the menu) - guard against null.
 					var templateName = TemplateReader.GetTemplateName(templatePath);
 					if (_menuItem != null && !string.IsNullOrEmpty(templateName))
-						_menuItem.Text = templateName;
+						SetMenuText(templateName);
 
 					ApplyThemeInOpenForms();
 				}
@@ -273,7 +288,6 @@ namespace KeePassDarkMode
 
 			// Windows theme flipped or the accent color changed - re-resolve
 			// the effective template.
-			_options.ThemeModeChanged += HandleThemeModeChanged;
 			_options.AccentFromWindowsChanged += accent => HandleThemeModeChanged();
 			
 			_initialized = true;
@@ -286,11 +300,11 @@ namespace KeePassDarkMode
 				_menuItem = new ToolStripMenuItem(_theme.Name);
 				_menuItem.CheckOnClick = true;
 				_menuItem.Checked = _options.Enabled;
-				_menuItem.ShortcutKeys = _options.HotKey;
+				SetMenuShortcut(_options.HotKey);
 				_menuItem.Click += HandleToggleDarkModeMenuItemClick;
-				_options.HotKeyChanged += keys => _menuItem.ShortcutKeys = keys;
+				_options.HotKeyChanged += SetMenuShortcut;
 				if (_pendingUpdate != null)
-					_menuItem.Text = MenuBaseText() + string.Format(" - Update {0} available!", _pendingUpdate.ToString(3));
+					SetMenuText(MenuBaseText());
 				return _menuItem;
 			}
 
@@ -316,7 +330,35 @@ namespace KeePassDarkMode
 		private void UpdateMenuBadge()
 		{
 			if (_menuItem != null && _pendingUpdate != null)
-				_menuItem.Text = MenuBaseText() + string.Format(" - Update {0} available!", _pendingUpdate.ToString(3));
+				SetMenuText(MenuBaseText());
+		}
+
+		// Menu text = theme name plus the update badge, so a theme switch
+		// does not silently drop a pending "Update available" hint.
+		private void SetMenuText(string baseText)
+		{
+			if (_menuItem == null)
+				return;
+
+			_menuItem.Text = _pendingUpdate == null
+				? baseText
+				: baseText + string.Format(" - Update {0} available!", _pendingUpdate.ToString(3));
+		}
+
+		private void SetMenuShortcut(Keys keys)
+		{
+			if (_menuItem == null)
+				return;
+
+			try
+			{
+				_menuItem.ShortcutKeys = keys;
+			}
+			catch (Exception)
+			{
+				// Invalid shortcut - keep the menu item usable without one.
+				_menuItem.ShortcutKeys = Keys.None;
+			}
 		}
 
 		private string MenuBaseText()
@@ -336,8 +378,7 @@ namespace KeePassDarkMode
 
 			_theme.Reload();
 
-			if (_menuItem != null)
-				_menuItem.Text = _theme.Name;
+			SetMenuText(_theme.Name);
 
 			// Title bars must flip with the mode (immersive dark attribute).
 			if (_dialogWatcher != null)

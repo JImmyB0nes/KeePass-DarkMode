@@ -72,8 +72,11 @@ namespace KeePassDarkMode
 		private void HandleAutoSyncWithWin10ThemeChanged(bool value)
 		{
 			// Toggling the option itself should follow the current Windows theme
-			// immediately, not only on the next preference change.
-			ScheduleSync();
+			// immediately, not only on the next preference change. SyncIfChanged
+			// would do nothing here (the Windows value did not change), so
+			// sync unconditionally.
+			if (value)
+				SyncNow();
 		}
 
 		private void HandleUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
@@ -105,6 +108,7 @@ namespace KeePassDarkMode
 		// Acts only when the Windows setting itself changed. A manual Ctrl+T
 		// toggle must stay valid until the next real Windows theme switch,
 		// so the watchdog must not "correct" Enabled back on every poll.
+		// Note: on KeePass start (SyncNow) the Windows theme wins again.
 		private void SyncIfChanged()
 		{
 			var dark = IsDarkThemeEnabled();
@@ -117,7 +121,8 @@ namespace KeePassDarkMode
 
 			// Dark Windows mode = plugin on, light mode = plugin off.
 			// A manual Ctrl+T toggle stays valid until the next real Windows
-			// theme switch - the watchdog only acts when the value really changed.
+			// theme switch or KeePass restart - the watchdog only acts when the
+			// value really changed.
 			if (!changed)
 				return;
 			if (_options.Enabled != dark)
@@ -159,6 +164,10 @@ namespace KeePassDarkMode
 			}
 		}
 
+		// UI thread only - no locking needed.
+		private static readonly System.Collections.Generic.Dictionary<Form, bool> PendingDarkMode =
+			new System.Collections.Generic.Dictionary<Form, bool>();
+
 		public static void UseImmersiveDarkMode(Form form, bool enabled)
 		{
 			if (form.IsHandleCreated)
@@ -173,15 +182,25 @@ namespace KeePassDarkMode
 			}
 			else
 			{
-				// Named handler that unsubscribes itself: a lambda per call would
-				// stack one handler per repeat invocation until the handle exists.
+				// One self-removing handler per form: repeated calls before the
+				// handle exists only update the requested state (last one wins).
+				var alreadyHooked = PendingDarkMode.ContainsKey(form);
+				PendingDarkMode[form] = enabled;
+				if (alreadyHooked)
+					return;
+
 				EventHandler hook = null;
 				hook = (s, e) =>
 				{
 					form.HandleCreated -= hook;
-					UseImmersiveDarkMode(form.Handle, enabled);
+					bool pending;
+					if (!PendingDarkMode.TryGetValue(form, out pending))
+						return;
+					PendingDarkMode.Remove(form);
+					UseImmersiveDarkMode(form.Handle, pending);
 				};
 				form.HandleCreated += hook;
+				form.Disposed += (s, e) => PendingDarkMode.Remove(form);
 			}
 		}
 
@@ -209,11 +228,11 @@ namespace KeePassDarkMode
 
 			try
 			{
-				var registryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", false);
-				if (registryKey != null)
+				using (var registryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", false))
 				{
 					uint result;
-					if (uint.TryParse(registryKey.GetValue("CurrentBuildNumber", string.Empty).ToString(), out result))
+					if (registryKey != null &&
+					    uint.TryParse(registryKey.GetValue("CurrentBuildNumber", string.Empty).ToString(), out result))
 						return result >= build;
 				}
 			}

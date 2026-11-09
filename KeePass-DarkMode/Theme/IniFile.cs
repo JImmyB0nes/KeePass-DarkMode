@@ -40,7 +40,7 @@ namespace KeePassDarkMode.Theme
 			{
 				line = line.Trim();
 
-				if (string.IsNullOrEmpty(line) || line.StartsWith(";"))
+				if (string.IsNullOrEmpty(line) || line.StartsWith(";") || line.StartsWith("#"))
 					continue;
 
 				if (line.StartsWith("[") && line.EndsWith("]"))

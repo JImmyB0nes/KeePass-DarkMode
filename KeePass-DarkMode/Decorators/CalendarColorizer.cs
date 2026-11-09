@@ -12,7 +12,6 @@ namespace KeePassDarkMode.Decorators
 	{
 		private const int DTM_GETMONTHCAL = 0x1008;
 		private const int MCM_SETCOLOR = 0x100A;
-		private const int WM_PAINT = 0x000F;
 
 		private const int MCSC_BACKGROUND = 0;
 		private const int MCSC_TEXT = 1;
@@ -20,6 +19,9 @@ namespace KeePassDarkMode.Decorators
 		private const int MCSC_TITLETEXT = 3;
 		private const int MCSC_MONTHBK = 4;
 		private const int MCSC_TRAILINGTEXT = 5;
+
+		[DllImport("user32.dll")]
+		private static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
 
 		[DllImport("user32.dll", EntryPoint = "SendMessageW")]
 		private static extern IntPtr SendMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam);
@@ -49,7 +51,9 @@ namespace KeePassDarkMode.Decorators
 				SetColor(calendar, MCSC_MONTHBK, back);
 				SetColor(calendar, MCSC_TRAILINGTEXT, Blend(text, back));
 
-				SendMessage(calendar, WM_PAINT, IntPtr.Zero, IntPtr.Zero);
+				// Never send WM_PAINT directly (no BeginPaint context) - just
+				// invalidate and let Windows paint.
+				InvalidateRect(calendar, IntPtr.Zero, true);
 			}
 			catch (Exception)
 			{

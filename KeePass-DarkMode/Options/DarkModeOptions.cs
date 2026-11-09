@@ -148,18 +148,6 @@ namespace KeePassDarkMode.Options
 		public event Action<bool> AccentFromWindowsChanged;
 		public event Action<string> TemplateChanged;
 
-		/// <summary>
-		/// Raised when the accent color setting changed although no template
-		/// option value changed.
-		/// </summary>
-		public event Action ThemeModeChanged;
-
-		public void NotifyThemeModeChanged()
-		{
-			if (ThemeModeChanged != null)
-				ThemeModeChanged.Invoke();
-		}
-
 		public DarkModeOptions(IPluginHost pluginHost)
 		{
 			_pluginHost = pluginHost;
@@ -176,6 +164,10 @@ namespace KeePassDarkMode.Options
 				// instead of failing the whole plugin load.
 				_hotKey = Keys.Control | Keys.T;
 			}
+			// A parsable but invalid shortcut (e.g. "Control" alone) would make
+			// ToolStripMenuItem.ShortcutKeys throw while building the menu.
+			if (_hotKey != Keys.None && !ToolStripManager.IsValidShortcut(_hotKey))
+				_hotKey = Keys.Control | Keys.T;
 			_autoSyncWithWin10Theme = pluginHost.CustomConfig.GetBool(AutoSyncWithWin10ThemeOption, true);
 			_accentFromWindows = pluginHost.CustomConfig.GetBool(AccentFromWindowsOption, false);
 			_checkUpdates = pluginHost.CustomConfig.GetBool(CheckUpdatesOption, true);

@@ -20,14 +20,25 @@ namespace KeePassDarkMode.Theme
 			if (!form.IsHandleCreated)
 			{
 				// Apply(Form) runs repeatedly (every Visit/theme change) while the
-				// handle may still be missing - hook exactly once per form.
+				// handle may still be missing - hook exactly once per form and
+				// apply only the latest requested colors.
+				var alreadyHooked = Pending.ContainsKey(form);
+				Pending[form] = new PendingTint(backColor, foreColor, dark);
+				if (alreadyHooked)
+					return;
+
 				EventHandler hook = null;
 				hook = (s, e) =>
 				{
 					form.HandleCreated -= hook;
-					Apply(form, backColor, foreColor, dark);
+					PendingTint tint;
+					if (!Pending.TryGetValue(form, out tint))
+						return;
+					Pending.Remove(form);
+					Apply(form, tint.BackColor, tint.ForeColor, tint.Dark);
 				};
 				form.HandleCreated += hook;
+				form.Disposed += (s, e) => Pending.Remove(form);
 				return;
 			}
 
@@ -52,6 +63,24 @@ namespace KeePassDarkMode.Theme
 				// dwmapi unavailable or attribute unsupported - skip silently.
 			}
 		}
+
+		private sealed class PendingTint
+		{
+			public readonly Color BackColor;
+			public readonly Color ForeColor;
+			public readonly bool Dark;
+
+			public PendingTint(Color backColor, Color foreColor, bool dark)
+			{
+				BackColor = backColor;
+				ForeColor = foreColor;
+				Dark = dark;
+			}
+		}
+
+		// UI thread only - no locking needed.
+		private static readonly System.Collections.Generic.Dictionary<Form, PendingTint> Pending =
+			new System.Collections.Generic.Dictionary<Form, PendingTint>();
 
 		// COLORREF is 0x00BBGGRR.
 		private static int ToColorRef(Color color)

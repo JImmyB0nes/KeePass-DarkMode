@@ -12,6 +12,9 @@ namespace KeePassDarkMode.Decorators
 			var disabledControlName = control.Name + "Snapshot";
 
 			var parent = control.Parent;
+			if (parent == null)
+				return;
+
 			if (!parent.Enabled)
 			{
 				if (parent.Controls.ContainsKey(disabledControlName))
@@ -34,7 +37,21 @@ namespace KeePassDarkMode.Decorators
 			}
 			else
 			{
-				parent.Controls.RemoveByKey(disabledControlName);
+				// RemoveByKey would leak the PictureBox and its screen bitmap.
+				var index = parent.Controls.IndexOfKey(disabledControlName);
+				if (index < 0)
+					return;
+
+				var snapshot = parent.Controls[index];
+				parent.Controls.RemoveAt(index);
+				var pictureBox = snapshot as PictureBox;
+				if (pictureBox != null && pictureBox.Image != null)
+				{
+					var image = pictureBox.Image;
+					pictureBox.Image = null;
+					image.Dispose();
+				}
+				snapshot.Dispose();
 			}
 		}
 
@@ -66,7 +83,7 @@ namespace KeePassDarkMode.Decorators
 			{
 				// ListView.PointToScreen returns result without border
 				var upperLeftSource = control is ListView 
-					? control.Parent.PointToScreen(Point.Empty) 
+					? control.Parent.PointToScreen(control.Location) 
 					: control.PointToScreen(Point.Empty);
 
 				g.CopyFromScreen(upperLeftSource, Point.Empty, control.Bounds.Size);

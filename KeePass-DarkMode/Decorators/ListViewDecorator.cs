@@ -20,6 +20,9 @@ namespace KeePassDarkMode.Decorators
 		// The background image we assigned ourselves - so we can remove it again
 		// when the theme is switched off, without touching user-supplied images.
 		private Image _assignedBackground;
+		// Background bitmap rendered by HandleListViewResize - the only image
+		// this decorator owns and therefore may dispose.
+		private Image _ownedBackground;
 
 		public ListViewDecorator(ListView listView, ITheme theme)
 		{
@@ -142,6 +145,21 @@ namespace KeePassDarkMode.Decorators
 				listView.BackgroundImage = null;
 				_assignedBackground = null;
 			}
+			else if (!_enabled)
+			{
+				RemoveOwnedBackground(listView);
+			}
+		}
+
+		private void RemoveOwnedBackground(ListView listView)
+		{
+			if (_ownedBackground == null)
+				return;
+
+			if (ReferenceEquals(listView.BackgroundImage, _ownedBackground))
+				listView.BackgroundImage = null;
+			_ownedBackground.Dispose();
+			_ownedBackground = null;
 		}
 
 		private void ListViewParentEnabledChanged(object sender, EventArgs e)
@@ -153,14 +171,19 @@ namespace KeePassDarkMode.Decorators
 		private void HandleListViewResize(object sender, EventArgs e)
 		{
 			var listView = (ListView)sender;
+			if (!_enabled)
+				return;
+
 			if (string.IsNullOrEmpty(_theme.ListView.BackgroundImage))
 			{
 				if (!_theme.ListViewBackgroundTiled)
 				{
-					if (listView.BackgroundImage != null)
-						listView.BackgroundImage.Dispose();
-
-					listView.BackgroundImage = null;
+					// Only drop images we set ourselves - never dispose the
+					// shared theme image or a background set by someone else.
+					RemoveOwnedBackground(listView);
+					if (_assignedBackground != null &&
+					    ReferenceEquals(listView.BackgroundImage, _assignedBackground))
+						listView.BackgroundImage = null;
 					_assignedBackground = null;
 				}
 
@@ -175,6 +198,9 @@ namespace KeePassDarkMode.Decorators
 				: ContentAlignment.TopLeft;
 
 			var bgSize = new Size(listView.ClientSize.Width, listView.ClientSize.Height - _headerPainter.HeaderHeight);
+			if (bgSize.Width <= 0 || bgSize.Height <= 0)
+				return; // minimized or collapsed - new Bitmap(0, x) would throw
+
 			var image = new Bitmap(bgSize.Width, bgSize.Height, PixelFormat.Format32bppArgb);
 
 			using (var g = Graphics.FromImage(image))
@@ -194,8 +220,9 @@ namespace KeePassDarkMode.Decorators
 				}
 			}
 
-			var prevImage = listView.BackgroundImage;
+			var prevImage = _ownedBackground;
 			listView.BackgroundImage = image;
+			_ownedBackground = image;
 			if (prevImage != null)
 				prevImage.Dispose();
 		}

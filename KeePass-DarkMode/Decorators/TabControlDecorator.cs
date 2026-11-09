@@ -13,6 +13,11 @@ namespace KeePassDarkMode.Decorators
 		private ITheme _theme;
 		private bool _enabled;
 
+		internal TabControl Target
+		{
+			get { return _tabControl; }
+		}
+
 		public TabControlDecorator(TabControl tabControl, ITheme theme)
 		{
 			_tabControl = tabControl;
@@ -158,6 +163,7 @@ namespace KeePassDarkMode.Decorators
 		{
 			_enabled = enabled;
 			_theme = theme;
+			_painter.Enabled = enabled;
 			
 			_tabControl.DrawMode = _enabled ? TabDrawMode.OwnerDrawFixed : _originalDrawMode;
 			_tabControl.Invalidate();

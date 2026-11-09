@@ -12,6 +12,10 @@ namespace KeePassDarkMode.Decorators
 
 		internal event PaintEventHandler Paint;
 
+		// Only while the theme is active the background erase is suppressed;
+		// with the theme off the native control must erase normally.
+		internal bool Enabled { get; set; }
+
 		public TabControlPainter(TabControl tabControl)
 		{
 			_tabControl = tabControl;
@@ -41,7 +45,7 @@ namespace KeePassDarkMode.Decorators
 
 		protected override void WndProc(ref Message m)
 		{
-			if (m.Msg == WM_ERASEBKGND)
+			if (m.Msg == WM_ERASEBKGND && Enabled)
 			{
 				// Return 1 to indicate we handled the background erase
 				// This prevents default background clearing
@@ -54,7 +58,7 @@ namespace KeePassDarkMode.Decorators
 			if (m.Msg != WM_PAINT)
 				return;
 
-			if (_tabControl.TabCount == 0)
+			if (!Enabled || _tabControl.TabCount == 0)
 				return;
 
 			using (var g = Graphics.FromHwnd(m.HWnd))

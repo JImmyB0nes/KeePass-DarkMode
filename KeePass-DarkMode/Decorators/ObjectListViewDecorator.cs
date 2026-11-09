@@ -26,10 +26,19 @@ namespace KeePassDarkMode.Decorators
 		private static Type _cellStyleType;
 		private static PropertyInfo _cellStyleForeColorProperty;
 
+		private static int _scannedAssemblyCount = -1;
+
 		public static void Initialize()
 		{ 
 			if (_objectListViewType != null)
 				return;
+
+			// Scanning all types of all assemblies is expensive and runs on
+			// every visit - only rescan when new assemblies were loaded.
+			var assemblyCount = AppDomain.CurrentDomain.GetAssemblies().Length;
+			if (assemblyCount == _scannedAssemblyCount)
+				return;
+			_scannedAssemblyCount = assemblyCount;
 
 			_objectListViewType = GetType("BrightIdeasSoftware.ObjectListView");
 			if (_objectListViewType == null)

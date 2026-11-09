@@ -18,7 +18,7 @@ namespace KeePassDarkMode.Decorators
 		internal const int WM_PAINT = 0x000F;
 		internal const int LVM_FIRST = 0x1000;
 
-		[DllImport("user32.dll", EntryPoint = "SendMessage")]
+		[DllImport("user32.dll", EntryPoint = "SendMessageW")]
 		internal static extern IntPtr SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
 	}
 }

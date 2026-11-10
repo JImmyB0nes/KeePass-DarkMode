@@ -23,9 +23,7 @@
 - [Eigene Themes](#-eigene-themes)
 - [Troubleshooting](#-troubleshooting)
 - [Kompatibilität](#-kompatibilität)
-- [Changelog](#-changelog)
 - [Entwicklung](#-entwicklung)
-- [Danksagung](#-danksagung)
 
 ---
 
@@ -128,31 +126,6 @@ KeePass nutzt klassische Windows-Controls, die sich nur eingeschränkt umfärben
 
 ---
 
-## 📋 Changelog
-
-### 1.8.14
-- Fix: Farb-Editor zerstört nicht mehr die Palette (Grund für Theme-Lader nach Bearbeiten im Editor)
-- Fix: Handler-Stapelung am Parent von ListViews behoben
-- Fix: Farbreset-Fänger für normale Textboxen ergänzt (fehlte nach 1.8.11)
-- Fix: ObjectListView ohne erwartete Properties lässt nicht mehr das Thematieren abbrechen
-
-### 1.8.13
-- Fix: Split-Button-Mehrfachauslösung, Akzentfarbe (Rot/Blau vertauscht), Theme-Fallback bei defektem Template, Dialog-Hook nur noch für KeePass-Prozess, Update-Check respektiert Opt-out, Speicher-/Handle-Lecks, .NET 4.5 (TLS 1.2)
-
-### 1.8.12
-- Fix: `IntPtr.One` durch `new IntPtr(1)` ersetzt (kompatibel mit .NET 4.0 Runtime)
-- Fix: Schwarze Blöcke im Options-Dialog (WS_EX_COMPOSITED zurückgebaut), Erase-Brush respektiert Feld-BackColor
-- Fix: Weißes Fokus-Flackern der Textfelder per WM_ERASEBKGND-Subclassing entfernt
-
-### 1.8.11
-- Fix: Flackerfreiheit beim Öffnen aller Dialoge (First-Frame-Schutz, Theme-Reset-Fänger)
-- Neu: Update-Hinweis im Menü unter *Tools*, Windows-Akzentfarbe übernehmbar, dunkle Titelzeilen nativer Dialoge
-- Neu: Theme-Erkennung folgt dem Windows-Farbschema (Light-Theme entfernt)
-
-*Ältere Änderungen: siehe [Release-Seite](https://github.com/JImmyB0nes/KeePass-DarkMode/releases).*
-
----
-
 ## 🛠️ Entwicklung
 
 ```bash
@@ -166,9 +139,3 @@ cd build && build.cmd
 Gebaut wird unter Windows mit MSBuild (.NET Framework 4.5) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
 
 **Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
-
----
-
-## 🙏 Danksagung
-
-Dieses Projekt basiert auf [**KeeTheme**](https://github.com/xatupal/KeeTheme) von xatupal, das die ursprüngliche Theme-Maschinerie und das ini-Format liefert. Darauf aufbauend wurden unter anderem entwickelt: fünf Themes statt eines, Windows-Akzentfarbe, Update-Hinweis im Menü, dunkle Titelzeilen nativer Dialoge, Flackerfreiheit bei Dialogen und Textfeldern, Theme-Autofollow des Windows-Farbschemas sowie der eingebaute Theme-Editor.

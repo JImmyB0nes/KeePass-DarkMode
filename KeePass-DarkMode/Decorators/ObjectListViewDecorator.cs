@@ -86,6 +86,13 @@ namespace KeePassDarkMode.Decorators
 
 		public static void Apply(ListView listView, ITheme theme)
 		{
+			// A different ObjectListView build may lack a property - without a
+			// guard the NRE would abort theming for the whole form.
+			if (_alternateRowBackColorProperty == null || _headerUsesThemesProperty == null ||
+			    _headerFormatStyleType == null || _setForeColorMethod == null || _setBackColorMethod == null ||
+			    _headerFormatStyleProperty == null)
+				return;
+
 			_alternateRowBackColorProperty.SetValue(listView, theme.ListView.EvenRowColor, null);
 			_headerUsesThemesProperty.SetValue(listView, false, null);
 

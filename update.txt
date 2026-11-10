@@ -1,6 +1,10 @@
 :::KeePass-DarkMode update information
-KeePass-DarkMode:1.8.13.0
+KeePass-DarkMode:1.8.14.0
 :::
+- Fix: Farb-Editor zerstoert nicht mehr die Palette (Grund fuer Theme-Lader nach Bearbeiten im Editor)
+- Fix: Handler-Stapelung am Parent von ListViews behoben
+- Fix: Farbreset-Faenger fuer normale Textboxen ergaenzt (fehlte nach 1.8.11)
+- Fix: ObjectListView ohne erwartete Properties laesst nicht mehr das Thematieren abbrechen
 - Fix: Review-Fixes 1.8.13 - Split-Button-Mehrfachausloesung, Akzentfarbe (R/B vertauscht), Theme-Fallback bei defektem Template, Dialog-Hook nur noch fuer KeePass-Prozess, Update-Check respektiert Opt-out, Speicher-/Handle-Lecks, .NET 4.5 (TLS 1.2)
 - Fix: Schwarze Blocke im Options-Dialog (WS_EX_COMPOSITED zurueckgebaut)
 - Fix: Fokus-Flackern der Textfelder per WM_ERASEBKGND-Subclassing, dabei respektiert die Felder eigene BackColor (z.B. Error-Felder)

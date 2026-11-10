@@ -124,7 +124,12 @@ namespace KeePassDarkMode.Decorators
 				listView.DrawItem += HandleListViewDrawItem;
 				listView.DrawSubItem += HandleListViewDrawSubItem;
 				if (listView.Parent != null)
+				{
+					// -= first: every theme reload visits the list again and the
+					// parent reference can change; += alone stacks handlers.
+					listView.Parent.EnabledChanged -= ListViewParentEnabledChanged;
 					listView.Parent.EnabledChanged += ListViewParentEnabledChanged;
+				}
 			}
 
 			listView.BorderStyle = _theme.ListView.BorderStyle;

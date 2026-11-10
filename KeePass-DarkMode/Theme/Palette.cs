@@ -77,14 +77,24 @@ namespace KeePassDarkMode.Theme
 			throw new InvalidDataException("Unknown color '" + color + "'!");
 		}
 
+		// Called by the ColorEditor after the user edits custom colors. Must NOT
+		// clear the palette: the named entries (Window, Text, Accent, ...) are
+		// referenced by every [Look] section - dropping them would make the next
+		// theme load fail with "Unknown color 'Window'". Only the ColorN slots
+		// owned by the dialog are refreshed.
 		public void FromBgrArray(int[] colors)
 		{
-			_colorsByName.Clear();
 			for (int i = 0; i < colors.Length; i++)
 			{
+				var name = "Color" + i;
+				if (colors[i] == 0)
+				{
+					_colorsByName.Remove(name);
+					continue;
+				}
+
 				var colorBgr = BitConverter.GetBytes(colors[i]);
-				var colorRgb = Color.FromArgb(colorBgr[2], colorBgr[1], colorBgr[0]);
-				_colorsByName.Add("Color" + i, colorRgb);
+				_colorsByName[name] = Color.FromArgb(colorBgr[2], colorBgr[1], colorBgr[0]);
 			}
 		}
 

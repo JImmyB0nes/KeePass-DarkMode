@@ -692,9 +692,27 @@ namespace KeePassDarkMode
 				subclass = new TextBoxNativeWindow(textBox, _theme);
 				_textBoxSubclasses.Add(textBox, subclass);
 				textBox.Disposed += (s, e) => _textBoxSubclasses.Remove(textBox);
+
+				// SecureTextBox/HotKeyControlEx have their own reset catchers -
+				// a second generic handler would fight them over the color.
+				if (!(textBox is SecureTextBoxEx) && !(textBox is HotKeyControlEx))
+				{
+					textBox.BackColorChanged -= HandlePlainTextBoxBackColorChanged;
+					textBox.BackColorChanged += HandlePlainTextBoxBackColorChanged;
+				}
 			}
 
 			subclass.EnableTheme(_enabled, _theme);
+		}
+
+		private void HandlePlainTextBoxBackColorChanged(object sender, EventArgs e)
+		{
+			if (!_enabled)
+				return;
+
+			var textBox = (TextBox) sender;
+			if (IsLightReset(textBox.BackColor))
+				textBox.BackColor = _theme.Control.BackColor;
 		}
 
 		private void Apply(SecureTextBoxEx secureTextBoxEx)

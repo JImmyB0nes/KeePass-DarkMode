@@ -8,66 +8,66 @@
 </p>
 
 <p align="center">
-  <strong>Dunkles Theme für KeePass 2.x — augenfreundlich, auch nachts.</strong><br>
-  Kein Umstieg, kein Funktionsverlust: Alles bleibt, nur die Optik ändert sich.
+  <strong>A dark theme for KeePass 2.x — easy on the eyes, even at night.</strong><br>
+  No migration, no lost features: everything stays, only the look changes.
 </p>
 
 ---
 
-## Inhalt
+## Contents
 
 - [Screenshots](#-screenshots)
 - [Quick Start](#-quick-start)
 - [Installation](#-installation)
 - [Features](#-features)
-- [Eigene Themes](#-eigene-themes)
+- [Custom Themes](#-custom-themes)
 - [Troubleshooting](#-troubleshooting)
-- [Kompatibilität](#-kompatibilität)
-- [Entwicklung](#-entwicklung)
+- [Compatibility](#-compatibility)
+- [Development](#-development)
 
 ---
 
 ## 📸 Screenshots
 
-| Hauptfenster im Dark Mode | Bearbeiten-Dialog |
+| Main window in dark mode | Edit entry dialog |
 |---|---|
-| ![Hauptfenster](docs/images/main-window.png) | ![Edit Entry](docs/images/edit-entry.png) |
+| ![Main window](docs/images/main-window.png) | ![Edit entry](docs/images/edit-entry.png) |
 
-| Tools-Menü mit Dark-Theme-Schalter | Optionen (Reiter KeePass-DarkMode) |
+| Tools menu with dark-theme toggle | Options (KeePass-DarkMode tab) |
 |---|---|
-| ![Tools-Menü](docs/images/tools-menu.png) | ![Optionen](docs/images/options-security.png) |
+| ![Tools menu](docs/images/tools-menu.png) | ![Options](docs/images/options-security.png) |
 
-| Theme-Konfiguration mit Live-Vorschau |
+| Theme configuration with live preview |
 |---|
-| ![Theme-Optionen](docs/images/options-darkmode.png) |
+| ![Theme options](docs/images/options-darkmode.png) |
 
 ---
 
 ## ⚡ Quick Start
 
 ```
-STRG + T          Theme umschalten
+CTRL + T          Toggle theme
 ```
 
-Alternativ über das Menü: **Tools → Dark Theme** (der Menüpunkt trägt den Namen des gewählten Themes)
+Alternatively via the menu: **Tools → Dark Theme** (the menu item shows the name of the active theme)
 
 ---
 
 ## 🚀 Installation
 
-1. **[KeePassDarkMode.plgx](https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx)** von der Release-Seite herunterladen
-2. In den Plugin-Ordner kopieren — je nach KeePass-Version:
+1. Download **[KeePassDarkMode.plgx](https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx)** from the release page
+2. Copy it into the plugin folder — depending on your KeePass version:
 
-   | Version | Pfad |
+   | Version | Path |
    |---|---|
-   | KeePass Standard | `C:\Program Files\KeePass Password Safe 2\Plugins\` |
-   | KeePass Standard (ältere 32-Bit-Installation) | `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\` |
+   | KeePass standard | `C:\Program Files\KeePass Password Safe 2\Plugins\` |
+   | KeePass standard (older 32-bit install) | `C:\Program Files (x86)\KeePass Password Safe 2\Plugins\` |
    | Pleasant PPS | `C:\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\Plugins\` |
 
-3. KeePass neu starten — fertig.
+3. Restart KeePass — done.
 
 > [!TIP]
-> Den Plugin-Ordner öffnet **Tools → Plugins → Open Folder** direkt. KeePass lädt Plugins nur beim Start — nach dem Kopieren ist ein Neustart nötig.
+> You can open the plugin folder directly via **Tools → Plugins → Open Plugin Folder...**. KeePass only loads plugins at startup — after copying the file, a restart is required.
 
 ---
 
@@ -75,67 +75,67 @@ Alternativ über das Menü: **Tools → Dark Theme** (der Menüpunkt trägt den 
 
 | | |
 |---|---|
-| 🌑 **Dunkles Theme** | Ruhige, moderne Farbpalette für die gesamte KeePass-Oberfläche |
-| 🎨 **Fünf Themes** | Standard, Windows 11, Dracula, Colorblind und High Contrast — per Dropdown wechselbar |
-| ⌨️ **Hotkey** | `STRG+T` zum Umschalten — frei konfigurierbar |
-| 🖌️ **Theme-Editor** | Eigene Farbwelten per GUI erstellen, ohne Textdateien zu editieren |
-| 📦 **Plgx-Format** | Ein Dateisprung installiert/updatet das Plugin — ohne Kompilieren |
-| 🔧 **Theme-Erkennung** | Folgt dem Windows-Farbschema — im Dunkel-Modus aktiv, im Hell-Modus aus |
-| 🎨 **Windows-Akzent** | optional: übernimmt die Windows-Akzentfarbe für Highlights |
-| 🔔 **Update-Hinweis** | zeigt eine neue Version direkt im Menü unter *Tools* an |
-| 🪟 **Flackerfrei** | Dialoge und Textfelder werden dunkel aufgebaut, bevor sie das erste Mal malen |
-| 🖥️ **Native Dialoge** | Message-Boxen und Fenster bekommen eine dunkle Titelzeile |
+| 🌑 **Dark theme** | Calm, modern color palette for the entire KeePass UI |
+| 🎨 **Five themes** | Default, Windows 11, Dracula, Colorblind and High Contrast — switchable from a dropdown |
+| ⌨️ **Hotkey** | `CTRL+T` to toggle — fully configurable |
+| 🖌️ **Theme editor** | Create your own color schemes via GUI, no editing of text files required |
+| 📦 **Plgx format** | A single file installs/updates the plugin — no compiling needed |
+| 🔧 **Theme detection** | Follows the Windows color scheme — active in dark mode, inactive in light mode |
+| 🎨 **Windows accent** | Optional: uses the Windows accent color for highlights |
+| 🔔 **Update notice** | Shows a new version directly in the *Tools* menu |
+| 🪟 **Flicker-free** | Dialogs and text boxes are built dark before their first paint |
+| 🖥️ **Native dialogs** | Message boxes and windows get a dark title bar |
 
 ---
 
-## 🎨 Eigene Themes
+## 🎨 Custom Themes
 
-Mit dem eingebauten Theme-Editor erstellst du im Handumdrehen eigene Farbwelten:
+Use the built-in theme editor to create your own color schemes in no time:
 
-Eigene Theme-Dateien (`.ini`) einfach in den Plugin-Ordner legen — sie erscheinen automatisch in der Auswahl unter **Tools → Optionen → KeePass-DarkMode**.
+Simply drop your own theme file (`.ini`) into the plugin folder — it appears automatically in the selection under **Tools → Options → KeePass-DarkMode**.
 
-Fünf mitgelieferte Themes liegen bei:
+Five bundled themes are included:
 
-| Theme | Beschreibung |
+| Theme | Description |
 |---|---|
-| `DarkTheme.ini` | Klassisches dunkles Theme (Standard) |
-| `DarkThemeWin11.ini` | An Windows-11-Optik angepasst |
-| `DarkThemeDracula.ini` | Nach der Dracula-Palette |
-| `DarkThemeColorblind.ini` | Für Farbfehlsichtigkeit optimierte Kontraste |
-| `DarkThemeHighContrast.ini` | Hoher Kontrast für barrierefreies Sehen |
+| `DarkTheme.ini` | Classic dark theme (default) |
+| `DarkThemeWin11.ini` | Matched to the Windows 11 look |
+| `DarkThemeDracula.ini` | Based on the Dracula palette |
+| `DarkThemeColorblind.ini` | Contrast tuned for color vision deficiency |
+| `DarkThemeHighContrast.ini` | High contrast for accessible viewing |
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Plugin-Cache leeren
+### Clear the plugin cache
 
-Nach einem Update kann ein veralteter Plugin-Cache für Lade-Probleme sorgen. Dazu einfach `%LOCALAPPDATA%\KeePass\PluginCache\` (bei Pleasant PPS: `%LOCALAPPDATA%\PleasantKeePass\PluginCache\`) löschen und KeePass neu starten.
+After an update, a stale plugin cache can cause loading problems. Simply delete `%LOCALAPPDATA%\KeePass\PluginCache\` (for Pleasant PPS: `%LOCALAPPDATA%\PleasantKeePass\PluginCache\`) and restart KeePass.
 
-### Bestimmte Bereiche bleiben hell
+### Some areas stay light
 
-KeePass nutzt klassische Windows-Controls, die sich nur eingeschränkt umfärben lassen. Einzelne Stellen (z. B. bestimmte Dialoge und Systemmenüs) können hell bleiben — alltagstauglich, aber kein kompromissloses Pixel-Perfect-Theming.
-
----
-
-## 🧩 Kompatibilität
-
-- **KeePass:** 2.4x und neuer (gegen 2.42 gebaut, lauffähig mit aktuellen Versionen)
-- **Windows:** 10 und 11
-- **.NET Framework:** 4.5 oder neuer
+KeePass uses classic Windows controls that can only be recolored to a limited extent. Individual spots (e.g. certain dialogs and system menus) may remain light — practical for daily use, but not a pixel-perfect theming.
 
 ---
 
-## 🛠️ Entwicklung
+## 🧩 Compatibility
+
+- **KeePass:** 2.4x and newer (built against 2.42, runs with current versions)
+- **Windows:** 10 and 11
+- **.NET Framework:** 4.5 or newer
+
+---
+
+## 🛠️ Development
 
 ```bash
-# Build unter Windows (benötigt .NET Framework 4.5)
+# Build on Windows (requires .NET Framework 4.5)
 msbuild KeePass-DarkMode.sln /p:Configuration=Release
 
-# plgx-Paket erzeugen
+# Create the plgx package
 cd build && build.cmd
 ```
 
-Gebaut wird unter Windows mit MSBuild (.NET Framework 4.5) — GitHub Actions sind deaktiviert, die Builds laufen lokal bzw. auf einer separaten Build-Maschine.
+Builds run on Windows with MSBuild (.NET Framework 4.5) — GitHub Actions are disabled; builds are produced locally or on a separate build machine.
 
-**Wichtig beim plgx-Bauen:** KeePass übernimmt den `BaseFileName` aus `<AssemblyName>` der `.csproj` und erwartet daraus abgeleitet die Plugin-Klasse `<AssemblyName>.<AssemblyName>Ext`. Dateiname, Assembly-Name und Klassenname müssen übereinstimmen.
+**Important when building the plgx:** KeePass takes the `BaseFileName` from `<AssemblyName>` in the `.csproj` and derives the expected plugin class `<AssemblyName>.<AssemblyName>Ext` from it. File name, assembly name and class name must match.

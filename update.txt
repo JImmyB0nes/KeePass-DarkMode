@@ -1,36 +1,36 @@
 :::KeePass-DarkMode update information
 KeePass-DarkMode:1.8.14.0
 :::
-- Fix: Farb-Editor zerstoert nicht mehr die Palette (Grund fuer Theme-Lader nach Bearbeiten im Editor)
-- Fix: Handler-Stapelung am Parent von ListViews behoben
-- Fix: Farbreset-Faenger fuer normale Textboxen ergaenzt (fehlte nach 1.8.11)
-- Fix: ObjectListView ohne erwartete Properties laesst nicht mehr das Thematieren abbrechen
-- Fix: Review-Fixes 1.8.13 - Split-Button-Mehrfachausloesung, Akzentfarbe (R/B vertauscht), Theme-Fallback bei defektem Template, Dialog-Hook nur noch fuer KeePass-Prozess, Update-Check respektiert Opt-out, Speicher-/Handle-Lecks, .NET 4.5 (TLS 1.2)
-- Fix: Schwarze Blocke im Options-Dialog (WS_EX_COMPOSITED zurueckgebaut)
-- Fix: Fokus-Flackern der Textfelder per WM_ERASEBKGND-Subclassing, dabei respektiert die Felder eigene BackColor (z.B. Error-Felder)
-- Fix: Flackern beim Fokuswechsel - weisses Hintergrund-Wischen der Textfelder (EDIT-Klass brush) per Fenster-Subclassing entfernt
-- Fix: Flackern beim Oeffnen von Dialogen - Theme wird jetzt spaetestens beim Handle-Aufbau und erneut nach KeePass-Farbreset im Form_Load gesetzt, bevor das erste Frame malt
-- Fix: Flackern beim Oeffnen ALLER Dialoge - First-Frame-Schutz greift jetzt ueberall (WS_EX_COMPOSITED + Transparenz bis Shown)
-- Fix: Flackern (weiss->dunkel) beim Oeffnen des Edit-Eintrag-Fensters - KeePass-Farbresets werden jetzt sofort gefangen
-- Fix: Versionsanzeige unten im Options-Dialog abschnieden, wenn der Dialog zu niedrig ist
-- Fix: Windows-Akzentfarbe wurde rot/vertauscht ausgelesen (falsche Farbe bei "Akzent uebernehmen")
-- Fix: Beschaedigte Theme-Datei im Plugins-Ordner laesst KeePass jetzt mit Standard-Theme starten
-- Fix: Haekchen im Tools-Menue folgt dem Windows-Autosync
-- Fix: Dunkler Listview-Hintergrund bleibt nach Theme-Abschalten bestehen
-- Fix: Graue Disabled-Texte bei beim Start deaktivierten Checkboxen
-- Fix: GDI-Speicherleck beim Theme-Reload (Split-Button-Pfeil)
-- Fix: TLS-Einstellung von KeePass-Plugins wird nicht mehr global ueberschrieben
-- Neu: Dracula-Theme konsequent an die Dracula-Palette angepasst
-- Fix: Colorblind-/HighContrast-Theme behalten ihre definierten Link-/Selektionsfarben
-- Entfernt: Light-Theme und Auto-Light-Funktion (Plugin folgt Windows nur noch dunkel/aus)
-- Fix: Suchbox-Rahmen, Combo-Pfeile und Kalender-Overlays folgen jetzt dem Theme
-- Fix: Tab-Reiter-Textfarbe respektier TabControl.ForeColor
-- Fix: Mehrere Handler-Leaks behoben (Theme-Reload, Titlebar-Hooks, Hotkey-Menue)
-- Fix: Theme-Hintergrundbild sperrt die Bilddatei nicht mehr
-- Fix: Nullzugriff auf MainForm bei Splash-/Wiederherstellungs-Fenstern
-- Fix: Temp-Dateien der Theme-Vorschau werden beim Schliessen geloescht
-- Entfernt: Import-Settings-Button im Options-Dialog (Export bleibt erhalten)
-- Fix: Behavior-Gruppe im Options-Dialog zu niedrig, Haken beschriften sich jetzt selbst
-- Neu: Update-Hinweis direkt im Menuepunkt "Tools"
-- Neu: Windows-Akzentfarbe fuer Highlights uebernehmbar
-- Neu: Native Dialoge (Message-Boxen) mit dunkler Titelzeile
+- Fix: Color editor no longer corrupts the palette (cause of theme reload after editing in the editor)
+- Fix: Handler stacking on the parent of ListViews fixed
+- Fix: Color-reset catchers added for plain text boxes (missing since 1.8.11)
+- Fix: ObjectListView without expected properties no longer aborts theming
+- Fix: Review fixes 1.8.13 - split button double trigger, accent color (R/B swapped), theme fallback for broken template, dialog hook only for the KeePass process, update check respects opt-out, memory/handle leaks, .NET 4.5 (TLS 1.2)
+- Fix: Black blocks in the options dialog (WS_EX_COMPOSITED reverted)
+- Fix: Text box focus flicker via WM_ERASEBKGND subclassing, while respecting fields that set their own BackColor (e.g. error fields)
+- Fix: Flicker on focus change - removed white background wipe of text boxes (EDIT class brush) via window subclassing
+- Fix: Flicker when opening dialogs - theme is now set at latest during handle creation and again after KeePass color resets in Form_Load, before the first frame paints
+- Fix: Flicker when opening ALL dialogs - first-frame protection now applies everywhere (WS_EX_COMPOSITED + transparency until Shown)
+- Fix: Flicker (white->dark) when opening the edit entry window - KeePass color resets are now caught immediately
+- Fix: Version label at the bottom of the options dialog no longer cut off when the dialog is too short
+- Fix: Windows accent color was read red/swapped (wrong color with "Use accent color")
+- Fix: Corrupted theme file in the plugin folder now lets KeePass start with the default theme
+- Fix: Checkmark in the Tools menu follows the Windows auto-sync
+- Fix: Dark ListView background no longer persists after switching the theme off
+- Fix: Gray disabled text on checkboxes that were disabled at startup
+- Fix: GDI memory leak on theme reload (split button arrow)
+- Fix: TLS setting of KeePass plugins is no longer overridden globally
+- New: Dracula theme consistently matched to the Dracula palette
+- Fix: Colorblind/HighContrast themes keep their defined link/selection colors
+- Removed: Light theme and auto-light feature (plugin now only follows Windows dark/off)
+- Fix: Search box border, combo arrows and calendar overlays now follow the theme
+- Fix: Tab page text color respects TabControl.ForeColor
+- Fix: Several handler leaks fixed (theme reload, titlebar hooks, hotkey menu)
+- Fix: Theme background image no longer locks the image file
+- Fix: Null reference on MainForm for splash/restore windows
+- Fix: Temp files of the theme preview are deleted on close
+- Removed: Import settings button in the options dialog (export is kept)
+- Fix: Behavior group in the options dialog too small; checkboxes now label themselves
+- New: Update notice directly in the "Tools" menu item
+- New: Windows accent color can be used for highlights
+- New: Native dialogs (message boxes) with dark title bar

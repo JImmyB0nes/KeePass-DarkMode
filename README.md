@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/badge/.NET-4.5-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET">
   <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest"><img src="https://img.shields.io/github/v/release/JImmyB0nes/KeePass-DarkMode?style=for-the-badge&color=brightgreen" alt="Version"></a>
   <a href="https://github.com/JImmyB0nes/KeePass-DarkMode/releases/latest/download/KeePassDarkMode.plgx"><img src="https://img.shields.io/github/downloads/JImmyB0nes/KeePass-DarkMode/total?style=for-the-badge&color=green" alt="Downloads"></a>
+  <a href="https://git.jimmybones.de/jimmybones/KeePass-DarkMode"><img src="https://img.shields.io/badge/mirror-forgejo-blue?style=for-the-badge&logo=forgejo" alt="Forgejo mirror"></a>
 </p>
 
 <p align="center">
